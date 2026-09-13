@@ -1,0 +1,1335 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&amp;family=IBM+Plex+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+  body { margin:0; background:#07090c; font-family:'IBM Plex Sans',system-ui,sans-serif; -webkit-font-smoothing:antialiased; }
+  a { color:#C8FF4D; text-decoration:none; }
+  a:hover { color:#dcff8a; }
+  *::-webkit-scrollbar { width:0; height:0; }
+</style>
+</helmet>
+
+<div style="min-height:100%;display:flex;align-items:flex-start;justify-content:center;padding:28px 16px;background:radial-gradient(1100px 700px at 50% -10%, #131c22 0%, #07090c 62%);">
+<div style="width:390px;height:844px;border-radius:46px;padding:5px;background:linear-gradient(160deg,#2b3440,#0d1116 55%,#242c36);box-shadow:0 40px 90px -20px rgba(0,0,0,.85), 0 0 0 1px rgba(255,255,255,.05);flex:none;">
+<div style="position:relative;width:100%;height:100%;border-radius:41px;overflow:hidden;background:#0B0F14;display:flex;flex-direction:column;">
+
+  <div style="flex:none;display:flex;align-items:center;justify-content:space-between;padding:12px 24px 4px;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:#fff;letter-spacing:.2px;">
+    <span>9:41</span>
+    <div style="display:flex;align-items:center;gap:5px;">
+      <svg width="16" height="11" viewBox="0 0 16 11" fill="none"><rect x="0" y="7" width="3" height="4" rx="1" fill="#fff"></rect><rect x="4.3" y="5" width="3" height="6" rx="1" fill="#fff"></rect><rect x="8.6" y="2.5" width="3" height="8.5" rx="1" fill="#fff"></rect><rect x="12.9" y="0" width="3" height="11" rx="1" fill="#fff" opacity=".45"></rect></svg>
+      <svg width="22" height="11" viewBox="0 0 22 11" fill="none"><rect x=".5" y=".5" width="18" height="10" rx="3" stroke="#fff" stroke-opacity=".5"></rect><rect x="2" y="2" width="12.5" height="7" rx="2" fill="#fff"></rect><path d="M20.5 4v3a2 2 0 0 0 0-3z" fill="#fff" fill-opacity=".5"></path></svg>
+    </div>
+  </div>
+
+  <div style="flex:1;overflow-y:auto;overflow-x:hidden;">
+
+  <sc-if value="{{ isAccounts }}" hint-placeholder-val="{{ true }}">
+  <div style="padding:8px 20px 24px;display:flex;flex-direction:column;gap:18px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:9px;">
+        <div style="width:26px;height:26px;border-radius:8px;background:#C8FF4D;display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:14px;color:#0B0F14;">N</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;letter-spacing:2.4px;color:#eaf0f5;">NOMI TRADES</div>
+      </div>
+      <div style="display:flex;gap:8px;">
+        <div style="width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#93a1ad" stroke-width="1.7"><circle cx="12" cy="13" r="8"></circle><path d="M12 10v3l2 2M5 3 3 5m16-2 2 2"></path></svg>
+        </div>
+        <div style="position:relative;width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#93a1ad" stroke-width="1.7"><path d="M18 9a6 6 0 1 0-12 0c0 5-2 6-2 6h16s-2-1-2-6M10.5 20a2 2 0 0 0 3 0"></path></svg>
+          <div style="position:absolute;top:6px;right:7px;width:7px;height:7px;border-radius:50%;background:#FF5F56;border:2px solid #0B0F14;"></div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+      <div>
+        <div style="font-size:11px;letter-spacing:1.6px;color:#6d7c89;font-weight:600;">TOTAL EQUITY</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:34px;font-weight:700;color:#fff;letter-spacing:-.8px;line-height:1.15;margin-top:4px;">{{ equity }}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;padding:5px 10px;border-radius:999px;background:{{ dayBg }};color:{{ dayColor }};font-size:12.5px;font-weight:600;">{{ dayPct }}</div>
+    </div>
+
+    <sc-if value="{{ kyc }}" hint-placeholder-val="{{ true }}">
+    
+    </sc-if>
+
+    <div style="display:flex;gap:6px;padding:4px;border-radius:13px;background:#121922;border:1px solid rgba(255,255,255,.06);">
+      <sc-for list="{{ modes }}" as="m" hint-placeholder-count="2">
+        <div onClick="{{ m.pick }}" style="flex:1;height:34px;border-radius:10px;background:{{ m.bg }};display:flex;align-items:center;justify-content:center;gap:7px;font-size:13px;font-weight:600;color:{{ m.fg }};cursor:pointer;">{{ m.name }}<span style="font-size:11px;color:#6d7c89;">{{ m.count }}</span></div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+      <sc-for list="{{ accountCards }}" as="a" hint-placeholder-count="2">
+        <div style="border-radius:20px;background:#121922;border:1px solid {{ a.border }};padding:16px;">
+          <div onClick="{{ a.select }}" style="display:flex;align-items:center;justify-content:space-between;cursor:pointer;">
+            <div style="font-size:12.5px;color:#7d8b98;letter-spacing:.4px;">{{ a.label }} · <span style="color:#5c6a77;">#{{ a.num }}</span></div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="font-size:11px;font-weight:600;color:{{ a.selColor }};">{{ a.selLabel }}</div>
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#7d8b98" stroke-width="2"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </div>
+          <div style="display:flex;gap:7px;margin-top:11px;flex-wrap:wrap;">
+            <div style="padding:4px 9px;border-radius:7px;background:rgba(53,209,154,.12);color:#35D19A;font-size:11px;font-weight:600;">MT5</div>
+            <div style="padding:4px 9px;border-radius:7px;background:rgba(53,209,154,.12);color:#35D19A;font-size:11px;font-weight:600;">{{ a.type }}</div>
+            <div style="padding:4px 9px;border-radius:7px;background:{{ a.modeBg }};color:{{ a.modeFg }};font-size:11px;font-weight:600;">{{ a.mode }}</div>
+          </div>
+          <div style="display:flex;align-items:baseline;gap:7px;margin-top:12px;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;">{{ a.bal }}</div>
+            <div style="font-size:13px;font-weight:600;color:#7d8b98;">{{ a.curr }}</div>
+          </div>
+          <div style="font-size:11.5px;color:#6d7c89;margin-top:4px;">Equity {{ a.eq }} · Open P/L <span style="color:{{ a.plColor }};">{{ a.pl }}</span></div>
+          <div style="display:flex;justify-content:space-between;margin-top:16px;">
+            <div onClick="{{ a.trade }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;width:62px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:#C8FF4D;display:flex;align-items:center;justify-content:center;">
+                <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#0B0F14" stroke-width="2"><path d="M8 3v4M8 17v4M16 3v3M16 14v7"></path><rect x="5" y="7" width="6" height="10" rx="1.5" fill="#0B0F14"></rect><rect x="13" y="6" width="6" height="8" rx="1.5" fill="#0B0F14"></rect></svg>
+              </div>
+              <div style="font-size:12px;color:#cfd8e0;">Trade</div>
+            </div>
+            <div onClick="{{ a.fund }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;width:62px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:#1A222C;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dbe3ea" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v9m-3.5-3.5L12 16l3.5-3.5"></path></svg>
+              </div>
+              <div style="font-size:12px;color:#8d9aa6;">{{ a.fundLabel }}</div>
+            </div>
+            <div onClick="{{ a.second }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;width:62px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:#1A222C;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#dbe3ea" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M9 15l6-6m0 0h-4.5m4.5 0v4.5"></path></svg>
+              </div>
+              <div style="font-size:12px;color:#8d9aa6;">{{ a.secondLabel }}</div>
+            </div>
+            <div onClick="{{ a.more }}" style="display:flex;flex-direction:column;align-items:center;gap:7px;cursor:pointer;width:62px;">
+              <div style="width:48px;height:48px;border-radius:50%;background:#1A222C;display:flex;align-items:center;justify-content:center;">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="#dbe3ea"><circle cx="12" cy="5.5" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="12" cy="18.5" r="1.8"></circle></svg>
+              </div>
+              <div style="font-size:12px;color:#8d9aa6;">More</div>
+            </div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+
+    <sc-if value="{{ hasArchived }}" hint-placeholder-val="{{ false }}">
+    <div>
+      <div style="font-size:11px;letter-spacing:1.6px;color:#6d7c89;font-weight:600;padding-bottom:10px;">ARCHIVED</div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <sc-for list="{{ archived }}" as="a" hint-placeholder-count="1">
+          <div style="border-radius:16px;background:#0F151D;border:1px dashed rgba(255,255,255,.09);padding:14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div>
+                <div style="font-size:12.5px;color:#7d8b98;">{{ a.label }} · <span style="color:#5c6a77;">#{{ a.num }}</span></div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#a8b4c0;margin-top:5px;">{{ a.bal }} {{ a.curr }}</div>
+              </div>
+              <div style="padding:4px 9px;border-radius:7px;background:rgba(255,255,255,.06);color:#8d9aa6;font-size:11px;font-weight:600;">{{ a.mode }}</div>
+            </div>
+            <div style="display:flex;gap:9px;margin-top:13px;">
+              <div onClick="{{ a.restore }}" style="flex:1;height:36px;border-radius:10px;background:rgba(200,255,77,.14);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#C8FF4D;cursor:pointer;">Restore</div>
+              <div onClick="{{ a.statement }}" style="flex:1;height:36px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#b6c2cd;cursor:pointer;">Statements</div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    </sc-if>
+
+    <div>
+      <div style="display:flex;align-items:center;gap:22px;border-bottom:1px solid rgba(255,255,255,.07);">
+        <div onClick="{{ setOpenTab }}" style="padding-bottom:10px;font-size:14px;font-weight:600;color:{{ posOpenColor }};border-bottom:2px solid {{ posOpenLine }};cursor:pointer;">Open</div>
+        <div onClick="{{ setPendingTab }}" style="padding-bottom:10px;font-size:14px;font-weight:600;color:{{ posPendColor }};border-bottom:2px solid {{ posPendLine }};cursor:pointer;">Pending</div>
+        <div onClick="{{ setClosedTab }}" style="padding-bottom:10px;font-size:14px;font-weight:600;color:{{ posClosedColor }};border-bottom:2px solid {{ posClosedLine }};cursor:pointer;">Closed</div>
+      </div>
+
+      <sc-if value="{{ hasRows }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:10px;padding-top:14px;">
+        <sc-for list="{{ rows }}" as="p" hint-placeholder-count="3">
+          <div style="border-radius:16px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:13px 14px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:10px;">
+                <div style="width:28px;height:28px;border-radius:50%;background:{{ p.tint }};display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:#0B0F14;">{{ p.mark }}</div>
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#fff;">{{ p.sym }}</div>
+                <div style="padding:2px 6px;border-radius:5px;background:rgba(255,255,255,.07);font-size:10px;font-weight:600;color:#9aa7b3;">{{ p.tag }}</div>
+              </div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:600;color:{{ p.pnlColor }};">{{ p.pnl }}</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:7px;">
+              <div style="font-size:12.5px;color:{{ p.sideColor }};"><span style="font-weight:600;">{{ p.side }}</span> <span style="color:#7d8b98;">{{ p.detail }}</span></div>
+              <div style="font-size:12.5px;color:#7d8b98;">{{ p.now }}</div>
+            </div>
+            <sc-if value="{{ p.live }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;gap:9px;margin-top:12px;">
+              <div onClick="{{ p.chart }}" style="flex:1;height:34px;border-radius:10px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#b6c2cd;cursor:pointer;">Chart</div>
+              <div onClick="{{ p.close }}" style="flex:1;height:34px;border-radius:10px;background:rgba(255,95,86,.14);display:flex;align-items:center;justify-content:center;font-size:12.5px;font-weight:600;color:#FF8A84;cursor:pointer;">Close position</div>
+            </div>
+            </sc-if>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ noRows }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:52px 24px;text-align:center;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#dbe3ea;">{{ emptyTitle }}</div>
+        <div style="font-size:13px;color:#6d7c89;margin-top:7px;line-height:1.5;">{{ emptyBody }}</div>
+      </div>
+      </sc-if>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isMarkets }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:8px 0 24px;display:flex;flex-direction:column;gap:14px;">
+    <div style="display:flex;justify-content:center;">
+      <div onClick="{{ openTerminal }}" style="display:flex;align-items:center;gap:9px;padding:6px 8px 6px 6px;border-radius:999px;background:#141C25;border:1px solid rgba(255,255,255,.07);cursor:pointer;">
+        <div style="padding:3px 9px;border-radius:999px;background:{{ selModeBg }};color:{{ selModeFg }};font-size:11.5px;font-weight:600;">{{ selMode }}</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;">{{ balance }}</div>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="#7d8b98"><circle cx="12" cy="5.5" r="1.6"></circle><circle cx="12" cy="12" r="1.6"></circle><circle cx="12" cy="18.5" r="1.6"></circle></svg>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;">Markets</div>
+      <div style="display:flex;gap:8px;">
+        <div onClick="{{ openTerminal }}" style="width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C8FF4D" stroke-width="1.8"><path d="M8 3v4M8 17v4M16 3v3M16 14v7"></path><rect x="5" y="7" width="6" height="10" rx="1.5"></rect><rect x="13" y="6" width="6" height="8" rx="1.5"></rect></svg>
+        </div>
+        <div style="width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#93a1ad" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="M16.5 16.5 21 21"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:20px;overflow-x:auto;padding:0 20px;border-bottom:1px solid rgba(255,255,255,.07);">
+      <sc-for list="{{ cats }}" as="c" hint-placeholder-count="5">
+        <div onClick="{{ c.pick }}" style="flex:none;padding-bottom:10px;font-size:14px;font-weight:600;white-space:nowrap;color:{{ c.color }};border-bottom:2px solid {{ c.line }};cursor:pointer;">{{ c.name }}</div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;gap:8px;padding:0 20px;">
+      <div style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:#161D25;font-size:12.5px;color:#b6c2cd;cursor:pointer;">Sort by volume
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7d8b98" stroke-width="2.4"><path d="M6 9l6 6 6-6"></path></svg>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:7px 12px;border-radius:999px;background:#161D25;font-size:12.5px;color:#b6c2cd;cursor:pointer;">Edit
+        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="#7d8b98" stroke-width="2"><path d="M4 20h4L20 8l-4-4L4 16v4z"></path></svg>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:9px;padding:0 20px;">
+      <sc-for list="{{ instruments }}" as="i" hint-placeholder-count="8">
+        <div onClick="{{ i.open }}" style="display:flex;align-items:center;gap:11px;padding:12px 13px;border-radius:16px;background:#121922;border:1px solid rgba(255,255,255,.055);cursor:pointer;" style-hover="background:#161f29">
+          <div style="flex:none;width:32px;height:32px;border-radius:50%;background:{{ i.tint }};display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:700;color:#0B0F14;">{{ i.mark }}</div>
+          <div style="flex:1;min-width:0;">
+            <div style="display:flex;align-items:center;gap:7px;">
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:600;color:#fff;">{{ i.sym }}</div>
+              <div style="display:flex;gap:1.5px;align-items:flex-end;height:9px;">
+                <div style="width:2.5px;height:5px;border-radius:1px;background:#C8FF4D;"></div>
+                <div style="width:2.5px;height:7px;border-radius:1px;background:#C8FF4D;"></div>
+                <div style="width:2.5px;height:9px;border-radius:1px;background:rgba(200,255,77,.3);"></div>
+              </div>
+            </div>
+            <div style="font-size:11.5px;color:#6d7c89;margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">{{ i.desc }}</div>
+          </div>
+          <svg width="72" height="30" viewBox="0 0 120 40" fill="none" style="flex:none;">
+            <path d="{{ i.path }}" stroke="{{ i.stroke }}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"></path>
+            <path d="M0 20H120" stroke="rgba(255,255,255,.14)" stroke-width="1" stroke-dasharray="4 4"></path>
+          </svg>
+          <div style="flex:none;text-align:right;min-width:74px;">
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;">{{ i.price }}</div>
+            <div style="font-size:12px;font-weight:600;color:{{ i.stroke }};margin-top:3px;">{{ i.chg }}</div>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isInsights }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:8px 0 24px;display:flex;flex-direction:column;gap:22px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff;padding:0 20px;letter-spacing:-.5px;">Insights</div>
+
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px 11px;">
+        <div style="font-size:11px;letter-spacing:1.6px;color:#6d7c89;font-weight:600;">TOP MOVERS</div>
+        <div style="font-size:12.5px;font-weight:600;color:#C8FF4D;cursor:pointer;">Show all</div>
+      </div>
+      <div style="display:flex;gap:10px;overflow-x:auto;padding:0 20px 4px;">
+        <sc-for list="{{ movers }}" as="m" hint-placeholder-count="4">
+          <div style="flex:none;width:132px;padding:13px;border-radius:16px;background:#121922;border:1px solid rgba(255,255,255,.055);">
+            <div style="display:flex;align-items:center;gap:8px;">
+              <div style="width:24px;height:24px;border-radius:50%;background:{{ m.tint }};display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:10px;font-weight:700;color:#0B0F14;">{{ m.mark }}</div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;color:#fff;">{{ m.sym }}</div>
+            </div>
+            <svg width="106" height="28" viewBox="0 0 120 40" fill="none" style="margin-top:10px;">
+              <path d="{{ m.path }}" stroke="{{ m.stroke }}" stroke-width="2" stroke-linecap="round"></path>
+            </svg>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;margin-top:8px;">{{ m.price }}</div>
+            <div style="font-size:12px;font-weight:600;color:{{ m.stroke }};margin-top:2px;">{{ m.chg }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:0 20px 11px;">
+        <div style="font-size:11px;letter-spacing:1.6px;color:#6d7c89;font-weight:600;">DESK SIGNALS</div>
+        <div style="font-size:12.5px;font-weight:600;color:#C8FF4D;cursor:pointer;">Show all</div>
+      </div>
+      <div style="display:flex;gap:12px;overflow-x:auto;padding:0 20px 4px;">
+        <sc-for list="{{ signals }}" as="s" hint-placeholder-count="2">
+          <div style="flex:none;width:258px;border-radius:18px;background:#121922;border:1px solid rgba(255,255,255,.055);overflow:hidden;">
+            <div style="padding:13px 14px 10px;display:flex;align-items:center;justify-content:space-between;">
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;color:#fff;">{{ s.sym }}</div>
+              <div style="font-size:11px;color:#6d7c89;letter-spacing:.6px;">{{ s.tf }}</div>
+            </div>
+            <div style="height:106px;background:#0E141B;position:relative;">
+              <svg viewBox="0 0 260 106" width="100%" height="106" preserveAspectRatio="none">
+                <path d="{{ s.band }}" fill="{{ s.bandFill }}"></path>
+                <path d="{{ s.line }}" stroke="{{ s.stroke }}" stroke-width="2" fill="none"></path>
+                <line x1="0" y1="{{ s.tpY }}" x2="260" y2="{{ s.tpY }}" stroke="#35D19A" stroke-width="1.4" stroke-dasharray="5 4"></line>
+                <line x1="0" y1="{{ s.slY }}" x2="260" y2="{{ s.slY }}" stroke="#FF5F56" stroke-width="1.4" stroke-dasharray="5 4"></line>
+              </svg>
+            </div>
+            <div style="padding:13px 14px;">
+              <div style="font-size:14px;font-weight:600;color:#eaf0f5;line-height:1.4;">{{ s.head }}</div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px;">
+                <div style="padding:5px 10px;border-radius:8px;background:{{ s.pillBg }};color:{{ s.stroke }};font-size:11.5px;font-weight:600;">{{ s.bias }}</div>
+                <div style="font-size:11.5px;color:#6d7c89;">{{ s.time }}</div>
+              </div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div>
+      <div style="font-size:11px;letter-spacing:1.6px;color:#6d7c89;font-weight:600;padding:0 20px 11px;">ECONOMIC CALENDAR</div>
+      <div style="margin:0 20px;border-radius:18px;background:#121922;border:1px solid rgba(255,255,255,.055);overflow:hidden;">
+        <sc-for list="{{ events }}" as="e" hint-placeholder-count="3">
+          <div style="display:flex;align-items:center;gap:12px;padding:14px;border-top:1px solid rgba(255,255,255,.05);">
+            <div style="flex:none;width:34px;height:24px;border-radius:5px;background:{{ e.tint }};display:flex;align-items:center;justify-content:center;font-size:10.5px;font-weight:700;color:#0B0F14;letter-spacing:.5px;">{{ e.cc }}</div>
+            <div style="flex:1;min-width:0;">
+              <div style="font-size:13.5px;font-weight:600;color:#eaf0f5;">{{ e.name }}</div>
+              <div style="font-size:11.5px;color:#6d7c89;margin-top:2px;">{{ e.when }}</div>
+            </div>
+            <div style="display:flex;gap:2.5px;align-items:flex-end;height:13px;">
+              <div style="width:3px;height:13px;border-radius:1px;background:{{ e.i1 }};"></div>
+              <div style="width:3px;height:13px;border-radius:1px;background:{{ e.i2 }};"></div>
+              <div style="width:3px;height:13px;border-radius:1px;background:{{ e.i3 }};"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isPerf }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:8px 20px 24px;display:flex;flex-direction:column;gap:16px;">
+    <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;">Performance</div>
+
+    <div style="display:flex;gap:8px;overflow-x:auto;">
+      <sc-for list="{{ accChips }}" as="a" hint-placeholder-count="3">
+        <div onClick="{{ a.pick }}" style="flex:none;display:flex;align-items:center;gap:7px;padding:8px 12px;border-radius:999px;background:{{ a.bg }};border:1px solid {{ a.border }};cursor:pointer;">
+          <div style="font-size:12.5px;font-weight:600;color:{{ a.fg }};">{{ a.label }}</div>
+          <div style="font-size:11px;color:#6d7c89;">#{{ a.num }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="display:flex;gap:7px;">
+      <sc-for list="{{ periods }}" as="p" hint-placeholder-count="4">
+        <div onClick="{{ p.pick }}" style="flex:1;height:32px;border-radius:10px;background:{{ p.bg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:{{ p.fg }};cursor:pointer;white-space:nowrap;">{{ p.name }}</div>
+      </sc-for>
+    </div>
+
+    <div style="border-radius:20px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:16px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+        <div>
+          <div style="font-size:11px;letter-spacing:1.4px;color:#6d7c89;font-weight:600;">{{ chartLabel }}</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:27px;font-weight:700;color:{{ chartColor }};margin-top:5px;letter-spacing:-.5px;">{{ chartValue }}</div>
+        </div>
+        <div style="font-size:11.5px;color:#6d7c89;text-align:right;">{{ chartSub }}</div>
+      </div>
+
+      <svg viewBox="0 0 320 130" width="100%" height="130" fill="none" style="margin-top:12px;">
+        <line x1="0" y1="32" x2="320" y2="32" stroke="rgba(255,255,255,.05)" stroke-width="1"></line>
+        <line x1="0" y1="65" x2="320" y2="65" stroke="rgba(255,255,255,.05)" stroke-width="1"></line>
+        <line x1="0" y1="98" x2="320" y2="98" stroke="rgba(255,255,255,.05)" stroke-width="1"></line>
+        <sc-if value="{{ chartIsBars }}" hint-placeholder-val="{{ false }}">
+          <sc-for list="{{ chartBars }}" as="b" hint-placeholder-count="12">
+            <rect x="{{ b.x }}" y="{{ b.y }}" width="{{ b.w }}" height="{{ b.h }}" rx="3" fill="{{ b.fill }}"></rect>
+          </sc-for>
+        </sc-if>
+        <sc-if value="{{ chartIsLine }}" hint-placeholder-val="{{ true }}">
+          <path d="{{ chartArea }}" fill="{{ chartFill }}"></path>
+          <path d="{{ chartLine }}" stroke="{{ chartColor }}" stroke-width="2.2" stroke-linecap="round"></path>
+        </sc-if>
+      </svg>
+
+      <div style="display:flex;gap:6px;margin-top:8px;overflow-x:auto;">
+        <sc-for list="{{ chartTabs }}" as="t" hint-placeholder-count="4">
+          <div onClick="{{ t.pick }}" style="flex:none;padding:0 11px;height:30px;border-radius:9px;background:{{ t.bg }};display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;color:{{ t.fg }};cursor:pointer;">{{ t.name }}</div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <sc-for list="{{ summaryCards }}" as="s" hint-placeholder-count="4">
+        <div style="border-radius:16px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:14px;">
+          <div style="font-size:10.5px;letter-spacing:1.2px;color:#6d7c89;font-weight:600;">{{ s.label }}</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:{{ s.color }};margin-top:7px;letter-spacing:-.3px;">{{ s.value }}</div>
+          <div style="font-size:11.5px;color:#6d7c89;margin-top:3px;">{{ s.note }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="border-radius:20px;background:#121922;border:1px solid rgba(255,255,255,.055);overflow:hidden;">
+      <div style="font-size:11px;letter-spacing:1.4px;color:#6d7c89;font-weight:600;padding:16px 16px 4px;">ACCOUNT SUMMARY</div>
+      <sc-for list="{{ summaryRows }}" as="r" hint-placeholder-count="8">
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid rgba(255,255,255,.05);">
+          <div style="font-size:13px;color:#8d9aa6;">{{ r.label }}</div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;color:{{ r.color }};">{{ r.value }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="border-radius:20px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:16px;">
+      <div style="font-size:11px;letter-spacing:1.4px;color:#6d7c89;font-weight:600;">WIN RATE BY INSTRUMENT</div>
+      <div style="display:flex;flex-direction:column;gap:13px;margin-top:14px;">
+        <sc-for list="{{ winRates }}" as="w" hint-placeholder-count="4">
+          <div>
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;color:#eaf0f5;">{{ w.sym }}</div>
+              <div style="font-size:12.5px;font-weight:600;color:#b6c2cd;">{{ w.pct }}</div>
+            </div>
+            <div style="height:6px;border-radius:999px;background:rgba(255,255,255,.07);margin-top:7px;overflow:hidden;">
+              <div style="height:100%;border-radius:999px;background:{{ w.color }};width:{{ w.pct }};"></div>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ isProfile }}" hint-placeholder-val="{{ false }}">
+  <div style="padding:8px 20px 24px;display:flex;flex-direction:column;gap:20px;">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:26px;font-weight:700;color:#fff;letter-spacing:-.5px;">Profile</div>
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#93a1ad" stroke-width="1.7"><circle cx="12" cy="12" r="3.2"></circle><path d="M12 2.8v2.4M12 18.8v2.4M4.5 7.5l2 1.2M17.5 15.3l2 1.2M4.5 16.5l2-1.2M17.5 8.7l2-1.2"></path></svg>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:13px;padding:15px;border-radius:20px;background:#121922;border:1px solid rgba(255,255,255,.055);">
+      <div style="width:50px;height:50px;border-radius:50%;background:linear-gradient(140deg,#C8FF4D,#6fbf3b);display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:19px;font-weight:700;color:#0B0F14;">AR</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;">Aarav Rathore</div>
+        <div style="font-size:12.5px;color:#6d7c89;margin-top:2px;">aarav.r@nomitrades.app</div>
+      </div>
+      <div style="padding:5px 10px;border-radius:8px;background:rgba(255,95,86,.14);color:#FF8A84;font-size:11px;font-weight:600;">Unverified</div>
+    </div>
+
+    <sc-for list="{{ profileGroups }}" as="g" hint-placeholder-count="3">
+      <div>
+        <div style="font-size:11px;letter-spacing:1.6px;color:#6d7c89;font-weight:600;padding-bottom:10px;">{{ g.title }}</div>
+        <div style="border-radius:18px;background:#121922;border:1px solid rgba(255,255,255,.055);overflow:hidden;">
+          <sc-for list="{{ g.items }}" as="it" hint-placeholder-count="3">
+            <div style="display:flex;align-items:center;gap:13px;padding:14px;border-top:1px solid rgba(255,255,255,.05);cursor:pointer;" style-hover="background:#161f29">
+              <div style="flex:none;width:34px;height:34px;border-radius:11px;background:{{ it.bg }};display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:700;color:{{ it.fg }};">{{ it.mark }}</div>
+              <div style="flex:1;min-width:0;">
+                <div style="font-size:14px;font-weight:500;color:#eaf0f5;">{{ it.name }}</div>
+                <div style="font-size:11.5px;color:#6d7c89;margin-top:2px;">{{ it.sub }}</div>
+              </div>
+              <div style="font-size:12.5px;font-weight:600;color:#8d9aa6;">{{ it.value }}</div>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#5c6a77" stroke-width="2" style="flex:none;"><path d="M9 6l6 6-6 6"></path></svg>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </sc-for>
+
+    <div style="display:flex;align-items:center;justify-content:center;gap:9px;height:48px;border-radius:14px;background:rgba(255,95,86,.09);border:1px solid rgba(255,95,86,.2);color:#FF8A84;font-size:14px;font-weight:600;cursor:pointer;">Log out</div>
+  </div>
+  </sc-if>
+
+  </div>
+
+  <div style="flex:none;display:flex;padding:9px 6px 22px;background:#0E141B;border-top:1px solid rgba(255,255,255,.06);">
+    <div onClick="{{ navAccounts }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{ cAccounts }}" stroke-width="1.8"><rect x="3" y="3" width="7" height="7" rx="2"></rect><rect x="14" y="3" width="7" height="7" rx="2"></rect><rect x="3" y="14" width="7" height="7" rx="2"></rect><rect x="14" y="14" width="7" height="7" rx="2"></rect></svg>
+      <div style="font-size:10.5px;color:{{ cAccounts }};">Accounts</div>
+    </div>
+    <div onClick="{{ navMarkets }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{ cMarkets }}" stroke-width="1.8"><path d="M8 2.5v3.5M8 18v3.5M16 2.5v3M16 15v6.5"></path><rect x="5" y="6" width="6" height="12" rx="2"></rect><rect x="13" y="5" width="6" height="10" rx="2"></rect></svg>
+      <div style="font-size:10.5px;color:{{ cMarkets }};">Markets</div>
+    </div>
+    <div onClick="{{ navInsights }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{ cInsights }}" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3c2.6 3 2.6 15 0 18M12 3c-2.6 3-2.6 15 0 18"></path></svg>
+      <div style="font-size:10.5px;color:{{ cInsights }};">Insights</div>
+    </div>
+    <div onClick="{{ navPerf }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{ cPerf }}" stroke-width="1.8"><path d="M4 20V11M10.5 20V4M17 20v-6"></path></svg>
+      <div style="font-size:10.5px;color:{{ cPerf }};">Performance</div>
+    </div>
+    <div onClick="{{ navProfile }}" style="flex:1;display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer;">
+      <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="{{ cProfile }}" stroke-width="1.8"><circle cx="12" cy="12" r="9"></circle><circle cx="12" cy="10" r="3"></circle><path d="M6.5 18.5c1.4-2.4 3.2-3.3 5.5-3.3s4.1.9 5.5 3.3"></path></svg>
+      <div style="font-size:10.5px;color:{{ cProfile }};">Profile</div>
+    </div>
+  </div>
+
+  <sc-if value="{{ terminal }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;background:#0B0F14;display:flex;flex-direction:column;">
+    <div style="flex:none;padding:50px 16px 0;display:flex;align-items:center;gap:10px;">
+      <div onClick="{{ closeTerminal }}" style="flex:none;width:32px;height:32px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#dbe3ea" stroke-width="2"><path d="M15 6l-6 6 6 6"></path></svg>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:600;color:#fff;">Terminal</div>
+        <div style="font-size:11px;color:#6d7c89;margin-top:1px;">{{ termAcc }}</div>
+      </div>
+      <div style="display:flex;align-items:center;gap:6px;padding:5px 10px;border-radius:999px;background:{{ mktBg }};">
+        <div style="width:6px;height:6px;border-radius:50%;background:{{ mktDot }};"></div>
+        <div style="font-size:11px;font-weight:600;color:{{ mktDot }};">{{ mktStatus }}</div>
+      </div>
+    </div>
+
+    <div style="flex:none;display:flex;gap:7px;overflow-x:auto;padding:12px 16px 10px;">
+      <sc-for list="{{ termTabsSym }}" as="s" hint-placeholder-count="6">
+        <div onClick="{{ s.pick }}" style="flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding:7px 11px;border-radius:11px;background:{{ s.bg }};border:1px solid {{ s.border }};cursor:pointer;">
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:{{ s.fg }};white-space:nowrap;">{{ s.sym }}</div>
+          <div style="font-size:10.5px;font-weight:600;color:{{ s.chgColor }};">{{ s.chg }}</div>
+        </div>
+      </sc-for>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:0 16px 16px;">
+      <div style="display:flex;align-items:flex-end;justify-content:space-between;">
+        <div>
+          <div style="font-family:'Space Grotesk',sans-serif;font-size:29px;font-weight:700;color:#fff;letter-spacing:-.8px;">{{ termPrice }}</div>
+          <div style="font-size:12px;color:#6d7c89;margin-top:3px;">{{ termSymDesc }}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:12.5px;font-weight:600;color:{{ termColor }};">{{ termChg }}</div>
+          <div style="display:flex;gap:10px;margin-top:5px;">
+            <div>
+              <div style="font-size:10px;letter-spacing:1px;color:#6d7c89;font-weight:600;">BID</div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:#FF8A84;">{{ termBid }}</div>
+            </div>
+            <div>
+              <div style="font-size:10px;letter-spacing:1px;color:#6d7c89;font-weight:600;">ASK</div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:12.5px;font-weight:600;color:#35D19A;">{{ termAsk }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:6px;margin-top:12px;">
+        <div style="display:flex;gap:5px;flex:1;overflow-x:auto;">
+          <sc-for list="{{ termTfs }}" as="t" hint-placeholder-count="6">
+            <div onClick="{{ t.pick }}" style="flex:none;padding:0 10px;height:28px;border-radius:8px;background:{{ t.bg }};display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;color:{{ t.fg }};cursor:pointer;">{{ t.name }}</div>
+          </sc-for>
+        </div>
+        <div onClick="{{ toggleEma }}" style="flex:none;padding:0 10px;height:28px;border-radius:8px;background:{{ emaBg }};display:flex;align-items:center;justify-content:center;font-size:11.5px;font-weight:600;color:{{ emaFg }};cursor:pointer;">EMA 9</div>
+        <div onClick="{{ toggleCross }}" style="flex:none;width:28px;height:28px;border-radius:8px;background:{{ crossBg }};display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="{{ crossFg }}" stroke-width="1.7"><path d="M12 3v18M3 12h18"></path><circle cx="12" cy="12" r="3.4"></circle></svg>
+        </div>
+      </div>
+
+      <div style="margin-top:12px;border-radius:16px;background:#0E141B;border:1px solid rgba(255,255,255,.055);overflow:hidden;">
+        <svg viewBox="0 0 326 210" width="100%" height="210" fill="none">
+          <sc-for list="{{ gridLines }}" as="g" hint-placeholder-count="4">
+            <line x1="0" y1="{{ g.y }}" x2="326" y2="{{ g.y }}" stroke="rgba(255,255,255,.045)" stroke-width="1"></line>
+          </sc-for>
+          <sc-for list="{{ candles }}" as="k" hint-placeholder-count="30">
+            <line x1="{{ k.cx }}" y1="{{ k.hy }}" x2="{{ k.cx }}" y2="{{ k.ly }}" stroke="{{ k.color }}" stroke-width="1.1"></line>
+            <rect x="{{ k.x }}" y="{{ k.y }}" width="{{ k.w }}" height="{{ k.h }}" fill="{{ k.color }}" rx="1"></rect>
+          </sc-for>
+          <sc-if value="{{ ema }}" hint-placeholder-val="{{ true }}">
+            <path d="{{ emaPath }}" stroke="#C8FF4D" stroke-width="1.6" fill="none" stroke-linecap="round"></path>
+          </sc-if>
+          <sc-if value="{{ cross }}" hint-placeholder-val="{{ false }}">
+            <line x1="238" y1="0" x2="238" y2="210" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3 3"></line>
+            <line x1="0" y1="{{ lastY }}" x2="326" y2="{{ lastY }}" stroke="rgba(255,255,255,.22)" stroke-width="1" stroke-dasharray="3 3"></line>
+          </sc-if>
+          <line x1="0" y1="{{ lastY }}" x2="326" y2="{{ lastY }}" stroke="{{ termColor }}" stroke-width="1" stroke-dasharray="5 4"></line>
+          <sc-for list="{{ priceAxis }}" as="p" hint-placeholder-count="4">
+            <text x="322" y="{{ p.y }}" text-anchor="end" fill="#5c6a77" font-size="9" font-family="IBM Plex Sans">{{ p.label }}</text>
+          </sc-for>
+        </svg>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:14px;">
+        <sc-for list="{{ termMetrics }}" as="m" hint-placeholder-count="6">
+          <div style="border-radius:13px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:11px;">
+            <div style="font-size:9.5px;letter-spacing:1px;color:#6d7c89;font-weight:600;">{{ m.label }}</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:13px;font-weight:600;color:{{ m.color }};margin-top:5px;">{{ m.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="display:flex;align-items:center;gap:22px;margin-top:18px;border-bottom:1px solid rgba(255,255,255,.07);">
+        <sc-for list="{{ termTradeTabs }}" as="t" hint-placeholder-count="3">
+          <div onClick="{{ t.pick }}" style="padding-bottom:9px;font-size:13.5px;font-weight:600;color:{{ t.fg }};border-bottom:2px solid {{ t.line }};cursor:pointer;">{{ t.name }}</div>
+        </sc-for>
+      </div>
+
+      <sc-if value="{{ termHasRows }}" hint-placeholder-val="{{ true }}">
+      <div style="display:flex;flex-direction:column;gap:9px;padding-top:12px;">
+        <sc-for list="{{ termRows }}" as="r" hint-placeholder-count="2">
+          <div style="border-radius:14px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:12px 13px;">
+            <div style="display:flex;align-items:center;justify-content:space-between;">
+              <div style="display:flex;align-items:center;gap:9px;">
+                <div style="font-family:'Space Grotesk',sans-serif;font-size:14px;font-weight:600;color:#fff;">{{ r.sym }}</div>
+                <div style="font-size:12px;font-weight:600;color:{{ r.sideColor }};">{{ r.side }}</div>
+              </div>
+              <div style="font-family:'Space Grotesk',sans-serif;font-size:13.5px;font-weight:600;color:{{ r.pnlColor }};">{{ r.pnl }}</div>
+            </div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px;">
+              <div style="font-size:11.5px;color:#7d8b98;">{{ r.detail }}</div>
+              <sc-if value="{{ r.live }}" hint-placeholder-val="{{ false }}">
+                <div onClick="{{ r.close }}" style="padding:5px 11px;border-radius:8px;background:rgba(255,95,86,.14);font-size:11.5px;font-weight:600;color:#FF8A84;cursor:pointer;">Close</div>
+              </sc-if>
+            </div>
+          </div>
+        </sc-for>
+      </div>
+      </sc-if>
+
+      <sc-if value="{{ termNoRows }}" hint-placeholder-val="{{ false }}">
+      <div style="padding:30px 16px;text-align:center;font-size:12.5px;color:#6d7c89;line-height:1.5;">{{ termEmpty }}</div>
+      </sc-if>
+    </div>
+
+    <div style="flex:none;display:flex;gap:8px;padding:11px 16px 24px;background:#0E141B;border-top:1px solid rgba(255,255,255,.06);">
+      <div onClick="{{ deposit }}" style="flex:none;width:52px;height:50px;border-radius:14px;background:rgba(200,255,77,.14);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;cursor:pointer;" style-hover="background:rgba(200,255,77,.22)">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#C8FF4D" stroke-width="1.9"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v9m-3.5-3.5L12 16l3.5-3.5"></path></svg>
+        <div style="font-size:9px;font-weight:600;color:#C8FF4D;">Deposit</div>
+      </div>
+      <div onClick="{{ termSell }}" style="flex:1;height:50px;border-radius:14px;background:rgba(255,95,86,.14);border:1px solid rgba(255,95,86,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:rgba(255,95,86,.2)">
+        <div style="font-size:10.5px;color:#FF8A84;letter-spacing:.8px;font-weight:600;">SELL</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:700;color:#fff;">{{ termBid }}</div>
+      </div>
+      <div onClick="{{ termBuy }}" style="flex:1;height:50px;border-radius:14px;background:rgba(53,209,154,.16);border:1px solid rgba(53,209,154,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:rgba(53,209,154,.24)">
+        <div style="font-size:10.5px;color:#35D19A;letter-spacing:.8px;font-weight:600;">BUY</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:14.5px;font-weight:700;color:#fff;">{{ termAsk }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ detail }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;background:#0B0F14;display:flex;flex-direction:column;">
+    <div style="flex:none;padding:52px 20px 0;display:flex;align-items:center;justify-content:space-between;">
+      <div onClick="{{ closeDetail }}" style="width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="#dbe3ea" stroke-width="2"><path d="M15 6l-6 6 6 6"></path></svg>
+      </div>
+      <div style="text-align:center;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:16px;font-weight:600;color:#fff;">{{ detail.sym }}</div>
+        <div style="font-size:11.5px;color:#6d7c89;margin-top:2px;">{{ detail.desc }}</div>
+      </div>
+      <div style="display:flex;gap:7px;">
+        <div onClick="{{ detailTerminal }}" style="width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8FF4D" stroke-width="1.8"><path d="M8 3v4M8 17v4M16 3v3M16 14v7"></path><rect x="5" y="7" width="6" height="10" rx="1.5"></rect><rect x="13" y="6" width="6" height="8" rx="1.5"></rect></svg>
+        </div>
+        <div style="width:34px;height:34px;border-radius:50%;background:#161D25;display:flex;align-items:center;justify-content:center;cursor:pointer;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#C8FF4D" stroke-width="1.8"><path d="M12 4.5l2.3 4.8 5.2.7-3.8 3.6.9 5.2-4.6-2.5-4.6 2.5.9-5.2L4.5 10l5.2-.7z"></path></svg>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:1;overflow-y:auto;padding:18px 20px 20px;">
+      <div style="display:flex;align-items:flex-end;gap:11px;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:33px;font-weight:700;color:#fff;letter-spacing:-1px;">{{ detail.price }}</div>
+        <div style="font-size:13.5px;font-weight:600;color:{{ detail.stroke }};padding-bottom:6px;">{{ detail.chg }}</div>
+      </div>
+
+      <svg viewBox="0 0 320 170" width="100%" height="170" fill="none" style="margin-top:14px;">
+        <path d="{{ detailArea }}" fill="{{ detail.areaFill }}"></path>
+        <path d="{{ detailLine }}" stroke="{{ detail.stroke }}" stroke-width="2.2" stroke-linecap="round"></path>
+      </svg>
+
+      <div style="display:flex;gap:7px;margin-top:8px;">
+        <sc-for list="{{ tfs }}" as="t" hint-placeholder-count="5">
+          <div onClick="{{ t.pick }}" style="flex:1;height:31px;border-radius:9px;background:{{ t.bg }};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:{{ t.fg }};cursor:pointer;">{{ t.name }}</div>
+        </sc-for>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px;">
+        <sc-for list="{{ detailStats }}" as="d" hint-placeholder-count="4">
+          <div style="border-radius:14px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:12px 13px;">
+            <div style="font-size:10.5px;letter-spacing:1.2px;color:#6d7c89;font-weight:600;">{{ d.label }}</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:600;color:#eaf0f5;margin-top:6px;">{{ d.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div style="margin-top:18px;border-radius:16px;background:#121922;border:1px solid rgba(255,255,255,.055);padding:15px;">
+        <div style="font-size:11px;letter-spacing:1.4px;color:#6d7c89;font-weight:600;">SENTIMENT · NOMI CLIENTS</div>
+        <div style="display:flex;height:8px;border-radius:999px;overflow:hidden;margin-top:12px;">
+          <div style="width:64%;background:#35D19A;"></div>
+          <div style="width:36%;background:#FF5F56;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-top:9px;font-size:12px;font-weight:600;">
+          <span style="color:#35D19A;">64% long</span>
+          <span style="color:#FF5F56;">36% short</span>
+        </div>
+      </div>
+    </div>
+
+    <div style="flex:none;display:flex;gap:10px;padding:12px 20px 26px;background:#0E141B;border-top:1px solid rgba(255,255,255,.06);">
+      <div onClick="{{ openSell }}" style="flex:1;height:52px;border-radius:15px;background:rgba(255,95,86,.14);border:1px solid rgba(255,95,86,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:rgba(255,95,86,.2)">
+        <div style="font-size:11px;color:#FF8A84;letter-spacing:.8px;font-weight:600;">SELL</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#fff;">{{ detail.bid }}</div>
+      </div>
+      <div onClick="{{ openBuy }}" style="flex:1;height:52px;border-radius:15px;background:rgba(53,209,154,.16);border:1px solid rgba(53,209,154,.3);display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:rgba(53,209,154,.24)">
+        <div style="font-size:11px;color:#35D19A;letter-spacing:.8px;font-weight:600;">BUY</div>
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:15px;font-weight:700;color:#fff;">{{ detail.ask }}</div>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ ticket }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;background:rgba(4,7,10,.6);display:flex;flex-direction:column;justify-content:flex-end;">
+    <div onClick="{{ closeTicket }}" style="flex:1;cursor:pointer;"></div>
+    <div style="border-radius:26px 26px 41px 41px;background:#121922;border-top:1px solid rgba(255,255,255,.08);padding:14px 20px 26px;">
+      <div style="width:38px;height:4px;border-radius:999px;background:rgba(255,255,255,.16);margin:0 auto 16px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="font-family:'Space Grotesk',sans-serif;font-size:18px;font-weight:600;color:#fff;">{{ ticket.title }}</div>
+        <div style="font-size:13px;color:#7d8b98;">{{ ticket.acc }}</div>
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:16px;">
+        <sc-for list="{{ orderTypes }}" as="o" hint-placeholder-count="2">
+          <div onClick="{{ o.pick }}" style="flex:1;height:38px;border-radius:11px;background:{{ o.bg }};display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:600;color:{{ o.fg }};cursor:pointer;">{{ o.name }}</div>
+        </sc-for>
+      </div>
+
+      <div style="margin-top:16px;border-radius:14px;background:#0E141B;border:1px solid rgba(255,255,255,.06);padding:14px;">
+        <div style="display:flex;align-items:center;justify-content:space-between;">
+          <div>
+            <div style="font-size:11px;letter-spacing:1.2px;color:#6d7c89;font-weight:600;">VOLUME (LOTS)</div>
+            <div style="font-family:'Space Grotesk',sans-serif;font-size:24px;font-weight:700;color:#fff;margin-top:5px;">{{ lots }}</div>
+          </div>
+          <div style="display:flex;gap:9px;">
+            <div onClick="{{ dec }}" style="width:42px;height:42px;border-radius:12px;background:#1A222C;display:flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#222c38">
+              <svg width="16" height="16" viewBox="0 0 24 24" stroke="#dbe3ea" stroke-width="2.4"><path d="M5 12h14"></path></svg>
+            </div>
+            <div onClick="{{ inc }}" style="width:42px;height:42px;border-radius:12px;background:#1A222C;display:flex;align-items:center;justify-content:center;cursor:pointer;" style-hover="background:#222c38">
+              <svg width="16" height="16" viewBox="0 0 24 24" stroke="#dbe3ea" stroke-width="2.4"><path d="M12 5v14M5 12h14"></path></svg>
+            </div>
+          </div>
+        </div>
+        <div style="display:flex;gap:7px;margin-top:13px;">
+          <sc-for list="{{ lotPresets }}" as="l" hint-placeholder-count="4">
+            <div onClick="{{ l.pick }}" style="flex:1;height:30px;border-radius:9px;background:rgba(255,255,255,.06);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#b6c2cd;cursor:pointer;" style-hover="background:rgba(255,255,255,.12)">{{ l.name }}</div>
+          </sc-for>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:9px;margin-top:15px;">
+        <sc-for list="{{ ticketRows }}" as="t" hint-placeholder-count="4">
+          <div style="display:flex;align-items:center;justify-content:space-between;">
+            <div style="font-size:13px;color:#7d8b98;">{{ t.label }}</div>
+            <div style="font-size:13px;font-weight:600;color:{{ t.color }};">{{ t.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+
+      <div onClick="{{ confirm }}" style="height:54px;border-radius:15px;background:{{ ticket.cta }};display:flex;align-items:center;justify-content:center;font-family:'Space Grotesk',sans-serif;font-size:15.5px;font-weight:700;color:#0B0F14;margin-top:18px;cursor:pointer;">{{ ticket.ctaLabel }}</div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ sheet }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;inset:0;background:rgba(4,7,10,.6);display:flex;flex-direction:column;justify-content:flex-end;">
+    <div onClick="{{ closeSheet }}" style="flex:1;cursor:pointer;"></div>
+    <div style="border-radius:26px 26px 41px 41px;background:#121922;border-top:1px solid rgba(255,255,255,.08);padding:14px 20px 26px;">
+      <div style="width:38px;height:4px;border-radius:999px;background:rgba(255,255,255,.16);margin:0 auto 16px;"></div>
+      <div style="font-family:'Space Grotesk',sans-serif;font-size:17px;font-weight:600;color:#fff;">{{ sheet.title }}</div>
+      <div style="font-size:12.5px;color:#7d8b98;margin-top:5px;line-height:1.5;">{{ sheet.sub }}</div>
+      <div style="display:flex;flex-direction:column;gap:9px;margin-top:16px;">
+        <sc-for list="{{ sheetItems }}" as="s" hint-placeholder-count="3">
+          <div onClick="{{ s.act }}" style="display:flex;align-items:center;justify-content:space-between;height:48px;padding:0 15px;border-radius:13px;background:{{ s.bg }};cursor:pointer;" style-hover="background:#1A222C">
+            <div style="font-size:13.5px;font-weight:600;color:{{ s.fg }};">{{ s.name }}</div>
+            <div style="font-size:12px;color:#6d7c89;">{{ s.value }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+  </sc-if>
+
+  <sc-if value="{{ toast }}" hint-placeholder-val="{{ false }}">
+  <div style="position:absolute;left:20px;right:20px;bottom:96px;border-radius:14px;background:#1c2530;border:1px solid rgba(53,209,154,.3);padding:13px 15px;display:flex;align-items:center;gap:11px;box-shadow:0 18px 40px -12px rgba(0,0,0,.8);">
+    <div style="flex:none;width:26px;height:26px;border-radius:50%;background:rgba(53,209,154,.18);display:flex;align-items:center;justify-content:center;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#35D19A" stroke-width="2.6"><path d="M5 13l4.5 4.5L19 7"></path></svg>
+    </div>
+    <div style="font-size:13px;color:#eaf0f5;">{{ toast }}</div>
+  </div>
+  </sc-if>
+
+</div>
+</div>
+</div>
+
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:440,&quot;height&quot;:920},&quot;accent&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#C8FF4D&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;options&quot;:[&quot;#C8FF4D&quot;,&quot;#35D19A&quot;,&quot;#7FA8FF&quot;,&quot;#F0C75E&quot;],&quot;section&quot;:&quot;Brand&quot;},&quot;currency&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;default&quot;:&quot;INR&quot;,&quot;options&quot;:[&quot;INR&quot;,&quot;USD&quot;,&quot;AED&quot;],&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Brand&quot;}}">
+class Component extends DCLogic {
+  UP = '#35D19A'; DN = '#FF5F56'; DIM = '#6d7c89';
+
+  INSTR = [
+    { sym: 'XAU/USD', desc: 'Gold vs US Dollar', mark: 'AU', tint: '#F0C75E', cat: 'Metals', p0: 4349.407, dec: 3, mult: 8800 },
+    { sym: 'BTC/USD', desc: 'Bitcoin vs US Dollar', mark: 'BT', tint: '#F7931A', cat: 'Crypto', p0: 77391.53, dec: 2, mult: 88 },
+    { sym: 'EUR/USD', desc: 'Euro vs US Dollar', mark: 'EU', tint: '#7FA8FF', cat: 'Majors', p0: 1.15981, dec: 5, mult: 8800000 },
+    { sym: 'USOIL', desc: 'Crude Oil WTI', mark: 'OI', tint: '#C9CED6', cat: 'Energies', p0: 96.574, dec: 3, mult: 88000 },
+    { sym: 'ETH/USD', desc: 'Ethereum vs US Dollar', mark: 'ET', tint: '#A9B4F5', cat: 'Crypto', p0: 2535.37, dec: 2, mult: 880 },
+    { sym: 'USD/JPY', desc: 'US Dollar vs Japanese Yen', mark: 'JP', tint: '#FF9C9C', cat: 'Majors', p0: 153.516, dec: 3, mult: 57500 },
+    { sym: 'XAG/USD', desc: 'Silver vs US Dollar', mark: 'AG', tint: '#D8DEE8', cat: 'Metals', p0: 64.491, dec: 3, mult: 44000 },
+    { sym: 'NAS100', desc: 'US Tech 100 Index', mark: 'NQ', tint: '#8FE3C6', cat: 'Indices', p0: 29401.25, dec: 2, mult: 880 },
+    { sym: 'GBP/USD', desc: 'Pound vs US Dollar', mark: 'GB', tint: '#9FB6FF', cat: 'Majors', p0: 1.32418, dec: 5, mult: 8800000 },
+    { sym: 'NATGAS', desc: 'Natural Gas', mark: 'NG', tint: '#BFE0FF', cat: 'Energies', p0: 3.482, dec: 3, mult: 88000 }
+  ];
+
+  ACCS = [
+    { id: 'a1', label: 'NOMI ZERO', num: '40369642', type: 'Zero', mode: 'Real', bal: 271147.56, curr: 'INR', archived: false },
+    { id: 'a2', label: 'NOMI PRO', num: '40412890', type: 'Pro', mode: 'Real', bal: 58420.14, curr: 'INR', archived: false },
+    { id: 'a3', label: 'NOMI DEMO', num: '40501773', type: 'Standard', mode: 'Demo', bal: 1000000, curr: 'INR', archived: false },
+    { id: 'a4', label: 'NOMI RAW', num: '40133905', type: 'Raw spread', mode: 'Demo', bal: 24880.9, curr: 'INR', archived: false },
+    { id: 'a5', label: 'NOMI CENT', num: '39887120', type: 'Cent', mode: 'Real', bal: 1284.35, curr: 'INR', archived: true }
+  ];
+
+  state = this.boot();
+
+  boot() {
+    const px = {};
+    this.INSTR.forEach(i => { px[i.sym] = i.p0; });
+    return {
+      tab: 'accounts', posTab: 'open', cat: 'Favourites', detailSym: null, ticket: null,
+      lots: 0.20, otype: 'Market', range: '1M', tf: '1H', kyc: true, toast: null, sheet: null,
+      px, accMode: 'Real', selAcc: 'a1',
+      accounts: this.ACCS.map(a => ({ ...a })),
+      positions: this.seedPositions(), closed: this.seedClosed(),
+      terminal: false, tSym: 'XAU/USD', tTf: '5m', ema: true, cross: false, termTab: 'open',
+      perfTab: 'Net Profit', perfPeriod: '365 days', seq: 1
+    };
+  }
+
+  seedPositions() {
+    const d = Date.now();
+    return [
+      { id: 'p1', acc: 'a1', sym: 'XAU/USD', side: 'Buy', lots: 0.30, entry: 4318.20, ts: d - 5400000, tag: 'MARKET' },
+      { id: 'p2', acc: 'a1', sym: 'BTC/USD', side: 'Sell', lots: 0.05, entry: 77940.00, ts: d - 9600000, tag: 'TP/SL' },
+      { id: 'p3', acc: 'a1', sym: 'USOIL', side: 'Buy', lots: 1.00, entry: 99.412, ts: d - 172800000, tag: 'MARKET' },
+      { id: 'p4', acc: 'a3', sym: 'NAS100', side: 'Buy', lots: 0.50, entry: 29180.40, ts: d - 43200000, tag: 'MARKET' },
+      { id: 'p5', acc: 'a2', sym: 'EUR/USD', side: 'Sell', lots: 0.20, entry: 1.16240, ts: d - 21600000, tag: 'MARKET' }
+    ];
+  }
+
+  seedClosed() {
+    const out = []; let s = 7717;
+    const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    const day = 86400000, now = Date.now();
+    const pool = ['XAU/USD', 'BTC/USD', 'EUR/USD', 'NAS100', 'USOIL', 'XAG/USD', 'ETH/USD'];
+    for (let i = 0; i < 96; i++) {
+      const sym = pool[Math.floor(rnd() * pool.length)];
+      const win = rnd() < 0.6;
+      const mag = 900 + rnd() * 11000;
+      const acc = rnd() < 0.62 ? 'a1' : rnd() < 0.6 ? 'a3' : 'a2';
+      out.push({
+        id: 'c' + i, acc, sym, side: rnd() < 0.55 ? 'Buy' : 'Sell',
+        lots: +(0.05 + rnd() * 1.2).toFixed(2),
+        entry: this.instr(sym).p0 * (0.98 + rnd() * 0.04),
+        exit: this.instr(sym).p0 * (0.98 + rnd() * 0.04),
+        pnl: win ? mag : -mag * 0.82,
+        cost: 60 + rnd() * 340,
+        ts: now - Math.floor(rnd() * 360 * day), tag: win ? 'TP HIT' : rnd() < 0.5 ? 'SL HIT' : 'MANUAL'
+      });
+    }
+    return out.sort((a, b) => b.ts - a.ts);
+  }
+
+  componentDidMount() {
+    this._iv = setInterval(() => {
+      this.setState(st => {
+        const px = { ...st.px };
+        this.INSTR.forEach(i => {
+          const drift = (Math.random() - 0.5) * 0.0016;
+          px[i.sym] = Math.max(i.p0 * 0.6, px[i.sym] * (1 + drift));
+        });
+        return { px };
+      });
+    }, 1800);
+  }
+  componentWillUnmount() { clearInterval(this._iv); clearTimeout(this._t); }
+
+  instr(sym) { return this.INSTR.find(i => i.sym === sym) || this.INSTR[0]; }
+  acc(id) { return this.state.accounts.find(a => a.id === id) || this.state.accounts[0]; }
+  fmt(n) { return (n < 0 ? '-' : '') + Math.abs(n).toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+  fmt0(n) { return Math.round(n).toLocaleString('en-IN'); }
+  price(sym) { const i = this.instr(sym); return this.state.px[sym].toFixed(i.dec); }
+  pnl(p) { const i = this.instr(p.sym); return (this.state.px[p.sym] - p.entry) * (p.side === 'Buy' ? 1 : -1) * p.lots * i.mult / 100; }
+  posFor(id) { return this.state.positions.filter(p => p.acc === id); }
+  openPl(id) { return this.posFor(id).reduce((t, p) => t + this.pnl(p), 0); }
+  marginFor(id) { return this.posFor(id).reduce((t, p) => t + p.lots * 41200, 0); }
+
+  spark(seed, up) {
+    let v = 20, s = seed, pts = [];
+    for (let i = 0; i <= 24; i++) {
+      s = (s * 9301 + 49297) % 233280;
+      const r = s / 233280 - 0.5;
+      v += r * 6 + (up ? -0.42 : 0.42);
+      pts.push([i * 5, Math.max(4, Math.min(36, v))]);
+    }
+    return 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L');
+  }
+
+  curve(seed, w, h, up, drift) {
+    let v = h * 0.6, s = seed, pts = [];
+    const n = 42;
+    for (let i = 0; i <= n; i++) {
+      s = (s * 9301 + 49297) % 233280;
+      const r = s / 233280 - 0.5;
+      v += r * h * 0.1 - (up ? drift : -drift) * h / n;
+      pts.push([i * (w / n), Math.max(h * 0.08, Math.min(h * 0.94, v))]);
+    }
+    const d = 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L');
+    return { line: d, area: d + 'L' + w + ' ' + h + 'L0 ' + h + 'Z' };
+  }
+
+  series(vals, w, h) {
+    const min = Math.min(...vals), max = Math.max(...vals), span = (max - min) || 1;
+    const pts = vals.map((v, i) => [i * (w / (vals.length - 1 || 1)), h - 8 - ((v - min) / span) * (h - 22)]);
+    const d = 'M' + pts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L');
+    return { line: d, area: d + 'L' + w + ' ' + h + 'L0 ' + h + 'Z' };
+  }
+
+  candles(sym, tf) {
+    const inst = this.instr(sym);
+    let s = 0; const key = sym + tf;
+    for (let i = 0; i < key.length; i++) s = (s * 31 + key.charCodeAt(i)) % 233280;
+    const rnd = () => { s = (s * 9301 + 49297) % 233280; return s / 233280; };
+    const step = { '1m': 0.0008, '5m': 0.0015, '15m': 0.0024, '1H': 0.0038, '4H': 0.0065, '1D': 0.0105 }[tf] || 0.002;
+    const vol = inst.p0 * step;
+    let c = this.state.px[sym] * (1 - step * 6);
+    const out = [];
+    for (let i = 0; i < 32; i++) {
+      const o = c;
+      c = o + (rnd() - 0.46) * vol * 2;
+      const h = Math.max(o, c) + rnd() * vol * 0.8;
+      const l = Math.min(o, c) - rnd() * vol * 0.8;
+      out.push({ o, h, l, c });
+    }
+    const shift = this.state.px[sym] - out[out.length - 1].c;
+    out.forEach(k => { k.o += shift; k.h += shift; k.l += shift; k.c += shift; });
+    return out;
+  }
+
+  renderVals() {
+    const acc = this.props.accent ?? '#C8FF4D';
+    const curr = this.props.currency ?? 'INR';
+    const UP = this.UP, DN = this.DN, DIM = this.DIM;
+    const st = this.state;
+    const A = this.acc(st.selAcc);
+    const mk = (arr, cur, set) => arr.map(n => ({ name: n, pick: () => set(n), bg: cur === n ? 'rgba(200,255,77,.16)' : 'rgba(255,255,255,.06)', fg: cur === n ? acc : '#8d9aa6' }));
+    const toast = msg => { this.setState({ toast: msg }); clearTimeout(this._t); this._t = setTimeout(() => this.setState({ toast: null }), 2600); };
+
+    const openPl = this.openPl(A.id);
+    const equity = A.bal + openPl;
+    const margin = this.marginFor(A.id);
+    const freeMargin = equity - margin;
+    const dayBase = this.state.accounts.reduce((t, a) => t + a.bal, 0);
+    const totalEq = this.state.accounts.filter(a => !a.archived).reduce((t, a) => t + a.bal + this.openPl(a.id), 0);
+    const dayDelta = this.state.accounts.filter(a => !a.archived).reduce((t, a) => t + this.openPl(a.id), 0);
+    const dayPctNum = dayBase ? (dayDelta / dayBase) * 100 : 0;
+
+    const visible = st.accounts.filter(a => !a.archived && a.mode === st.accMode);
+    const archived = st.accounts.filter(a => a.archived);
+
+    const openTerminalFor = (sym, accId) => this.setState({ terminal: true, tSym: sym || st.tSym, selAcc: accId || st.selAcc, detailSym: null, sheet: null });
+
+    const closePosition = id => {
+      const p = st.positions.find(x => x.id === id); if (!p) return;
+      const gain = this.pnl(p);
+      this.setState(s => ({
+        positions: s.positions.filter(x => x.id !== id),
+        accounts: s.accounts.map(a => a.id === p.acc ? { ...a, bal: a.bal + gain } : a),
+        closed: [{ id: 'x' + s.seq, acc: p.acc, sym: p.sym, side: p.side, lots: p.lots, entry: p.entry, exit: s.px[p.sym], pnl: gain, cost: p.lots * 120, ts: Date.now(), tag: 'MANUAL' }, ...s.closed],
+        seq: s.seq + 1
+      }));
+      toast('Position closed · ' + (gain >= 0 ? '+' : '') + this.fmt(gain) + ' ' + curr);
+    };
+
+    const accountCards = visible.map(a => {
+      const pl = this.openPl(a.id), demo = a.mode === 'Demo', sel = a.id === st.selAcc;
+      return {
+        label: a.label, num: a.num, type: a.type, mode: a.mode, curr: a.curr,
+        bal: this.fmt(a.bal), eq: this.fmt(a.bal + pl),
+        pl: (pl >= 0 ? '+' : '') + this.fmt(pl), plColor: pl >= 0 ? UP : DN,
+        border: sel ? 'rgba(200,255,77,.35)' : 'rgba(255,255,255,.06)',
+        selLabel: sel ? 'Selected' : 'Select', selColor: sel ? acc : '#6d7c89',
+        modeBg: demo ? 'rgba(255,255,255,.07)' : 'rgba(127,168,255,.14)',
+        modeFg: demo ? '#9aa7b3' : '#7FA8FF',
+        select: () => this.setState({ selAcc: a.id }),
+        trade: () => openTerminalFor(null, a.id),
+        fundLabel: demo ? 'Set balance' : 'Deposit',
+        fund: () => {
+          this.setState({ selAcc: a.id });
+          if (demo) this.setState({ sheet: { kind: 'setbal', acc: a.id, title: 'Set demo balance', sub: a.label + ' #' + a.num + ' · simulated funds only' } });
+          else toast('Deposit request opened · ' + a.label);
+        },
+        secondLabel: demo ? 'Reset' : 'Withdraw',
+        second: () => {
+          this.setState({ selAcc: a.id });
+          if (demo) {
+            this.setState(s => ({ accounts: s.accounts.map(x => x.id === a.id ? { ...x, bal: 1000000 } : x), positions: s.positions.filter(p => p.acc !== a.id) }));
+            toast('Demo account reset to 10,00,000 ' + curr);
+          } else toast('Withdrawal to UPI started');
+        },
+        more: () => this.setState({ selAcc: a.id, sheet: { kind: 'more', acc: a.id, title: a.label + ' · #' + a.num, sub: 'MT5 · ' + a.type + ' · ' + a.mode + ' account' } })
+      };
+    });
+
+    const sheet = st.sheet;
+    const sheetItems = !sheet ? [] : sheet.kind === 'setbal'
+      ? [100000, 500000, 1000000, 5000000].map(v => ({
+          name: 'Set to ' + this.fmt0(v) + ' ' + curr, value: '', bg: '#0E141B', fg: '#eaf0f5',
+          act: () => { this.setState(s => ({ accounts: s.accounts.map(x => x.id === sheet.acc ? { ...x, bal: v } : x), sheet: null })); toast('Demo balance set to ' + this.fmt0(v) + ' ' + curr); }
+        }))
+      : [
+          { name: 'Open terminal', value: '', bg: '#0E141B', fg: '#eaf0f5', act: () => openTerminalFor(null, sheet.acc) },
+          { name: 'Account statement', value: 'PDF', bg: '#0E141B', fg: '#eaf0f5', act: () => { this.setState({ sheet: null }); toast('Statement queued for email'); } },
+          { name: 'Trading server', value: 'NomiZero-MT5', bg: '#0E141B', fg: '#eaf0f5', act: () => this.setState({ sheet: null }) },
+          { name: 'Archive account', value: '', bg: 'rgba(255,95,86,.09)', fg: '#FF8A84', act: () => { this.setState(s => ({ accounts: s.accounts.map(x => x.id === sheet.acc ? { ...x, archived: true } : x), sheet: null })); toast('Account archived'); } }
+        ];
+
+    const list = st.cat === 'Favourites' ? this.INSTR : this.INSTR.filter(b => b.cat === st.cat);
+    const chgOf = sym => { const i = this.instr(sym); return ((st.px[sym] - i.p0) / i.p0) * 100; };
+
+    const instruments = list.map((b, k) => {
+      const pct = chgOf(b.sym), up = pct >= 0;
+      return {
+        sym: b.sym, desc: b.desc, mark: b.mark, tint: b.tint,
+        price: this.price(b.sym), path: this.spark(k * 977 + 131, up), stroke: up ? UP : DN,
+        chg: (up ? '↑ ' : '↓ ') + Math.abs(pct).toFixed(2) + '%',
+        open: () => this.setState({ detailSym: b.sym })
+      };
+    });
+
+    const movers = this.INSTR.slice(0, 5).map((b, k) => {
+      const pct = chgOf(b.sym), up = pct >= 0;
+      return { sym: b.sym.split('/')[0], mark: b.mark, tint: b.tint, price: this.price(b.sym), chg: (up ? '↑ ' : '↓ ') + Math.abs(pct).toFixed(2) + '%', stroke: up ? UP : DN, path: this.spark(k * 613 + 77, up) };
+    });
+
+    const signals = [
+      { sym: 'Gold / Dollar', tf: '30 MIN', head: 'XAU: breakout retest holding above 4,340', bias: '↑ Intraday long', up: true, time: '11:15 AM' },
+      { sym: 'Ethereum / Dollar', tf: '30 MIN', head: 'ETH: momentum fading into resistance', bias: '↓ Intraday short', up: false, time: '10:40 AM' }
+    ].map((s, k) => {
+      const c = this.curve(k * 431 + 29, 260, 106, s.up, 0.5);
+      return { ...s, line: c.line, band: c.area, bandFill: s.up ? 'rgba(53,209,154,.09)' : 'rgba(255,95,86,.09)', stroke: s.up ? UP : DN, pillBg: s.up ? 'rgba(53,209,154,.14)' : 'rgba(255,95,86,.14)', tpY: s.up ? 22 : 84, slY: s.up ? 88 : 20 };
+    });
+
+    const events = [
+      { cc: 'US', name: 'Core CPI (MoM)', when: 'In 3 hours · 18:00 IST', tint: '#BFD4FF', i1: acc, i2: acc, i3: acc },
+      { cc: 'EU', name: 'ECB Rate Decision', when: 'Tomorrow · 17:15 IST', tint: '#FFD79A', i1: acc, i2: acc, i3: 'rgba(255,255,255,.12)' },
+      { cc: 'IN', name: 'WPI Inflation', when: 'In 2 days', tint: '#9FE8C4', i1: acc, i2: 'rgba(255,255,255,.12)', i3: 'rgba(255,255,255,.12)' }
+    ];
+
+    const accOpen = this.posFor(A.id).map(p => {
+      const g = this.pnl(p), i = this.instr(p.sym);
+      return {
+        sym: p.sym, mark: i.mark, tint: i.tint, tag: p.tag,
+        pnl: (g >= 0 ? '+' : '') + this.fmt(g) + ' ' + curr, pnlColor: g >= 0 ? UP : DN,
+        side: p.side + ' ' + p.lots.toFixed(2) + ' lot', detail: 'at ' + p.entry.toFixed(i.dec),
+        now: this.price(p.sym), sideColor: p.side === 'Buy' ? '#7FA8FF' : '#FF8A84',
+        live: true, close: () => closePosition(p.id), chart: () => openTerminalFor(p.sym)
+      };
+    });
+    const accClosed = st.closed.filter(c => c.acc === A.id).slice(0, 12).map(c => {
+      const i = this.instr(c.sym);
+      return {
+        sym: c.sym, mark: i.mark, tint: i.tint, tag: c.tag,
+        pnl: (c.pnl >= 0 ? '+' : '') + this.fmt(c.pnl) + ' ' + curr, pnlColor: c.pnl >= 0 ? UP : DN,
+        side: c.side + ' ' + c.lots.toFixed(2) + ' lot', detail: 'at ' + c.entry.toFixed(i.dec),
+        now: c.exit.toFixed(i.dec), sideColor: c.side === 'Buy' ? '#7FA8FF' : '#FF8A84', live: false
+      };
+    });
+    const rows = st.posTab === 'open' ? accOpen : st.posTab === 'closed' ? accClosed : [];
+    const tabCol = k => st.posTab === k ? '#fff' : DIM;
+    const tabLine = k => st.posTab === k ? acc : 'transparent';
+
+    const det = st.detailSym ? this.instr(st.detailSym) : null;
+    const detPct = det ? chgOf(det.sym) : 0;
+    const dc = det ? this.curve(3311, 320, 170, detPct >= 0, 0.45) : { line: '', area: '' };
+
+    const periodDays = { '7 days': 7, '30 days': 30, '90 days': 90, '365 days': 365 }[st.perfPeriod] || 365;
+    const cutoff = Date.now() - periodDays * 86400000;
+    const hist = st.closed.filter(c => c.acc === A.id && c.ts >= cutoff).slice().sort((a, b) => a.ts - b.ts);
+    const wins = hist.filter(c => c.pnl > 0), losses = hist.filter(c => c.pnl <= 0);
+    const gross = hist.reduce((t, c) => t + c.pnl, 0);
+    const profitSum = wins.reduce((t, c) => t + c.pnl, 0);
+    const lossSum = losses.reduce((t, c) => t + c.pnl, 0);
+    const costs = hist.reduce((t, c) => t + (c.cost || 0), 0);
+    const vol = hist.reduce((t, c) => t + c.lots, 0);
+    const lifetime = st.closed.filter(c => c.acc === A.id).reduce((t, c) => t + c.pnl, 0);
+
+    const buckets = 12;
+    const bStart = cutoff, bSpan = (Date.now() - cutoff) / buckets;
+    const bucketed = (fn) => {
+      const out = new Array(buckets).fill(0);
+      hist.forEach(c => { const k = Math.min(buckets - 1, Math.max(0, Math.floor((c.ts - bStart) / bSpan))); out[k] += fn(c); });
+      return out;
+    };
+    const netB = bucketed(c => c.pnl), ordB = bucketed(() => 1), volB = bucketed(c => c.lots);
+    let run = 0; const cum = netB.map(v => (run += v));
+    const eqSeries = cum.map(v => A.bal - gross + v);
+
+    const isBars = st.perfTab === 'Closed Orders' || st.perfTab === 'Trading Volume';
+    const barVals = st.perfTab === 'Closed Orders' ? ordB : volB;
+    const barMax = Math.max(...barVals, 1);
+    const chartBars = barVals.map((v, i) => {
+      const h = Math.max(2, (v / barMax) * 100);
+      return { x: (8 + i * 26).toFixed(1), y: (112 - h).toFixed(1), w: 17, h: h.toFixed(1), fill: i === buckets - 1 ? acc : 'rgba(200,255,77,.35)' };
+    });
+    const lineVals = st.perfTab === 'Equity' ? eqSeries : cum;
+    const lineColor = st.perfTab === 'Equity' ? acc : (gross >= 0 ? UP : DN);
+    const ls = this.series(lineVals.length > 1 ? lineVals : [0, 0], 320, 130);
+
+    const chartValue = st.perfTab === 'Net Profit' ? (gross >= 0 ? '+' : '') + this.fmt0(gross) + ' ' + curr
+      : st.perfTab === 'Closed Orders' ? String(hist.length)
+      : st.perfTab === 'Trading Volume' ? vol.toFixed(2) + ' lots'
+      : this.fmt0(equity) + ' ' + curr;
+
+    const summaryCards = [
+      { label: 'NET PROFIT', value: (gross >= 0 ? '+' : '') + this.fmt0(gross), note: periodDays + ' day window', color: gross >= 0 ? UP : DN },
+      { label: 'CLOSED ORDERS', value: String(hist.length), note: wins.length + ' profitable', color: '#fff' },
+      { label: 'TRADING VOLUME', value: vol.toFixed(2), note: 'lots traded', color: '#fff' },
+      { label: 'EQUITY', value: this.fmt0(equity), note: 'balance + open P/L', color: '#fff' }
+    ];
+
+    const summaryRows = [
+      { label: 'Profit', value: '+' + this.fmt(profitSum) + ' ' + curr, color: UP },
+      { label: 'Loss', value: this.fmt(lossSum) + ' ' + curr, color: DN },
+      { label: 'Profitable trades', value: wins.length + ' · ' + (hist.length ? Math.round(wins.length / hist.length * 100) : 0) + '%', color: '#eaf0f5' },
+      { label: 'Unprofitable trades', value: losses.length + ' · ' + (hist.length ? Math.round(losses.length / hist.length * 100) : 0) + '%', color: '#eaf0f5' },
+      { label: 'Trading costs', value: '-' + this.fmt(costs) + ' ' + curr, color: '#eaf0f5' },
+      { label: 'Unrealised P/L', value: (openPl >= 0 ? '+' : '') + this.fmt(openPl) + ' ' + curr, color: openPl >= 0 ? UP : DN },
+      { label: 'Current P/L', value: (gross + openPl >= 0 ? '+' : '') + this.fmt(gross + openPl) + ' ' + curr, color: gross + openPl >= 0 ? UP : DN },
+      { label: 'Lifetime P/L', value: (lifetime >= 0 ? '+' : '') + this.fmt(lifetime) + ' ' + curr, color: lifetime >= 0 ? UP : DN }
+    ];
+
+    const wr = {};
+    st.closed.filter(c => c.acc === A.id).forEach(c => {
+      wr[c.sym] = wr[c.sym] || { w: 0, n: 0 };
+      wr[c.sym].n++; if (c.pnl > 0) wr[c.sym].w++;
+    });
+    const winRates = Object.keys(wr).slice(0, 5).map(k => {
+      const p = Math.round(wr[k].w / wr[k].n * 100);
+      return { sym: k, pct: p + '%', color: p >= 60 ? UP : p >= 45 ? acc : DN };
+    });
+
+    const tSym = st.tSym, tInst = this.instr(tSym), tPct = chgOf(tSym), tUp = tPct >= 0;
+    const kd = this.candles(tSym, st.tTf);
+    const lo = Math.min(...kd.map(k => k.l)), hi = Math.max(...kd.map(k => k.h)), span = (hi - lo) || 1;
+    const CH = 210, CW = 326, pad = 12;
+    const yOf = v => pad + (1 - (v - lo) / span) * (CH - pad * 2);
+    const step = (CW - 30) / kd.length;
+    const candles = kd.map((k, i) => {
+      const up = k.c >= k.o, x = 6 + i * step;
+      const yTop = yOf(Math.max(k.o, k.c)), yBot = yOf(Math.min(k.o, k.c));
+      return { x: x.toFixed(1), w: Math.max(2.5, step * 0.62).toFixed(1), y: yTop.toFixed(1), h: Math.max(1.2, yBot - yTop).toFixed(1), cx: (x + Math.max(2.5, step * 0.62) / 2).toFixed(1), hy: yOf(k.h).toFixed(1), ly: yOf(k.l).toFixed(1), color: up ? UP : DN };
+    });
+    let emaPrev = kd[0].c; const emaPts = kd.map((k, i) => { emaPrev = i === 0 ? k.c : k.c * 0.2 + emaPrev * 0.8; return [6 + i * step + step * 0.3, yOf(emaPrev)]; });
+    const emaPath = 'M' + emaPts.map(p => p[0].toFixed(1) + ' ' + p[1].toFixed(1)).join('L');
+    const priceAxis = [0, 1, 2, 3].map(i => { const v = hi - (span / 3) * i; return { y: (yOf(v) + 3).toFixed(1), label: v.toFixed(tInst.dec) }; });
+    const gridLines = [0, 1, 2, 3].map(i => ({ y: (pad + i * (CH - pad * 2) / 3).toFixed(1) }));
+    const spread = tInst.p0 * 0.00006;
+
+    const termRows = (st.termTab === 'open' ? this.posFor(A.id).map(p => {
+      const g = this.pnl(p), i = this.instr(p.sym);
+      return { sym: p.sym, side: p.side + ' ' + p.lots.toFixed(2), sideColor: p.side === 'Buy' ? '#7FA8FF' : '#FF8A84', pnl: (g >= 0 ? '+' : '') + this.fmt(g), pnlColor: g >= 0 ? UP : DN, detail: 'Entry ' + p.entry.toFixed(i.dec) + ' → ' + this.price(p.sym), live: true, close: () => closePosition(p.id) };
+    }) : st.termTab === 'closed' ? st.closed.filter(c => c.acc === A.id).slice(0, 8).map(c => {
+      const i = this.instr(c.sym);
+      return { sym: c.sym, side: c.side + ' ' + c.lots.toFixed(2), sideColor: c.side === 'Buy' ? '#7FA8FF' : '#FF8A84', pnl: (c.pnl >= 0 ? '+' : '') + this.fmt(c.pnl), pnlColor: c.pnl >= 0 ? UP : DN, detail: c.tag + ' · exit ' + c.exit.toFixed(i.dec), live: false };
+    }) : []);
+
+    const t = st.ticket;
+    const lotsStr = st.lots.toFixed(2);
+    const tktInst = t ? this.instr(t.sym) : null;
+    const reqMargin = t ? st.lots * 41200 : 0;
+
+    return {
+      curr, kyc: st.kyc, toast: st.toast,
+      equity: '₹ ' + this.fmt(totalEq), balance: '₹ ' + this.fmt(A.bal + openPl),
+      dayPct: (dayPctNum >= 0 ? '+' : '') + dayPctNum.toFixed(2) + '% open P/L',
+      dayColor: dayPctNum >= 0 ? UP : DN,
+      dayBg: dayPctNum >= 0 ? 'rgba(53,209,154,.12)' : 'rgba(255,95,86,.12)',
+      selMode: A.mode, selModeBg: A.mode === 'Demo' ? 'rgba(255,255,255,.08)' : 'rgba(53,209,154,.14)', selModeFg: A.mode === 'Demo' ? '#9aa7b3' : '#35D19A',
+
+      isAccounts: st.tab === 'accounts', isMarkets: st.tab === 'markets',
+      isInsights: st.tab === 'insights', isPerf: st.tab === 'perf', isProfile: st.tab === 'profile',
+      cAccounts: st.tab === 'accounts' ? acc : '#5c6a77',
+      cMarkets: st.tab === 'markets' ? acc : '#5c6a77',
+      cInsights: st.tab === 'insights' ? acc : '#5c6a77',
+      cPerf: st.tab === 'perf' ? acc : '#5c6a77',
+      cProfile: st.tab === 'profile' ? acc : '#5c6a77',
+      navAccounts: () => this.setState({ tab: 'accounts' }),
+      navMarkets: () => this.setState({ tab: 'markets' }),
+      navInsights: () => this.setState({ tab: 'insights' }),
+      navPerf: () => this.setState({ tab: 'perf' }),
+      navProfile: () => this.setState({ tab: 'profile' }),
+      dismissKyc: () => this.setState({ kyc: false }),
+
+      modes: ['Real', 'Demo'].map(m => ({
+        name: m, count: String(st.accounts.filter(a => !a.archived && a.mode === m).length),
+        pick: () => {
+          const first = st.accounts.find(a => !a.archived && a.mode === m);
+          this.setState({ accMode: m, selAcc: first ? first.id : st.selAcc });
+        },
+        bg: st.accMode === m ? 'rgba(200,255,77,.16)' : 'transparent',
+        fg: st.accMode === m ? acc : '#8d9aa6'
+      })),
+      accountCards, hasArchived: archived.length > 0,
+      archived: archived.map(a => ({
+        label: a.label, num: a.num, curr: a.curr, mode: a.mode, bal: this.fmt(a.bal),
+        restore: () => { this.setState(s => ({ accounts: s.accounts.map(x => x.id === a.id ? { ...x, archived: false } : x), accMode: a.mode, selAcc: a.id })); toast(a.label + ' restored'); },
+        statement: () => toast('Statement for #' + a.num + ' emailed')
+      })),
+
+      rows, hasRows: rows.length > 0, noRows: rows.length === 0,
+      emptyTitle: st.posTab === 'pending' ? 'No pending orders' : st.posTab === 'open' ? 'No open positions' : 'No closed trades',
+      emptyBody: st.posTab === 'pending' ? 'Set a limit order from any instrument and it will queue up in this tab.' : 'Open a position from Markets or the terminal to see it here.',
+      setOpenTab: () => this.setState({ posTab: 'open' }), setPendingTab: () => this.setState({ posTab: 'pending' }), setClosedTab: () => this.setState({ posTab: 'closed' }),
+      posOpenColor: tabCol('open'), posPendColor: tabCol('pending'), posClosedColor: tabCol('closed'),
+      posOpenLine: tabLine('open'), posPendLine: tabLine('pending'), posClosedLine: tabLine('closed'),
+
+      cats: ['Favourites', 'Majors', 'Metals', 'Crypto', 'Indices', 'Energies'].map(n => ({ name: n, pick: () => this.setState({ cat: n }), color: st.cat === n ? '#fff' : DIM, line: st.cat === n ? acc : 'transparent' })),
+      instruments, movers, signals, events,
+      openTerminal: () => openTerminalFor(),
+
+      accChips: st.accounts.filter(a => !a.archived).map(a => ({
+        label: a.label, num: a.num, pick: () => this.setState({ selAcc: a.id, accMode: a.mode }),
+        bg: a.id === st.selAcc ? 'rgba(200,255,77,.14)' : '#121922',
+        border: a.id === st.selAcc ? 'rgba(200,255,77,.35)' : 'rgba(255,255,255,.06)',
+        fg: a.id === st.selAcc ? acc : '#b6c2cd'
+      })),
+      periods: ['7 days', '30 days', '90 days', '365 days'].map(n => ({ name: n, pick: () => this.setState({ perfPeriod: n }), bg: st.perfPeriod === n ? 'rgba(200,255,77,.16)' : 'rgba(255,255,255,.06)', fg: st.perfPeriod === n ? acc : '#8d9aa6' })),
+      chartTabs: ['Net Profit', 'Closed Orders', 'Trading Volume', 'Equity'].map(n => ({ name: n, pick: () => this.setState({ perfTab: n }), bg: st.perfTab === n ? 'rgba(200,255,77,.16)' : 'rgba(255,255,255,.06)', fg: st.perfTab === n ? acc : '#8d9aa6' })),
+      chartLabel: st.perfTab.toUpperCase() + ' · LAST ' + st.perfPeriod.toUpperCase(),
+      chartValue, chartColor: lineColor, chartFill: st.perfTab === 'Equity' ? 'rgba(200,255,77,.12)' : gross >= 0 ? 'rgba(53,209,154,.13)' : 'rgba(255,95,86,.12)',
+      chartSub: A.label + ' · #' + A.num,
+      chartIsBars: isBars, chartIsLine: !isBars, chartBars, chartLine: ls.line, chartArea: ls.area,
+      summaryCards, summaryRows, winRates,
+
+      profileGroups: [
+        { title: 'ACCOUNT', items: [
+          { mark: 'ID', name: 'Identity verification', sub: 'Step 2 of 3 · address proof', value: '', bg: 'rgba(255,95,86,.14)', fg: '#FF8A84' },
+          { mark: '₹', name: 'Payment methods', sub: 'UPI · 2 cards linked', value: '', bg: 'rgba(200,255,77,.14)', fg: acc },
+          { mark: 'SF', name: 'Swap-free trading', sub: 'Applied to NOMI ZERO', value: 'Active', bg: 'rgba(53,209,154,.14)', fg: UP }
+        ]},
+        { title: 'WALLET', items: [
+          { mark: 'W', name: 'Crypto wallet', sub: 'USDT · TRC-20', value: '0.00 USD', bg: 'rgba(127,168,255,.14)', fg: '#7FA8FF' },
+          { mark: 'CT', name: 'Copy trading', sub: 'Follow verified strategies', value: '', bg: 'rgba(169,180,245,.14)', fg: '#A9B4F5' },
+          { mark: 'RF', name: 'Referral programme', sub: 'Earn per funded referral', value: '', bg: 'rgba(240,199,94,.14)', fg: '#F0C75E' }
+        ]},
+        { title: 'SUPPORT', items: [
+          { mark: '?', name: 'Help centre', sub: 'Guides and answers', value: '', bg: 'rgba(255,255,255,.07)', fg: '#b6c2cd' },
+          { mark: 'LC', name: 'Live chat', sub: 'Typical reply under 2 min', value: '', bg: 'rgba(255,255,255,.07)', fg: '#b6c2cd' },
+          { mark: 'LG', name: 'Legal documents', sub: 'Nomi Trades Ltd', value: '', bg: 'rgba(255,255,255,.07)', fg: '#b6c2cd' }
+        ]}
+      ],
+
+      detail: det ? {
+        sym: det.sym, desc: det.desc, price: this.price(det.sym),
+        stroke: detPct >= 0 ? UP : DN,
+        areaFill: detPct >= 0 ? 'rgba(53,209,154,.13)' : 'rgba(255,95,86,.12)',
+        chg: (detPct >= 0 ? '↑ ' : '↓ ') + Math.abs(detPct).toFixed(2) + '%',
+        bid: (st.px[det.sym] - det.p0 * 0.00006).toFixed(det.dec),
+        ask: (st.px[det.sym] + det.p0 * 0.00006).toFixed(det.dec)
+      } : null,
+      detailLine: dc.line, detailArea: dc.area,
+      closeDetail: () => this.setState({ detailSym: null }),
+      detailTerminal: () => openTerminalFor(det ? det.sym : null),
+      tfs: mk(['5M', '1H', '4H', '1D', '1W'], st.tf, n => this.setState({ tf: n })),
+      detailStats: det ? [
+        { label: 'SPREAD', value: (det.p0 * 0.00012).toFixed(det.dec) },
+        { label: 'LEVERAGE', value: '1:200' },
+        { label: 'DAY RANGE', value: (det.p0 * 0.991).toFixed(det.dec) + ' – ' + (det.p0 * 1.008).toFixed(det.dec) },
+        { label: 'SWAP LONG', value: '-0.42' }
+      ] : [],
+      openBuy: () => this.setState({ ticket: { side: 'Buy', sym: det ? det.sym : st.tSym } }),
+      openSell: () => this.setState({ ticket: { side: 'Sell', sym: det ? det.sym : st.tSym } }),
+
+      terminal: st.terminal,
+      closeTerminal: () => this.setState({ terminal: false }),
+      termAcc: A.label + ' · #' + A.num + ' · ' + A.mode,
+      mktStatus: 'Market open', mktDot: UP, mktBg: 'rgba(53,209,154,.12)',
+      termTabsSym: ['XAG/USD', 'EUR/USD', 'XAU/USD', 'ETH/USD', 'BTC/USD', 'USOIL'].map(s => {
+        const p = chgOf(s), on = s === tSym;
+        return { sym: s, pick: () => this.setState({ tSym: s }), bg: on ? 'rgba(200,255,77,.14)' : '#121922', border: on ? 'rgba(200,255,77,.35)' : 'rgba(255,255,255,.06)', fg: on ? acc : '#cfd8e0', chg: (p >= 0 ? '+' : '') + p.toFixed(2) + '%', chgColor: p >= 0 ? UP : DN };
+      }),
+      termPrice: this.price(tSym), termSymDesc: tInst.desc,
+      termChg: (tUp ? '↑ ' : '↓ ') + Math.abs(tPct).toFixed(2) + '%', termColor: tUp ? UP : DN,
+      termBid: (st.px[tSym] - spread).toFixed(tInst.dec), termAsk: (st.px[tSym] + spread).toFixed(tInst.dec),
+      termTfs: ['1m', '5m', '15m', '1H', '4H', '1D'].map(n => ({ name: n, pick: () => this.setState({ tTf: n }), bg: st.tTf === n ? 'rgba(200,255,77,.16)' : 'rgba(255,255,255,.06)', fg: st.tTf === n ? acc : '#8d9aa6' })),
+      ema: st.ema, cross: st.cross, emaPath, candles, gridLines, priceAxis,
+      lastY: yOf(st.px[tSym]).toFixed(1),
+      toggleEma: () => this.setState(s => ({ ema: !s.ema })),
+      toggleCross: () => this.setState(s => ({ cross: !s.cross })),
+      emaBg: st.ema ? 'rgba(200,255,77,.16)' : 'rgba(255,255,255,.06)', emaFg: st.ema ? acc : '#8d9aa6',
+      crossBg: st.cross ? 'rgba(200,255,77,.16)' : 'rgba(255,255,255,.06)', crossFg: st.cross ? acc : '#8d9aa6',
+      termMetrics: [
+        { label: 'EQUITY', value: this.fmt0(equity), color: '#fff' },
+        { label: 'BALANCE', value: this.fmt0(A.bal), color: '#fff' },
+        { label: 'FREE MARGIN', value: this.fmt0(freeMargin), color: freeMargin >= 0 ? '#fff' : DN },
+        { label: 'MARGIN', value: this.fmt0(margin), color: '#fff' },
+        { label: 'MARGIN LEVEL', value: margin ? Math.round(equity / margin * 100) + '%' : '—', color: margin && equity / margin < 1.5 ? DN : UP },
+        { label: 'OPEN P/L', value: (openPl >= 0 ? '+' : '') + this.fmt0(openPl), color: openPl >= 0 ? UP : DN }
+      ],
+      termTradeTabs: [['Open', 'open'], ['Pending', 'pending'], ['Closed', 'closed']].map(([n, k]) => ({ name: n, pick: () => this.setState({ termTab: k }), fg: st.termTab === k ? '#fff' : DIM, line: st.termTab === k ? acc : 'transparent' })),
+      termRows, termHasRows: termRows.length > 0, termNoRows: termRows.length === 0,
+      termEmpty: st.termTab === 'pending' ? 'No pending orders on this account.' : 'Nothing to show for this account yet.',
+      termBuy: () => this.setState({ ticket: { side: 'Buy', sym: tSym } }),
+      termSell: () => this.setState({ ticket: { side: 'Sell', sym: tSym } }),
+      deposit: () => toast(A.mode === 'Demo' ? 'Demo account — use Set balance' : 'Deposit request opened'),
+
+      ticket: t ? { title: t.side + ' ' + t.sym, acc: A.mode + ' · ' + A.label, cta: t.side === 'Buy' ? UP : DN, ctaLabel: 'Confirm ' + t.side.toLowerCase() + ' · ' + lotsStr + ' lot' } : null,
+      closeTicket: () => this.setState({ ticket: null }),
+      lots: lotsStr,
+      inc: () => this.setState(s => ({ lots: Math.min(20, +(s.lots + 0.05).toFixed(2)) })),
+      dec: () => this.setState(s => ({ lots: Math.max(0.01, +(s.lots - 0.05).toFixed(2)) })),
+      lotPresets: [0.01, 0.10, 0.50, 1.00].map(v => ({ name: v.toFixed(2), pick: () => this.setState({ lots: v }) })),
+      orderTypes: mk(['Market', 'Limit'], st.otype, n => this.setState({ otype: n })),
+      ticketRows: t ? [
+        { label: 'Entry price', value: t.side === 'Buy' ? (st.px[t.sym] + tktInst.p0 * 0.00006).toFixed(tktInst.dec) : (st.px[t.sym] - tktInst.p0 * 0.00006).toFixed(tktInst.dec), color: '#eaf0f5' },
+        { label: 'Required margin', value: '₹ ' + this.fmt(reqMargin), color: reqMargin > freeMargin ? DN : '#eaf0f5' },
+        { label: 'Free margin after', value: '₹ ' + this.fmt(freeMargin - reqMargin), color: '#eaf0f5' },
+        { label: 'Account', value: A.label + ' · ' + A.mode, color: '#8d9aa6' }
+      ] : [],
+      confirm: () => {
+        if (!t) return;
+        const inst = this.instr(t.sym);
+        const entry = st.px[t.sym] + (t.side === 'Buy' ? 1 : -1) * inst.p0 * 0.00006;
+        this.setState(s => ({
+          ticket: null,
+          positions: [{ id: 'n' + s.seq, acc: A.id, sym: t.sym, side: t.side, lots: s.lots, entry, ts: Date.now(), tag: s.otype === 'Limit' ? 'LIMIT' : 'MARKET' }, ...s.positions],
+          seq: s.seq + 1, posTab: 'open', termTab: 'open'
+        }));
+        toast(t.side + ' filled · ' + lotsStr + ' lot ' + t.sym);
+      },
+
+      sheet, sheetItems, closeSheet: () => this.setState({ sheet: null })
+    };
+  }
+}
+</script>
+</body>
+</html>
