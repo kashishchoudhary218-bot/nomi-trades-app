@@ -148,14 +148,15 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 		{b: 'Background:', t: 'Mathematician aur former signals analyst'},
 		{b: 'Nazariya:', t: 'Market ko dekhne ka tareeka traditional traders se bilkul alag'},
 	], 0.5, 2.65, 4.4, 2.2);
-	// Photo slot — a real, licensed photo goes here.
-	s.addShape(pres.ShapeType.roundRect, {x: 5.6, y: 1.35, w: 3.9, h: 3.6, rectRadius: 0.12, fill: {color: C.panel}, line: {color: C.muted, width: 1, dashType: 'dash'}});
-	s.addText([
-		{text: 'PHOTO SLOT', options: {bold: true, color: C.gold, fontSize: 12, charSpacing: 3, breakLine: true}},
-		{text: 'Jim Simons ki real photo yahan lagayein', options: {color: C.text, fontSize: 13, breakLine: true}},
-		{text: 'Licensed image hi use karein (Getty / AP) ya Wikimedia Commons ki CC photo — attribution ke saath. Is box ko delete karke photo drag-and-drop karein.', options: {color: C.muted, fontSize: 10}},
-	], {x: 5.85, y: 2.2, w: 3.4, h: 1.9, fontFace: BODY, align: 'center', valign: 'middle', margin: 0, isTextBox: true});
-	notes(s, ['S05'], 'Is slide par Jim Simons ki licensed photo lagayein (photo slot).');
+	// Portrait of Jim Simons (supplied by the channel owner).
+	const px = 5.95;
+	const py = 1.35;
+	const ps = 3.3;
+	s.addShape(pres.ShapeType.rect, {x: px - 0.03, y: py - 0.03, w: ps + 0.06, h: ps + 0.06, fill: {color: C.panelLine}, line: {color: C.panelLine}, shadow: shadow()});
+	s.addImage({path: img('jim-simons'), x: px, y: py, w: ps, h: ps, altText: 'Portrait of Jim Simons'});
+	s.addText('Jim Simons', {x: px, y: py + ps + 0.12, w: ps, h: 0.3, fontFace: HEAD, fontSize: 14, color: C.text, margin: 0, isTextBox: true});
+	s.addText('Photo: [source / credit]', {x: px, y: py + ps + 0.42, w: ps, h: 0.22, fontFace: BODY, fontSize: 8, color: C.muted, margin: 0, isTextBox: true});
+	notes(s, ['S05'], 'Photo credit line (slide par "Photo: [source / credit]") mein photo ka source likh dein.');
 }
 
 // 5 · The core idea
