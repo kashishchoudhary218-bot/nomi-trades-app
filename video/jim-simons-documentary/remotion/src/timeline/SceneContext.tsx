@@ -1,10 +1,12 @@
 import React, {createContext, useContext} from 'react';
-import {phraseIndex, wordCount} from './narration';
+import {resolvePhrase, wordCount} from './narration';
 
 export type SceneInfo = {
 	id: string;
 	durationInFrames: number;
 	narration: string;
+	/** Beat-phrase translations for non-English narration (see localizeScenes). */
+	anchors?: Record<string, string>;
 	/** VO start / length in frames, relative to scene start. */
 	voFrom: number;
 	voFrames: number;
@@ -49,7 +51,7 @@ export const useBeats = (): Beats => {
 	const start = s.voFrom - s.contentOffset;
 	const at = (fraction: number) => Math.round(start + fraction * s.voFrames);
 	return {
-		on: (phrase, occurrence = 0) => at(phraseIndex(s.narration, phrase, occurrence) / total),
+		on: (phrase, occurrence = 0) => at(resolvePhrase(s.narration, s.anchors, phrase, occurrence) / total),
 		at,
 		voStart: start,
 		voEnd: start + s.voFrames,
@@ -58,7 +60,7 @@ export const useBeats = (): Beats => {
 };
 
 /** Same phrase → frame mapping, usable outside React (audio cue placement). */
-export const phraseFrame = (info: Pick<SceneInfo, 'narration' | 'voFrom' | 'voFrames'>, phrase: string): number => {
+export const phraseFrame = (info: Pick<SceneInfo, 'narration' | 'anchors' | 'voFrom' | 'voFrames'>, phrase: string): number => {
 	const total = Math.max(1, wordCount(info.narration));
-	return Math.round(info.voFrom + (phraseIndex(info.narration, phrase) / total) * info.voFrames);
+	return Math.round(info.voFrom + (resolvePhrase(info.narration, info.anchors, phrase) / total) * info.voFrames);
 };

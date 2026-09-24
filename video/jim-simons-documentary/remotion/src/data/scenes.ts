@@ -35,6 +35,11 @@ export type SceneDef = {
 	transitionFrames?: number;
 	music: MusicCueId;
 	sfx: SfxCue[];
+	/**
+	 * Set by localizeScenes() for non-English narration: English beat phrase → phrase in
+	 * this narration. Keys/values may carry "#n" for the nth occurrence.
+	 */
+	anchors?: Record<string, string>;
 };
 
 const CARD_VO_OFFSET = 2.3;

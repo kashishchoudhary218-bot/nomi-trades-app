@@ -21,12 +21,14 @@ npm run render          # final: out/the-mathematicians-edge.mp4 (1920×1080, 30
 | Command | What it does |
 |---|---|
 | `npm run studio` | Index `public/`, open Remotion Studio (scrub, preview, change props). |
-| `npm run render` | Full-quality render with burned-in subtitles. |
+| `npm run render` | Full-quality render with burned-in subtitles (Hinglish narration). |
+| `npm run render:english` | The English-narration cut. |
 | `npm run render:clean` | Same, without subtitles or HUD (use with the `.srt` for YouTube CC). |
 | `npm run render:draft` | Half-res, fast-encode draft with the editor HUD. |
 | `npm run render:scene -- Scene-S05 out/s05.mp4` | Render a single scene. |
 | `npm run thumbnail` | `out/thumbnail.png` (1280×720 still). |
-| `npm run srt` | `out/subtitles.srt` closed captions. |
+| `npm run srt` | `out/subtitles.hinglish.srt` closed captions (`npm run srt -- english` for English). |
+| `npm run script:hinglish` | Regenerate `../NARRATION_HINGLISH.md` (the VO recording script). |
 | `npm run check` | TypeScript + ESLint (incl. `@remotion/eslint-plugin`) + timeline/audio-sync validation. |
 | `npm run qa` | Render 3 stills per scene into `out/qa/` for a visual pass. |
 | `npm run assets` | Regenerate `ASSETS.md` (what's missing and where it goes). |
@@ -39,7 +41,7 @@ npm run render          # final: out/the-mathematicians-edge.mp4 (1920×1080, 30
 
 | ID | What |
 |---|---|
-| `Documentary` | The full film. Props: `showSubtitles`, `showGuides` (editor HUD); `voDurations` / `mediaDurations` are measured automatically. |
+| `Documentary` | The full film. Props: `language` (`hinglish` default / `english`), `showSubtitles`, `showGuides` (editor HUD); `voDurations` / `mediaDurations` are measured automatically. |
 | `Scenes/Scene-S01` … `Scene-S35` | Each scene alone, with its own VO/SFX/subtitles. Use these to iterate. |
 | `Extras/Showcase` | Every reusable component in isolation: a living style guide. |
 | `Extras/Thumbnail` | YouTube thumbnail (`<Still>`, storyboard §10). |
@@ -74,7 +76,9 @@ src/
 │   └── Guides.tsx              editor HUD
 ├── scenes/                     S01–S35, one file per chapter
 ├── data/
-│   ├── scenes.ts               ★ single source of truth: narration, durations, transitions, music, SFX
+│   ├── scenes.ts               ★ single source of truth: English narration, durations, transitions, music, SFX
+│   ├── narration.hinglish.ts   ★ Hinglish narration + beat anchors (default language)
+│   ├── language.ts             language switch (localizeScenes)
 │   ├── chapters.ts
 │   ├── broll.ts                B-roll / image slots
 │   └── illustrative.ts         synthetic series for concept charts (never real data)
@@ -92,10 +96,16 @@ props/                          draft.json · clean.json (input props for render
 scripts/                        sync-assets · validate · qa-stills · export-srt · asset-manifest
 ```
 
+## Narration languages
+
+The film is narrated in **Hinglish** by default ([`../NARRATION_HINGLISH.md`](../NARRATION_HINGLISH.md)); the English script remains as an alternate cut (`language: "english"`). Only the spoken words differ: visuals, on-screen text, transitions, music and SFX are shared.
+
+Visual beats are written against English phrases (`b.on('1982')`). For Hinglish, `anchors` in `data/narration.hinglish.ts` points each of those to the Hinglish phrase where the same idea is spoken (e.g. `'more than thirty years' → '30 saal se zyada'`), so every beat still lands on the right word. `npm run validate` checks every anchor in both languages.
+
 ## How timing works
 
 1. **`data/scenes.ts`** holds each scene's narration (verbatim from storyboard §6), minimum length (from the storyboard timecodes), outgoing transition, music cue and SFX cues.
-2. **`timeline/build.ts`** lays scenes end-to-end (transitions overlap). A scene lasts at least its storyboard length and always long enough for its VO: the **measured** recording if present, otherwise an estimate (~150 wpm plus punctuation pauses).
+2. **`timeline/build.ts`** lays scenes end-to-end (transitions overlap). A scene lasts at least its storyboard length and always long enough for its VO: the **measured** recording if present, otherwise an estimate (character-based, calibrated to a ~150 wpm read, plus punctuation pauses; it works for both languages).
 3. **Beats are phrases, not frame numbers.** Inside a scene:
    ```tsx
    const b = useBeats();
@@ -111,7 +121,7 @@ See **[`ASSETS.md`](ASSETS.md)** for the full checklist, including the VO record
 
 | Asset | Path | Notes |
 |---|---|---|
-| Voiceover | `public/audio/vo/S01.mp3` … `S34.mp3` | One file per scene (S04/S35 have none). `.mp3/.wav/.m4a/.aac`. |
+| Voiceover | `public/audio/vo/hinglish/S01.mp3` … `S34.mp3` | One file per scene (S04/S35 have none). English cut: `public/audio/vo/english/…`. `.mp3/.wav/.m4a/.aac`. |
 | Music | `public/audio/music/m1-pattern.mp3` … `m7-discipline.mp3` | Looped per chapter, faded, auto-ducked under VO (`audio/AudioLayer.tsx`). |
 | SFX | `public/audio/sfx/sfx-01-sub-boom.mp3` … | 12-sound library from storyboard §4. |
 | B-roll | `public/broll/…`, `public/images/…` | Paths in `data/broll.ts`. Placeholders show the expected path. |

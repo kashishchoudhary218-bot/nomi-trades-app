@@ -8,7 +8,7 @@ import {Documentary, documentarySchema, type DocumentaryProps} from './compositi
 import {ScenePreview, type ScenePreviewProps} from './compositions/ScenePreview';
 import {Showcase, SHOWCASE_FRAMES} from './compositions/Showcase';
 import {Thumbnail} from './compositions/Thumbnail';
-import {SCENES} from './data/scenes';
+import {DEFAULT_LANGUAGE, localizeScenes, type Language} from './data/language';
 import {buildTimeline} from './timeline/build';
 import {VIDEO} from './theme/tokens';
 import './theme/fonts';
@@ -17,8 +17,8 @@ import './theme/fonts';
  * Measures recorded VO (so scene lengths, subtitles, beats and SFX re-time to the real read)
  * and B-roll clips (so clips shorter than their slot loop instead of freezing).
  */
-const measureMedia = async () => {
-	const voPaths = SCENES.map((s) => [s.id, findAudio(voPath(s.id))] as const).filter((e): e is [string, string] => e[1] !== null);
+const measureMedia = async (language: Language) => {
+	const voPaths = localizeScenes(language).map((s) => [s.id, findAudio(voPath(s.id, language))] as const).filter((e): e is [string, string] => e[1] !== null);
 	const videoPaths = Object.values(BROLL)
 		.map((b) => b.src)
 		.filter((src) => /\.(mp4|mov|webm)$/i.test(src) && hasAsset(src));
@@ -31,21 +31,22 @@ const measureMedia = async () => {
 };
 
 const calculateDocumentary: CalculateMetadataFunction<DocumentaryProps> = async ({props}) => {
-	const measured = await measureMedia();
+	const measured = await measureMedia(props.language);
 	const voDurations = {...measured.voDurations, ...props.voDurations};
 	const mediaDurations = {...measured.mediaDurations, ...props.mediaDurations};
-	return {durationInFrames: buildTimeline(SCENES, voDurations).totalFrames, props: {...props, voDurations, mediaDurations}};
+	const timeline = buildTimeline(localizeScenes(props.language), voDurations, props.language);
+	return {durationInFrames: timeline.totalFrames, props: {...props, voDurations, mediaDurations}};
 };
 
 const calculateScene: CalculateMetadataFunction<ScenePreviewProps> = async ({props}) => {
-	const {voDurations, mediaDurations} = await measureMedia();
-	const scene = buildTimeline(SCENES, voDurations).scenes.find((s) => s.def.id === props.sceneId);
+	const {voDurations, mediaDurations} = await measureMedia(props.language);
+	const scene = buildTimeline(localizeScenes(props.language), voDurations, props.language).scenes.find((s) => s.def.id === props.sceneId);
 	if (!scene) throw new Error(`Unknown scene ${props.sceneId}`);
 	return {durationInFrames: scene.durationInFrames, props: {...props, voDurations, mediaDurations}};
 };
 
 export const RemotionRoot: React.FC = () => {
-	const estimate = buildTimeline(SCENES);
+	const estimate = buildTimeline(localizeScenes(DEFAULT_LANGUAGE));
 	return (
 		<>
 			<Composition
@@ -56,7 +57,7 @@ export const RemotionRoot: React.FC = () => {
 				fps={VIDEO.fps}
 				width={VIDEO.width}
 				height={VIDEO.height}
-				defaultProps={{voDurations: {}, mediaDurations: {}, showSubtitles: true, showGuides: false}}
+				defaultProps={{language: DEFAULT_LANGUAGE, voDurations: {}, mediaDurations: {}, showSubtitles: true, showGuides: false}}
 				calculateMetadata={calculateDocumentary}
 			/>
 			<Folder name="Scenes">
@@ -69,7 +70,7 @@ export const RemotionRoot: React.FC = () => {
 						fps={VIDEO.fps}
 						width={VIDEO.width}
 						height={VIDEO.height}
-						defaultProps={{sceneId: s.def.id, voDurations: {}, mediaDurations: {}, showSubtitles: true, showGuides: true}}
+						defaultProps={{sceneId: s.def.id, language: DEFAULT_LANGUAGE, voDurations: {}, mediaDurations: {}, showSubtitles: true, showGuides: true}}
 						calculateMetadata={calculateScene}
 					/>
 				))}

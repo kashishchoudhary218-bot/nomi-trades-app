@@ -1,3 +1,5 @@
+import type {Language} from '../data/language';
+
 /**
  * Audio placeholder library. Drop files into public/ with these base names
  * (.mp3, .wav, .m4a or .aac) and run `npm run sync:assets` — they are picked up
@@ -33,6 +35,7 @@ export const MUSIC = {
 
 export type MusicCueId = keyof typeof MUSIC;
 
-export const voPath = (sceneId: string) => `audio/vo/${sceneId}`;
+/** One VO folder per narration language: audio/vo/hinglish/S01.mp3, audio/vo/english/S01.mp3 … */
+export const voPath = (sceneId: string, language: Language) => `audio/vo/${language}/${sceneId}`;
 
 export const AUDIO_EXTENSIONS = ['.mp3', '.wav', '.m4a', '.aac'] as const;

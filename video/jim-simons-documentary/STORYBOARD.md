@@ -566,6 +566,8 @@ Rule: at most **one** accent color is dominant per frame. The frame is ~90% ink.
 
 ## 6. Complete Narration Script (clean read for the VO artist)
 
+> **Hinglish version (default narration for the film):** [`NARRATION_HINGLISH.md`](NARRATION_HINGLISH.md). Same meaning and scene structure; visuals unchanged.
+
 > Target read: ~140–150 wpm, calm, authoritative, documentary register. Pauses are marked `/` (short) and `//` (long, ≥1 s).
 
 **[COLD OPEN]**

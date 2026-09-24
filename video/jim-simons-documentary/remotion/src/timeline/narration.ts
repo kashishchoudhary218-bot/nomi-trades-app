@@ -25,14 +25,42 @@ export const phraseIndex = (narration: string, phrase: string, occurrence = 0): 
 	throw new Error(`Phrase "${phrase}" not found in narration: "${narration.slice(0, 60)}…"`);
 };
 
+const withOccurrence = (p: string, occurrence: number): [string, number] => {
+	const m = /^(.*)#(\d+)$/.exec(p);
+	return m ? [m[1], Number(m[2])] : [p, occurrence];
+};
+
 /**
- * Estimated VO length when no recording exists yet: ~150 wpm documentary read,
- * plus pauses at punctuation (matches the / and // marks in the script).
+ * Word index of a beat phrase. Beat phrases are written against the English script;
+ * `anchors` (from localizeScenes) translates them to the phrase in the active narration.
  */
+export const resolvePhrase = (
+	narration: string,
+	anchors: Record<string, string> | undefined,
+	phrase: string,
+	occurrence = 0,
+): number => {
+	const key = occurrence ? `${phrase}#${occurrence}` : phrase;
+	const mapped = anchors?.[key];
+	if (mapped) {
+		const [p, occ] = withOccurrence(mapped, 0);
+		return phraseIndex(narration, p, occ);
+	}
+	return phraseIndex(narration, phrase, occurrence);
+};
+
+/**
+ * Estimated VO length when no recording exists yet. Character-based, so it works for
+ * English and Hinglish alike (Hinglish has many short function words — "ki", "ke", "hai" —
+ * that a word count would over-weight). Calibrated to a ~150 wpm documentary read
+ * (≈17 characters/second), plus pauses at punctuation (the / and // marks in the script).
+ */
+const CHARS_PER_SECOND = 17;
+
 export const estimateVoSeconds = (text: string): number => {
 	if (!text.trim()) return 0;
-	const words = wordCount(text);
+	const letters = text.replace(/[^\p{L}\p{N} ]/gu, '').replace(/\s+/g, ' ').trim().length;
 	const sentences = (text.match(/[.!?]/g) ?? []).length;
 	const breaths = (text.match(/[,:;—]/g) ?? []).length;
-	return words / 2.5 + sentences * 0.35 + breaths * 0.15;
+	return letters / CHARS_PER_SECOND + sentences * 0.35 + breaths * 0.15;
 };

@@ -50,7 +50,7 @@ export const Guides: React.FC<{timeline: BuiltTimeline}> = ({timeline}) => {
 				<div style={{color: colors.signal}}>
 					{formatTimecode(frame)} · {scene.def.id} · {CHAPTERS[scene.def.chapter].title} · {scene.def.title}
 				</div>
-				{activeVo ? row(`VO ${activeVo.sceneId}`, findAudio(voPath(activeVo.sceneId)), scene.voMeasured ? '(measured)' : '(estimated)') : null}
+				{activeVo ? row(`VO ${activeVo.sceneId}`, findAudio(voPath(activeVo.sceneId, timeline.language)), scene.voMeasured ? '(measured)' : '(estimated)') : null}
 				{activeMusic ? row(`MUSIC ${activeMusic.id}`, findAudio(MUSIC[activeMusic.id].path), MUSIC[activeMusic.id].name) : null}
 				{recentSfx.map((s) => row(s.id, findAudio(SFX[s.id].path), SFX[s.id].name))}
 			</div>

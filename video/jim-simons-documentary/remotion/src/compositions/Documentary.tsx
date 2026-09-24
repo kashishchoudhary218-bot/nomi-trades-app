@@ -11,7 +11,7 @@ import {CHAPTER_CARD_FRAMES, CHAPTER_CONTENT_OFFSET} from '../components/SceneSh
 import {CHAPTERS} from '../data/chapters';
 import {Subtitle} from '../components/Subtitle';
 import {getTransition} from '../components/Transition';
-import {SCENES} from '../data/scenes';
+import {DEFAULT_LANGUAGE, LANGUAGES, localizeScenes} from '../data/language';
 import {SCENE_COMPONENTS} from '../scenes';
 import {buildCues} from '../subtitles/buildCues';
 import {buildTimeline, type BuiltScene} from '../timeline/build';
@@ -19,6 +19,8 @@ import {SceneProvider} from '../timeline/SceneContext';
 import {colors} from '../theme/tokens';
 
 export const documentarySchema = z.object({
+	/** Narration language (VO files, subtitles and beat timing). */
+	language: z.enum(LANGUAGES),
 	/** Measured VO lengths in seconds, filled automatically by calculateMetadata. */
 	voDurations: z.record(z.string(), z.number()),
 	/** Measured B-roll clip lengths in seconds, filled automatically by calculateMetadata. */
@@ -42,6 +44,7 @@ export const RenderScene: React.FC<{scene: BuiltScene}> = ({scene}) => {
 				id: scene.def.id,
 				durationInFrames: scene.durationInFrames,
 				narration: scene.def.narration,
+				anchors: scene.def.anchors,
 				voFrom: scene.voFrom,
 				voFrames: scene.voFrames,
 				contentOffset: offset,
@@ -62,8 +65,8 @@ export const RenderScene: React.FC<{scene: BuiltScene}> = ({scene}) => {
 };
 
 /** The full film: 35 scenes with house transitions, audio layer, subtitles and editor guides. */
-export const Documentary: React.FC<DocumentaryProps> = ({voDurations, mediaDurations, showSubtitles, showGuides}) => {
-	const timeline = useMemo(() => buildTimeline(SCENES, voDurations), [voDurations]);
+export const Documentary: React.FC<DocumentaryProps> = ({language = DEFAULT_LANGUAGE, voDurations, mediaDurations, showSubtitles, showGuides}) => {
+	const timeline = useMemo(() => buildTimeline(localizeScenes(language), voDurations, language), [language, voDurations]);
 	const cues = useMemo(() => buildCues(timeline), [timeline]);
 
 	return (

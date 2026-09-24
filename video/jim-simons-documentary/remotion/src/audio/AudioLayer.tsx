@@ -33,7 +33,7 @@ export const placeAudio = (timeline: BuiltTimeline) => {
 	const sfx: PlacedSfx[] = timeline.scenes.flatMap((s) =>
 		s.def.sfx.map((cue) => {
 			const local = cue.on
-				? phraseFrame({narration: s.def.narration, voFrom: s.voFrom, voFrames: s.voFrames}, cue.on)
+				? phraseFrame({narration: s.def.narration, anchors: s.def.anchors, voFrom: s.voFrom, voFrames: s.voFrames}, cue.on)
 				: Math.round((cue.atSec ?? 0) * VIDEO.fps);
 			return {id: cue.id, from: s.from + local, volume: cue.volume ?? 0.8, sceneId: s.def.id};
 		}),
@@ -64,7 +64,7 @@ export const AudioLayer: React.FC<{timeline: BuiltTimeline}> = ({timeline}) => {
 	return (
 		<>
 			{vo.map((v) => {
-				const path = findAudio(voPath(v.sceneId));
+				const path = findAudio(voPath(v.sceneId, timeline.language));
 				if (!path) return null;
 				return (
 					<Sequence key={`vo-${v.sceneId}`} from={v.from} name={`VO ${v.sceneId}`} layout="none">

@@ -1,4 +1,5 @@
 import {DEFAULT_TRANSITION_FRAMES, type TransitionKind} from '../components/Transition';
+import {DEFAULT_LANGUAGE, type Language} from '../data/language';
 import type {SceneDef} from '../data/scenes';
 import {VIDEO} from '../theme/tokens';
 import {estimateVoSeconds} from './narration';
@@ -17,7 +18,7 @@ export type BuiltScene = {
 	transitionOut: {kind: TransitionKind; frames: number};
 };
 
-export type BuiltTimeline = {scenes: BuiltScene[]; totalFrames: number};
+export type BuiltTimeline = {scenes: BuiltScene[]; totalFrames: number; language: Language};
 
 const TAIL_SEC = 0.9;
 const f = (s: number) => Math.round(s * VIDEO.fps);
@@ -26,7 +27,11 @@ const f = (s: number) => Math.round(s * VIDEO.fps);
  * Lays scenes end-to-end. Each scene lasts at least its storyboard length and
  * always long enough for its voiceover (recorded duration if available, else an estimate).
  */
-export const buildTimeline = (defs: SceneDef[], voDurations: Record<string, number> = {}): BuiltTimeline => {
+export const buildTimeline = (
+	defs: SceneDef[],
+	voDurations: Record<string, number> = {},
+	language: Language = DEFAULT_LANGUAGE,
+): BuiltTimeline => {
 	const scenes: BuiltScene[] = [];
 	let cursor = 0;
 	defs.forEach((def, index) => {
@@ -52,7 +57,7 @@ export const buildTimeline = (defs: SceneDef[], voDurations: Record<string, numb
 		cursor += durationInFrames - frames;
 	});
 	const last = scenes[scenes.length - 1];
-	return {scenes, totalFrames: last.from + last.durationInFrames};
+	return {scenes, totalFrames: last.from + last.durationInFrames, language};
 };
 
 export const formatTimecode = (frame: number, fps: number = VIDEO.fps): string => {

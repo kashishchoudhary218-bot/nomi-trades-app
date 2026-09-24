@@ -17,7 +17,9 @@
     "check": "npm run typecheck && npm run lint && npm run validate",
     "assets": "tsx scripts/asset-manifest.ts",
     "lint": "eslint .",
-    "render:clean": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge-no-subs.mp4 --props=props/clean.json"
+    "render:clean": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge-no-subs.mp4 --props=props/clean.json",
+    "render:english": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge-english.mp4 --props=props/english.json",
+    "script:hinglish": "tsx scripts/export-script.ts"
   },
   "dependencies": {
     "@remotion/cli": "4.0.527",
