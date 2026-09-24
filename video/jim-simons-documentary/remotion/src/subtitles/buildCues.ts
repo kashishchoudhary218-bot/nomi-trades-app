@@ -1,6 +1,6 @@
 import type {SubtitleCue} from '../components/Subtitle';
 import type {BuiltTimeline} from '../timeline/build';
-import {wordCount} from '../timeline/narration';
+import {tokenFraction, wordCount} from '../timeline/narration';
 
 const MAX_CHARS = 84; // ≈ two lines of 42 characters (broadcast standard)
 const MIN_FRAMES = 30;
@@ -52,12 +52,34 @@ export const chunkNarration = (text: string): string[] => {
 		}
 		if (buf) out.push(buf);
 	}
+	return mergeFragments(out);
+};
+
+const MIN_CHUNK_CHARS = 18;
+
+/** Folds tiny leftovers ("level.", "For example:") into a neighbour when the result still fits. */
+const mergeFragments = (chunks: string[]): string[] => {
+	const out = [...chunks];
+	for (let i = 0; i < out.length; i++) {
+		if (out[i].length >= MIN_CHUNK_CHARS || out.length === 1) continue;
+		const prevFits = i > 0 && out[i - 1].length + 1 + out[i].length <= MAX_CHARS;
+		const nextFits = i < out.length - 1 && out[i].length + 1 + out[i + 1].length <= MAX_CHARS;
+		// Prefer attaching a sentence ending to what precedes it, and a lead-in to what follows.
+		const leadIn = /[:—]$/.test(out[i]);
+		if (nextFits && (leadIn || !prevFits)) {
+			out.splice(i, 2, `${out[i]} ${out[i + 1]}`);
+			i--;
+		} else if (prevFits) {
+			out.splice(i - 1, 2, `${out[i - 1]} ${out[i]}`);
+			i -= 2;
+		}
+	}
 	return out;
 };
 
 /**
- * Subtitle cues for the whole film. Chunks are timed by word position across each
- * scene's VO window — the same model useBeats() uses, so captions and visual beats agree.
+ * Subtitle cues for the whole film. Chunks are timed with the same speech model as
+ * useBeats() (characters + punctuation pauses), so captions and visual beats agree.
  * For frame-accurate captions from the final VO, replace with a Whisper transcription (see README).
  */
 export const buildCues = (timeline: BuiltTimeline): SubtitleCue[] => {
@@ -65,13 +87,13 @@ export const buildCues = (timeline: BuiltTimeline): SubtitleCue[] => {
 	for (const s of timeline.scenes) {
 		if (!s.def.narration) continue;
 		const chunks = chunkNarration(s.def.narration);
-		const total = Math.max(1, wordCount(s.def.narration));
 		const start = s.from + s.voFrom;
+		const at = (tokenIndex: number) => start + Math.round(tokenFraction(s.def.narration, tokenIndex) * s.voFrames);
 		let wordsBefore = 0;
 		chunks.forEach((chunk, i) => {
-			const from = start + Math.round((wordsBefore / total) * s.voFrames);
+			const from = at(wordsBefore);
 			wordsBefore += wordCount(chunk);
-			const to = i === chunks.length - 1 ? start + s.voFrames : start + Math.round((wordsBefore / total) * s.voFrames);
+			const to = i === chunks.length - 1 ? start + s.voFrames : at(wordsBefore);
 			cues.push({from, to: Math.max(to, from + MIN_FRAMES) + 6, text: chunk});
 		});
 	}

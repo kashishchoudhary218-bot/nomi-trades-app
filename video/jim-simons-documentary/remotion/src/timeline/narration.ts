@@ -50,17 +50,50 @@ export const resolvePhrase = (
 };
 
 /**
- * Estimated VO length when no recording exists yet. Character-based, so it works for
- * English and Hinglish alike (Hinglish has many short function words — "ki", "ke", "hai" —
- * that a word count would over-weight). Calibrated to a ~150 wpm documentary read
- * (≈17 characters/second), plus pauses at punctuation (the / and // marks in the script).
+ * Speech-timing model shared by the VO estimate, visual beats, SFX cues and subtitles.
+ * Time per word ∝ its characters (≈17 characters/second, a ~150 wpm documentary read),
+ * plus a pause after sentence ends and clause breaks (the / and // marks in the script).
+ * Character-based works for English and Hinglish alike — Hinglish has many short function
+ * words ("ki", "ke", "hai") that a plain word count would over-weight.
  */
 const CHARS_PER_SECOND = 17;
+const SENTENCE_PAUSE = 0.35;
+const CLAUSE_PAUSE = 0.15;
 
-export const estimateVoSeconds = (text: string): number => {
-	if (!text.trim()) return 0;
-	const letters = text.replace(/[^\p{L}\p{N} ]/gu, '').replace(/\s+/g, ' ').trim().length;
-	const sentences = (text.match(/[.!?]/g) ?? []).length;
-	const breaths = (text.match(/[,:;—]/g) ?? []).length;
-	return letters / CHARS_PER_SECOND + sentences * 0.35 + breaths * 0.15;
+type SpeechModel = {
+	/** Seconds from VO start to the start of each token (index = tokenize() index). */
+	starts: number[];
+	totalSeconds: number;
 };
+
+const speechModel = (text: string): SpeechModel => {
+	const starts: number[] = [];
+	let t = 0;
+	for (const raw of text.split(/\s+/).filter(Boolean)) {
+		const isToken = tokenize(raw).length > 0;
+		if (isToken) starts.push(t);
+		const letters = raw.replace(/[^\p{L}\p{N}]/gu, '').length;
+		t += (letters + 1) / CHARS_PER_SECOND;
+		if (/[.!?]["'”)]*$/.test(raw)) t += SENTENCE_PAUSE;
+		else if (/[,:;—]$/.test(raw) || raw === '—') t += CLAUSE_PAUSE;
+	}
+	return {starts, totalSeconds: t};
+};
+
+/** Estimated VO length (seconds) when no recording exists yet. */
+export const estimateVoSeconds = (text: string): number => (text.trim() ? speechModel(text).totalSeconds : 0);
+
+/** Where (0–1) in the read a given token index starts. Scales onto the real VO length once recorded. */
+export const tokenFraction = (text: string, tokenIndex: number): number => {
+	const m = speechModel(text);
+	if (tokenIndex >= m.starts.length) return 1;
+	return m.totalSeconds > 0 ? m.starts[tokenIndex] / m.totalSeconds : 0;
+};
+
+/** Where (0–1) in the read a beat phrase is spoken (anchors translate English beat phrases). */
+export const phraseFraction = (
+	narration: string,
+	anchors: Record<string, string> | undefined,
+	phrase: string,
+	occurrence = 0,
+): number => tokenFraction(narration, resolvePhrase(narration, anchors, phrase, occurrence));

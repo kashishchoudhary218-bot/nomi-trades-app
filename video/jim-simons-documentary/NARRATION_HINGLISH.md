@@ -66,7 +66,7 @@ _(Music only — no narration.)_
 
 <sub>EN reference: One: statistical pattern recognition. The team processed price, volume, order flow and other market data. The goal: find signals that were statistically significant, repeated over time — and stayed useful even after trading costs.</sub>
 
-### S10 · Pillar 2 · Borrowed from Physics  `02:32`
+### S10 · Pillar 2 · Borrowed from Physics  `02:33`
 
 > Doosra: doosri sciences se seekhna. Kuch mathematical techniques finance ke bahar ke fields — jaise physics aur signal processing — se adapt ki gayi thi. Hidden Markov Models jaise techniques ka use reportedly financial pattern recognition mein kiya gaya. Logic simple tha: agar koi technique doosre complex systems mein kaam karti hai, to test karo ki kya woh markets mein bhi kaam karti hai.
 
@@ -86,7 +86,7 @@ _(Music only — no narration.)_
 
 ## 03 — The Reality Check
 
-### S13 · You Can't Copy This  `03:42`
+### S13 · You Can't Copy This  `03:43`
 
 > Ab, ek reality check. Ek retail trader Medallion Fund ki performance ko replicate nahi kar sakta. Uske models proprietary hain, aur publicly available nahi hain. Renaissance ke paas technology thi, scale tha, aur highly skilled researchers the. Isliye Simons ke principles ko ek learning framework ki tarah dekho — copy karne wali trading strategy ki tarah nahi.
 
@@ -94,13 +94,13 @@ _(Music only — no narration.)_
 
 ## 04 — Four Principles You Can Use
 
-### S14 · Principle 1 · Rules Over Judgement  `04:08`
+### S14 · Principle 1 · Rules Over Judgement  `04:09`
 
 > To aap actually kya apply kar sakte ho? Principle one: discretionary judgement ke bajay systematic rules. Apni entry, exit, stop loss aur position size pehle se define karo. Measurable conditions se overconfidence, hesitation aur confirmation bias jaise behavioural mistakes kam ho sakte hain.
 
 <sub>EN reference: So what can you actually apply? Principle one: systematic rules over discretionary judgement. Define your entry, exit, stop loss and position size in advance. Measurable conditions can reduce behavioural mistakes like overconfidence, hesitation and confirmation bias.</sub>
 
-### S15 · Principle 2 · Evidence Over Narrative  `04:31`
+### S15 · Principle 2 · Evidence Over Narrative  `04:32`
 
 > Principle two: narrative se upar data aur evidence ko rakho. Apni strategy ko historical data par backtest karo. Samjho ki woh kahan perform karti hai, kahan fail hoti hai, uska historical drawdown kya raha, win rate kya raha, aur average risk-to-reward kya raha. Backtest future profit ki guarantee nahi deta — lekin yeh samajhne ka baseline zaroor deta hai ki strategy ne ab tak kaise behave kiya hai.
 
@@ -112,7 +112,7 @@ _(Music only — no narration.)_
 
 <sub>EN reference: Principle three: risk management is non-negotiable. Keep position sizing consistent. Define a maximum loss per trade. Define a daily and weekly maximum loss. And don't increase risk just because you're on a winning streak. The goal: no single trade — or sequence of trades — should seriously damage your account.</sub>
 
-### S17 · Principle 4 · Diversify  `05:26`
+### S17 · Principle 4 · Diversify  `05:27`
 
 > Principle four: markets aur signals mein diversify karo. Medallion ne reportedly hundreds of instruments mein trade kiya — equities, bonds, currencies, commodities aur derivatives. Retail level par iska broad lesson yeh hai: kisi ek instrument ya ek strategy par poori tarah dependent mat raho. Less-correlated markets mein diversify karne se, kisi ek edge par aapki dependence kam ho sakti hai.
 
@@ -120,25 +120,25 @@ _(Music only — no narration.)_
 
 ## 05 — The Quant Toolkit
 
-### S18 · Statistical Arbitrage  `05:55`
+### S18 · Statistical Arbitrage  `05:56`
 
 > Quantitative strategies kuch broad types ki hoti hain. Statistical arbitrage mein historically related assets ke price relationship ko study kiya jata hai. Agar yeh relationship temporarily kisi unusual level tak widen ho jaye, to strategy test karti hai ki kya spread wapas apni normal range ki taraf revert karega.
 
 <sub>EN reference: Quantitative strategies come in a few broad types. Statistical arbitrage studies the price relationship between historically related assets. If that relationship temporarily widens to an unusual level, the strategy tests whether the spread will revert toward its normal range.</sub>
 
-### S19 · Momentum & Trend Following  `06:17`
+### S19 · Momentum & Trend Following  `06:18`
 
 > Momentum aur trend following ka idea hai — is possibility ko systematically capture karna, ki recent strength aage bhi continue ho sakti hai. Jaise rules: uptrend mein long, aur downtrend mein short.
 
 <sub>EN reference: Momentum and trend following try to systematically capture the possibility that recent strength continues — using rules like going long in an uptrend, and short in a downtrend.</sub>
 
-### S20 · Mean Reversion  `06:33`
+### S20 · Mean Reversion  `06:34`
 
 > Mean reversion mein yeh idea test kiya jata hai ki price apne average ya equilibrium level ki taraf wapas aa sakta hai. Short-term trading mein yeh relevant ho sakta hai — lekin challenge yeh pehchanna hai ki yeh temporary overextension hai, ya ek new trend ki shuruaat.
 
 <sub>EN reference: Mean reversion tests the idea that price may return to its average, or equilibrium, level. It can be relevant in short-term trading — but the challenge is telling a temporary overextension apart from the beginning of a new trend.</sub>
 
-### S21 · Factor-Based Models  `06:52`
+### S21 · Factor-Based Models  `06:53`
 
 > Aur factor-based models value, momentum, quality aur low volatility jaise characteristics ko analyse karte hain. Kisi ek stock ki direction predict karne ke bajay, portfolio ko specific factor exposures ki taraf tilt kiya jata hai.
 
@@ -146,13 +146,13 @@ _(Music only — no narration.)_
 
 ## 06 — Your First Testable Rule
 
-### S22 · One Precise Rule  `07:08`
+### S22 · One Precise Rule  `07:09`
 
 > Achhi khabar yeh hai: quantitative approach ke liye Renaissance-level mathematics ki zarurat nahi hai. Shuruaat hoti hai ek precise, testable rule se. Example: Main tab buy karunga, jab 20-day moving average, 50-day moving average ke upar cross karega. Aur jab 20-day moving average wapas 50-day ke neeche cross karega, tab exit karunga.
 
 <sub>EN reference: The good news: a quantitative approach doesn't need Renaissance-level mathematics. It starts with one precise, testable rule. For example: I'll buy when the 20-day moving average crosses above the 50-day moving average. And I'll exit when the 20-day crosses back below the 50-day.</sub>
 
-### S23 · Now Test It  `07:34`
+### S23 · Now Test It  `07:35`
 
 > Ab is rule ko historical data par backtest kiya ja sakta hai — win rate, drawdown, average risk-to-reward, aur alag-alag market conditions mein iska behaviour check karte hue.
 
@@ -160,7 +160,7 @@ _(Music only — no narration.)_
 
 ## 07 — The Hardest Part: Execution
 
-### S24 · How Traders Break Their Own Systems  `07:48`
+### S24 · How Traders Break Their Own Systems  `07:49`
 
 > Strategy banana ek challenge hai. Lekin use consistently execute karna, usse bhi bada challenge hai. Yahi woh jagah hai, jahan traders apne hi systems tod dete hain: kuch signals par trade lena, aur kuch ko skip kar dena. Stop loss ko move karna. Losing trade ko is ummeed mein hold karna, ki woh recover ho jayega. Aur drawdown ke baad strategy ko abandon kar dena.
 
@@ -174,13 +174,13 @@ _(Music only — no narration.)_
 
 ## 08 — When It Stops Working
 
-### S26 · Normal Drawdown, or Broken Edge?  `08:44`
+### S26 · Normal Drawdown, or Broken Edge?  `08:45`
 
 > Systematic strategies bhi drawdown periods se guzarti hain. Important sawaal sirf yeh nahi hai ki "kya mujhe loss hua?" — balki yeh hai ki kya yeh ek normal historical drawdown hai, ya strategy ki edge genuinely badal gayi hai. Khud se poocho: Kya market regime change hua hai? Kya similar strategies bhi underperform kar rahi hain? Kya signal conditions abhi bhi generate ho rahi hain? Aur current market historical conditions se kitna different hai?
 
 <sub>EN reference: Even systematic strategies go through drawdown periods. The important question isn't just "did I lose?" — it's whether this is a normal historical drawdown, or whether the strategy's edge has genuinely changed. Ask: Has the market regime changed? Are similar strategies also underperforming? Are the signal conditions still being generated? How different is the current market from historical conditions?</sub>
 
-### S27 · Don't Abandon on Emotion  `09:15`
+### S27 · Don't Abandon on Emotion  `09:16`
 
 > Recent losses ke baad aisa lag sakta hai ki strategy permanently fail ho gayi hai. Lekin agar strategy properly backtested aur validated hai, to historical evidence drawdown ko objectively evaluate karne ka ek better basis deta hai.
 
@@ -194,25 +194,25 @@ _(Music only — no narration.)_
 
 <sub>EN reference: Now, the advanced traps. The biggest one: overfitting — optimizing a strategy so tightly to historical data that the backtest looks strong, but it fails in live markets. The strategy may be learning historical noise instead of a real market pattern.</sub>
 
-### S29 · Out-of-Sample Testing  `09:54`
+### S29 · Out-of-Sample Testing  `09:55`
 
 > Iska ek defence hai: out-of-sample testing — yaani strategy ko aise alag data par test karna, jo use develop karne mein use nahi hua.
 
 <sub>EN reference: One defence: out-of-sample testing — testing the strategy on separate data that wasn't used to develop it.</sub>
 
-### S30 · The Hidden Tax: Transaction Costs  `10:03`
+### S30 · The Hidden Tax: Transaction Costs  `10:04`
 
 > Phir aate hain transaction costs. Trading ka actual cost sirf entry aur exit price nahi hota. Spread, commission, slippage ya market impact, aur overnight financing — yeh sab aapki edge ko kam kar sakte hain. High-turnover strategies inke liye khaas taur par sensitive hoti hain.
 
 <sub>EN reference: Then there are transaction costs. Your real cost isn't just the entry and exit price. Spread, commission, slippage or market impact, and overnight financing can all reduce an edge. High-turnover strategies are especially sensitive.</sub>
 
-### S31 · Capacity & Signal Decay  `10:23`
+### S31 · Capacity & Signal Decay  `10:24`
 
 > Capacity limits: agar bahut zyada capital ek hi strategy ko follow kare, to large orders market ko move kar sakte hain aur returns kam kar sakte hain — haalanki small retail accounts ke liye yeh usually utna relevant nahi hota. Aur signal degradation: jo intraday pattern pehle kaam karta tha, woh time ke saath kam effective ho sakta hai — khaas kar tab, jab bahut saare traders use pehchan kar use karne lagein.
 
 <sub>EN reference: Capacity limits: if too much capital follows the same strategy, large orders can move the market and reduce returns — though for small retail accounts, this is usually less relevant. And signal degradation: an intraday pattern that once worked can become less effective over time — especially if many traders discover and start using it.</sub>
 
-### S32 · Five Common Mistakes  `10:50`
+### S32 · Five Common Mistakes  `10:51`
 
 > Aur aakhir mein, systematic trading ki paanch common mistakes. Ek: model ko over-complicate karna. Zyada complexity ka matlab automatically better strategy nahi hota; simple aur robust models overfitting ke liye kam vulnerable ho sakte hain. Do: bina clear rationale ke signals use karna. Sirf statistical pattern mil jana kaafi nahi hai; yeh samajhna bhi zaroori hai ki woh pattern exist kyun kar sakta hai. Teen: bahut kam data par testing. Short backtest misleading ho sakta hai. Strategy ko high aur low volatility, trending aur range-bound markets, aur alag-alag macro environments mein test karo. Chaar: market regime change ko ignore karna. Policy, volatility, liquidity aur trader behaviour — sab badalte rehte hain, aur sab performance ko affect kar sakte hain. Aur paanch: live conditions ko monitor na karna. Check karo ki aaj ka market un conditions jaisa hai ya nahi, jahan aapki strategy historically best perform karti thi.
 
@@ -220,22 +220,22 @@ _(Music only — no narration.)_
 
 ## Closing
 
-### S33 · Copy the Discipline  `11:50`
+### S33 · Copy the Discipline  `11:51`
 
 > Renaissance ki performance sirf models ka result nahi thi. Yeh ek process se aayi: evidence dhoondho, use test karo, discipline ke saath trade karo, monitor karo — aur jo kaam karna band kar de, use remove karo. Aap Medallion ko copy nahi kar sakte. Lekin aap uska discipline zaroor copy kar sakte hain.
 
 <sub>EN reference: Renaissance's performance wasn't the product of models alone. It came from a process: find evidence, test it, trade it with discipline, monitor it — and remove what stops working. You can't copy Medallion. But you can copy the discipline.</sub>
 
-### S34 · Disclaimer  `12:11`
+### S34 · Disclaimer  `12:12`
 
 > Yeh video sirf educational purpose ke liye hai. Historical performance future results ki guarantee nahi hoti — aur yahan Medallion ke proprietary models ko replicate karne ka koi claim nahi kiya gaya hai.
 
 <sub>EN reference: This video is for education. Historical performance doesn't guarantee future results — and nothing here claims to replicate Medallion's proprietary models.</sub>
 
-### S35 · End Card  `12:24`
+### S35 · End Card  `12:25`
 
 _(Music only — no narration.)_
 
 ---
 
-Estimated total runtime (Hinglish): **12:44**
+Estimated total runtime (Hinglish): **12:45**

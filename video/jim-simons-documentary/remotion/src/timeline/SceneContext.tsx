@@ -1,5 +1,5 @@
 import React, {createContext, useContext} from 'react';
-import {resolvePhrase, wordCount} from './narration';
+import {phraseFraction} from './narration';
 
 export type SceneInfo = {
 	id: string;
@@ -47,11 +47,10 @@ export type Beats = {
  */
 export const useBeats = (): Beats => {
 	const s = useScene();
-	const total = Math.max(1, wordCount(s.narration));
 	const start = s.voFrom - s.contentOffset;
 	const at = (fraction: number) => Math.round(start + fraction * s.voFrames);
 	return {
-		on: (phrase, occurrence = 0) => at(resolvePhrase(s.narration, s.anchors, phrase, occurrence) / total),
+		on: (phrase, occurrence = 0) => at(phraseFraction(s.narration, s.anchors, phrase, occurrence)),
 		at,
 		voStart: start,
 		voEnd: start + s.voFrames,
@@ -61,6 +60,5 @@ export const useBeats = (): Beats => {
 
 /** Same phrase → frame mapping, usable outside React (audio cue placement). */
 export const phraseFrame = (info: Pick<SceneInfo, 'narration' | 'anchors' | 'voFrom' | 'voFrames'>, phrase: string): number => {
-	const total = Math.max(1, wordCount(info.narration));
-	return Math.round(info.voFrom + (resolvePhrase(info.narration, info.anchors, phrase) / total) * info.voFrames);
+	return Math.round(info.voFrom + phraseFraction(info.narration, info.anchors, phrase) * info.voFrames);
 };
