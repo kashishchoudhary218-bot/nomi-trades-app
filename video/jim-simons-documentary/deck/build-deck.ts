@@ -25,8 +25,11 @@ const C = {
 	red: 'FF5A5F',
 	green: '35D19A',
 };
-const HEAD = 'Cambria';
-const BODY = 'Calibri';
+// DECK_WIDE_FONTS=1 builds a QA copy with wider fallback fonts (what a PC without
+// Cambria/Calibri would show) — the layout must stay overlap-free in both.
+const WIDE = process.env.DECK_WIDE_FONTS === '1';
+const HEAD = WIDE ? 'DejaVu Serif' : 'Cambria';
+const BODY = WIDE ? 'DejaVu Sans' : 'Calibri';
 const W = 10;
 const H = 5.625;
 
@@ -54,7 +57,7 @@ const base = (opts: {kicker?: string; title?: string} = {}) => {
 		s.addText(opts.kicker.toUpperCase(), {x: 0.5, y: 0.3, w: 9, h: 0.3, fontFace: BODY, fontSize: 10, bold: true, color: C.lime, charSpacing: 3, margin: 0, isTextBox: true});
 	}
 	if (opts.title) {
-		s.addText(opts.title, {x: 0.5, y: 0.6, w: 9, h: 0.65, fontFace: HEAD, fontSize: 28, color: C.text, margin: 0, valign: 'top', isTextBox: true});
+		s.addText(opts.title, {x: 0.5, y: 0.62, w: 9, h: 0.6, fontFace: HEAD, fontSize: 24, color: C.text, margin: 0, valign: 'top', isTextBox: true});
 	}
 	if (slideNo > 1) {
 		s.addText(String(slideNo), {x: 9.1, y: 5.2, w: 0.4, h: 0.25, fontFace: BODY, fontSize: 9, color: C.muted, align: 'right', margin: 0, isTextBox: true});
@@ -71,8 +74,28 @@ const picture = (s: pptxgen.Slide, id: string, x: number, y: number, w: number) 
 	return h;
 };
 
-const caption = (s: pptxgen.Slide, text: string, x: number, y: number, w: number) =>
-	s.addText(text, {x, y, w, h: 0.28, fontFace: BODY, fontSize: 10, color: C.muted, margin: 0, isTextBox: true});
+/** Caption under a picture whose bottom edge is at `bottom` — always a clear gap from the image. */
+const caption = (s: pptxgen.Slide, text: string, x: number, bottom: number, w: number) =>
+	s.addText(text, {x, y: bottom + 0.3, w, h: 0.3, fontFace: BODY, fontSize: 10, color: C.muted, valign: 'top', margin: 0, isTextBox: true});
+
+/**
+ * Heading + body in ONE text box: if the heading wraps (e.g. with a wider fallback font),
+ * the body flows down instead of colliding with it.
+ */
+const pair = (
+	s: pptxgen.Slide,
+	head: string,
+	body: string,
+	box: {x: number; y: number; w: number; h: number},
+	o: {headSize?: number; bodySize?: number; headColor?: string; bodyColor?: string} = {},
+) =>
+	s.addText(
+		[
+			{text: head, options: {bold: true, fontSize: o.headSize ?? 13, color: o.headColor ?? C.lime, breakLine: true, paraSpaceAfter: 3}},
+			{text: body, options: {fontSize: o.bodySize ?? 12, color: o.bodyColor ?? C.text}},
+		],
+		{...box, fontFace: BODY, valign: 'top', margin: 0, isTextBox: true},
+	);
 
 type Bullet = string | {b: string; t: string};
 /** One paragraph per point: a lime lead ("→" for plain points, or a bold label) + the text. */
@@ -100,10 +123,13 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 // 1 · Title
 {
 	const s = base();
-	s.addImage({path: img('S06'), x: 5.6, y: 1.2, w: 4.2, h: 2.3625, transparency: 35, altText: 'Video frame: People, Data, Technology'});
+	s.addImage({path: img('S06'), x: 5.7, y: 1.2, w: 4.2, h: 2.3625, transparency: 35, altText: 'Video frame: People, Data, Technology'});
 	s.addText('HINGLISH EXPLAINER', {x: 0.6, y: 1.35, w: 5, h: 0.3, fontFace: BODY, fontSize: 11, bold: true, color: C.lime, charSpacing: 4, margin: 0, isTextBox: true});
-	s.addText("The Mathematician's\nEdge", {x: 0.6, y: 1.7, w: 5.6, h: 1.45, fontFace: HEAD, fontSize: 34, color: C.text, margin: 0, valign: 'top', isTextBox: true});
-	s.addText('Jim Simons ka Trading Approach — math, data aur discipline se trading ko samjhein', {x: 0.6, y: 3.35, w: 4.8, h: 0.8, fontFace: BODY, fontSize: 15, color: C.muted, margin: 0, valign: 'top', isTextBox: true});
+	s.addText([
+		{text: "The Mathematician's", options: {breakLine: true}},
+		{text: 'Edge', options: {}},
+	], {x: 0.6, y: 1.75, w: 4.9, h: 1.5, fontFace: HEAD, fontSize: 32, color: C.text, lineSpacingMultiple: 1.15, margin: 0, valign: 'top', isTextBox: true});
+	s.addText('Jim Simons ka Trading Approach — math, data aur discipline se trading ko samjhein', {x: 0.6, y: 3.45, w: 4.8, h: 0.9, fontFace: BODY, fontSize: 15, color: C.muted, margin: 0, valign: 'top', isTextBox: true});
 	s.addText('Sirf educational content · Historical performance future results ki guarantee nahi hai', {x: 0.6, y: 4.85, w: 6, h: 0.3, fontFace: BODY, fontSize: 9, color: C.muted, margin: 0, isTextBox: true});
 	s.addNotes('Intro: Namaste! Aaj hum samjhenge Jim Simons ka trading approach — ek mathematician ne markets ko math aur data se kaise dekha. Is presentation ke har slide ke notes mein video ki Hinglish script hai, video timecode ke saath.');
 }
@@ -112,11 +138,10 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 {
 	const s = base({kicker: 'Cold open', title: 'Ek number jo sab kuch shuru karta hai'});
 	s.addText('~66%', {x: 0.5, y: 1.45, w: 4.3, h: 1.4, fontFace: HEAD, fontSize: 80, color: C.gold, margin: 0, valign: 'top', isTextBox: true});
-	s.addText('Average annual return · fees se pehle · reportedly', {x: 0.5, y: 2.9, w: 4.3, h: 0.35, fontFace: BODY, fontSize: 13, bold: true, color: C.text, margin: 0, isTextBox: true});
-	s.addText('Medallion Fund — 30+ saal tak', {x: 0.5, y: 3.25, w: 4.3, h: 0.35, fontFace: BODY, fontSize: 13, color: C.muted, margin: 0, isTextBox: true});
-	s.addText('Gut feeling ya market stories se nahi — mathematics, data aur scientific discipline se.', {x: 0.5, y: 3.85, w: 4.1, h: 0.8, fontFace: BODY, fontSize: 14, italic: true, color: C.lime, margin: 0, valign: 'top', isTextBox: true});
-	picture(s, 'S02', 4.95, 1.55, 4.55);
-	caption(s, 'Video frame · Scene S02', 4.95, 4.2, 4.5);
+	pair(s, 'Average annual return · fees se pehle · reportedly', 'Medallion Fund — 30+ saal tak', {x: 0.5, y: 2.85, w: 4.1, h: 0.9}, {headColor: C.text, bodyColor: C.muted, bodySize: 13});
+	s.addText('Gut feeling ya market stories se nahi — mathematics, data aur scientific discipline se.', {x: 0.5, y: 3.95, w: 4.1, h: 0.9, fontFace: BODY, fontSize: 14, italic: true, color: C.lime, margin: 0, valign: 'top', isTextBox: true});
+	const ph = picture(s, 'S02', 4.95, 1.55, 4.55);
+	caption(s, 'Video frame · Scene S02', 4.95, 1.55 + ph, 4.55);
 	notes(s, ['S01', 'S02']);
 }
 
@@ -133,8 +158,7 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 		const y = 1.55 + i * 0.85;
 		const color = i === 3 ? C.red : C.lime;
 		numberCircle(s, n, 0.55, y, color);
-		s.addText(head, {x: 1.15, y: y - 0.02, w: 7.5, h: 0.3, fontFace: BODY, fontSize: 16, bold: true, color: C.text, margin: 0, isTextBox: true});
-		s.addText(body, {x: 1.15, y: y + 0.28, w: 7.5, h: 0.3, fontFace: BODY, fontSize: 13, color: C.muted, margin: 0, isTextBox: true});
+		pair(s, head, body, {x: 1.15, y: y - 0.04, w: 8.3, h: 0.78}, {headSize: 16, bodySize: 13, headColor: C.text, bodyColor: C.muted});
 	});
 	notes(s, ['S03']);
 }
@@ -147,15 +171,14 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 		{b: 'Founder:', t: 'Jim Simons ne Renaissance Technologies ki foundation rakhi'},
 		{b: 'Background:', t: 'Mathematician aur former signals analyst'},
 		{b: 'Nazariya:', t: 'Market ko dekhne ka tareeka traditional traders se bilkul alag'},
-	], 0.5, 2.65, 4.4, 2.2);
+	], 0.5, 2.6, 5.0, 2.5);
 	// Portrait of Jim Simons (supplied by the channel owner).
 	const px = 5.95;
-	const py = 1.35;
-	const ps = 3.3;
+	const py = 1.4;
+	const ps = 3.0;
 	s.addShape(pres.ShapeType.rect, {x: px - 0.03, y: py - 0.03, w: ps + 0.06, h: ps + 0.06, fill: {color: C.panelLine}, line: {color: C.panelLine}, shadow: shadow()});
 	s.addImage({path: img('jim-simons'), x: px, y: py, w: ps, h: ps, altText: 'Portrait of Jim Simons'});
-	s.addText('Jim Simons', {x: px, y: py + ps + 0.12, w: ps, h: 0.3, fontFace: HEAD, fontSize: 14, color: C.text, margin: 0, isTextBox: true});
-	s.addText('Photo: [source / credit]', {x: px, y: py + ps + 0.42, w: ps, h: 0.22, fontFace: BODY, fontSize: 8, color: C.muted, margin: 0, isTextBox: true});
+	pair(s, 'Jim Simons', 'Photo: [source / credit]', {x: px, y: py + ps + 0.3, w: ps, h: 0.55}, {headSize: 14, bodySize: 8, headColor: C.text, bodyColor: C.muted});
 	notes(s, ['S05'], 'Photo credit line (slide par "Photo: [source / credit]") mein photo ka source likh dein.');
 }
 
@@ -168,8 +191,8 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 		'In patterns ko identify karke systematically trade kiya ja sakta hai',
 		{b: 'Kehna simple,', t: 'execute karna mushkil'},
 	], 0.5, 1.5, 4.2, 3.4);
-	picture(s, 'S06', 4.95, 1.5, 4.55);
-	caption(s, 'People · Data · Technology → Systematic trading', 4.95, 4.15, 4.5);
+	const ph = picture(s, 'S06', 4.95, 1.5, 4.55);
+	caption(s, 'People · Data · Technology → Systematic trading', 4.95, 1.5 + ph, 4.55);
 	notes(s, ['S06']);
 }
 
@@ -212,8 +235,7 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 		const x = 0.5 + (i % 2) * 4.6;
 		const y = 1.4 + Math.floor(i / 2) * 2.0;
 		s.addImage({path: img(id), x, y, w: 2.2, h: 1.2375, altText: `Video frame, scene ${id}`});
-		s.addText(head, {x: x + 2.35, y, w: 2.1, h: 0.6, fontFace: BODY, fontSize: 12, bold: true, color: C.lime, valign: 'top', margin: 0, isTextBox: true});
-		s.addText(body, {x: x + 2.35, y: y + 0.6, w: 2.1, h: 0.9, fontFace: BODY, fontSize: 11, color: C.text, valign: 'top', margin: 0, isTextBox: true});
+		pair(s, head, body, {x: x + 2.35, y, w: 2.15, h: 1.75}, {headSize: 12, bodySize: 11});
 	});
 	notes(s, ['S09', 'S10', 'S11']);
 }
@@ -247,24 +269,20 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 // 11 · Principles 1 & 2
 {
 	const s = base({kicker: 'Chapter 04 · Principles you can use', title: 'Rules aur evidence'});
-	picture(s, 'S14', 0.5, 1.4, 4.35);
-	picture(s, 'S15', 5.15, 1.4, 4.35);
-	s.addText('1 · Rules > judgement', {x: 0.5, y: 3.95, w: 4.35, h: 0.3, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-	s.addText('Entry, exit, stop loss, position size pehle se define karo', {x: 0.5, y: 4.27, w: 4.35, h: 0.5, fontFace: BODY, fontSize: 12, color: C.text, valign: 'top', margin: 0, isTextBox: true});
-	s.addText('2 · Data & evidence > narrative', {x: 5.15, y: 3.95, w: 4.35, h: 0.3, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-	s.addText('Backtest karo — lekin backtest guarantee nahi, baseline hai', {x: 5.15, y: 4.27, w: 4.35, h: 0.5, fontFace: BODY, fontSize: 12, color: C.text, valign: 'top', margin: 0, isTextBox: true});
+	const ph = picture(s, 'S14', 0.5, 1.35, 4.35);
+	picture(s, 'S15', 5.15, 1.35, 4.35);
+	pair(s, '1 · Rules > judgement', 'Entry, exit, stop loss, position size pehle se define karo', {x: 0.5, y: 1.35 + ph + 0.3, w: 4.35, h: 1.2});
+	pair(s, '2 · Data & evidence > narrative', 'Backtest karo — lekin backtest guarantee nahi, baseline hai', {x: 5.15, y: 1.35 + ph + 0.3, w: 4.35, h: 1.2});
 	notes(s, ['S14', 'S15']);
 }
 
 // 12 · Principles 3 & 4
 {
 	const s = base({kicker: 'Chapter 04 · Principles you can use', title: 'Risk aur diversification'});
-	picture(s, 'S16', 0.5, 1.4, 4.35);
-	picture(s, 'S17', 5.15, 1.4, 4.35);
-	s.addText('3 · Risk management non-negotiable', {x: 0.5, y: 3.95, w: 4.35, h: 0.3, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-	s.addText('Har trade + daily/weekly max loss; winning streak mein risk mat badhao', {x: 0.5, y: 4.27, w: 4.35, h: 0.5, fontFace: BODY, fontSize: 12, color: C.text, valign: 'top', margin: 0, isTextBox: true});
-	s.addText('4 · Diversify karo', {x: 5.15, y: 3.95, w: 4.35, h: 0.3, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-	s.addText('Ek instrument ya ek strategy par poori tarah dependent mat raho', {x: 5.15, y: 4.27, w: 4.35, h: 0.5, fontFace: BODY, fontSize: 12, color: C.text, valign: 'top', margin: 0, isTextBox: true});
+	const ph = picture(s, 'S16', 0.5, 1.35, 4.35);
+	picture(s, 'S17', 5.15, 1.35, 4.35);
+	pair(s, '3 · Risk management non-negotiable', 'Har trade + daily/weekly max loss; winning streak mein risk mat badhao', {x: 0.5, y: 1.35 + ph + 0.3, w: 4.35, h: 1.2});
+	pair(s, '4 · Diversify karo', 'Ek instrument ya ek strategy par poori tarah dependent mat raho', {x: 5.15, y: 1.35 + ph + 0.3, w: 4.35, h: 1.2});
 	notes(s, ['S16', 'S17']);
 }
 
@@ -281,8 +299,7 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 		const x = 0.5 + (i % 2) * 4.6;
 		const y = 1.4 + Math.floor(i / 2) * 2.0;
 		s.addImage({path: img(id), x, y, w: 2.2, h: 1.2375, altText: `Video frame, scene ${id}`});
-		s.addText(head, {x: x + 2.35, y, w: 2.1, h: 0.35, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-		s.addText(body, {x: x + 2.35, y: y + 0.38, w: 2.1, h: 0.9, fontFace: BODY, fontSize: 11, color: C.text, valign: 'top', margin: 0, isTextBox: true});
+		pair(s, head, body, {x: x + 2.35, y, w: 2.15, h: 1.75}, {headSize: 13, bodySize: 11});
 	});
 	notes(s, ['S18', 'S19', 'S20', 'S21']);
 }
@@ -357,12 +374,10 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 // 19 · Costs, capacity, decay
 {
 	const s = base({kicker: 'Chapter 09 · The traps', title: 'Hidden costs aur fading edge'});
-	picture(s, 'S30', 0.5, 1.4, 4.35);
-	picture(s, 'S31', 5.15, 1.4, 4.35);
-	s.addText('Transaction costs', {x: 0.5, y: 3.95, w: 4.35, h: 0.3, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-	s.addText('Spread, commission, slippage, overnight financing — high-turnover mein zyada asar', {x: 0.5, y: 4.27, w: 4.35, h: 0.55, fontFace: BODY, fontSize: 12, color: C.text, valign: 'top', margin: 0, isTextBox: true});
-	s.addText('Capacity & signal degradation', {x: 5.15, y: 3.95, w: 4.35, h: 0.3, fontFace: BODY, fontSize: 13, bold: true, color: C.lime, margin: 0, isTextBox: true});
-	s.addText('Zyada capital market move karta hai; zyada traders use karein to pattern kam effective', {x: 5.15, y: 4.27, w: 4.35, h: 0.55, fontFace: BODY, fontSize: 12, color: C.text, valign: 'top', margin: 0, isTextBox: true});
+	const ph = picture(s, 'S30', 0.5, 1.35, 4.35);
+	picture(s, 'S31', 5.15, 1.35, 4.35);
+	pair(s, 'Transaction costs', 'Spread, commission, slippage, overnight financing — high-turnover mein zyada asar', {x: 0.5, y: 1.35 + ph + 0.3, w: 4.35, h: 1.2});
+	pair(s, 'Capacity & signal degradation', 'Zyada capital market move karta hai; zyada traders use karein to pattern kam effective', {x: 5.15, y: 1.35 + ph + 0.3, w: 4.35, h: 1.2});
 	notes(s, ['S30', 'S31']);
 }
 
@@ -402,4 +417,4 @@ const numberCircle = (s: pptxgen.Slide, n: string, x: number, y: number, color =
 	notes(s, ['S34']);
 }
 
-pres.writeFile({fileName: path.join(__dirname, 'The-Mathematicians-Edge-Hinglish.pptx')}).then((f) => console.log(`Wrote ${f} (${slideNo} slides)`));
+pres.writeFile({fileName: path.join(__dirname, WIDE ? 'qa/wide-fonts.pptx' : 'The-Mathematicians-Edge-Hinglish.pptx')}).then((f) => console.log(`Wrote ${f} (${slideNo} slides)`));
