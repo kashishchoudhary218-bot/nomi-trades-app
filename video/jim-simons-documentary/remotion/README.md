@@ -10,28 +10,39 @@ Production build of [`../STORYBOARD.md`](../STORYBOARD.md): a ~12½-minute premi
 
 ## Quick start
 
+Requires **Node.js 18+** (tested on Node 22). Remotion downloads its own headless Chrome on first render.
+
 ```bash
 npm install
-npm run studio          # open Remotion Studio (preview, scrub, tweak props)
-npm run render          # → out/the-mathematicians-edge.mp4 (full quality)
-npm run render:draft    # half-res draft with the editor HUD
-npm run srt             # → out/subtitles.srt (upload to YouTube as closed captions)
-npm run thumbnail       # → out/thumbnail.png (1280×720)
-npm run check           # typecheck + scene-data validation
-npm run qa              # render 3 stills per scene into out/qa/ (visual pass)
-npm run assets          # regenerate ASSETS.md (what's missing, where it goes)
+npm run studio          # preview in Remotion Studio → http://localhost:3000
+npm run render          # final: out/the-mathematicians-edge.mp4 (1920×1080, 30 fps, H.264 + AAC)
 ```
 
-> Sandboxed / CI machines without Remotion's bundled Chrome can pass `--browser-executable=/path/to/chrome-headless-shell` (or set `REMOTION_BROWSER_EXECUTABLE` for `npm run qa`).
+| Command | What it does |
+|---|---|
+| `npm run studio` | Index `public/`, open Remotion Studio (scrub, preview, change props). |
+| `npm run render` | Full-quality render with burned-in subtitles. |
+| `npm run render:clean` | Same, without subtitles or HUD (use with the `.srt` for YouTube CC). |
+| `npm run render:draft` | Half-res, fast-encode draft with the editor HUD. |
+| `npm run render:scene -- Scene-S05 out/s05.mp4` | Render a single scene. |
+| `npm run thumbnail` | `out/thumbnail.png` (1280×720 still). |
+| `npm run srt` | `out/subtitles.srt` closed captions. |
+| `npm run check` | TypeScript + ESLint (incl. `@remotion/eslint-plugin`) + timeline/audio-sync validation. |
+| `npm run qa` | Render 3 stills per scene into `out/qa/` for a visual pass. |
+| `npm run assets` | Regenerate `ASSETS.md` (what's missing and where it goes). |
+
+> **Added audio/B-roll while Studio is open?** Run `npm run sync:assets` in a second terminal, then reload the Studio tab. Always render through the `npm run render*` scripts (they sync first); a bare `npx remotion render` would ignore files added since the last sync.
+>
+> Machines that can't download Remotion's Chrome (locked-down CI, sandboxes) can add `--browser-executable=/path/to/chrome-headless-shell`, or set `REMOTION_BROWSER_EXECUTABLE` for `npm run qa`.
 
 ## Compositions
 
 | ID | What |
 |---|---|
-| `Documentary` | The full film. Props: `showSubtitles`, `showGuides` (editor HUD), `voDurations` (auto-filled). |
+| `Documentary` | The full film. Props: `showSubtitles`, `showGuides` (editor HUD); `voDurations` / `mediaDurations` are measured automatically. |
 | `Scenes/Scene-S01` … `Scene-S35` | Each scene alone, with its own VO/SFX/subtitles. Use these to iterate. |
 | `Extras/Showcase` | Every reusable component in isolation: a living style guide. |
-| `Extras/Thumbnail` | YouTube thumbnail still (storyboard §10). |
+| `Extras/Thumbnail` | YouTube thumbnail (`<Still>`, storyboard §10). |
 
 Turn on **`showGuides`** in Studio to see the current scene, timecode, title-safe frame and every audio cue at the playhead, with a `ready` / `placeholder` flag.
 
@@ -39,7 +50,7 @@ Turn on **`showGuides`** in Studio to see the current scene, timecode, title-saf
 
 ```
 src/
-├── Root.tsx                    compositions + calculateMetadata (measures recorded VO)
+├── Root.tsx                    compositions + calculateMetadata (measures VO + B-roll with Mediabunny)
 ├── compositions/
 │   ├── Documentary.tsx         TransitionSeries of all scenes + audio + subtitles + HUD
 │   ├── ScenePreview.tsx        single-scene composition
@@ -70,13 +81,14 @@ src/
 ├── timeline/                   timeline builder, narration beats (useBeats), scene context
 ├── subtitles/buildCues.ts      narration → subtitle cues / SRT
 ├── audio/                      library (file names), AudioLayer (VO, ducked music, SFX)
-├── assets/                     public/ file index (auto-generated) + helpers
+├── assets/                     public/ index (auto-generated), duration measuring, media context
 ├── theme/                      colour tokens, easing, local fonts
 └── lib/                        animation helpers, series generators
 public/
 ├── fonts/                      Fraunces · Inter Tight · JetBrains Mono (OFL)
 ├── audio/{vo,music,sfx}/       ← drop audio here
 ├── broll/ · images/            ← drop B-roll here
+props/                          draft.json · clean.json (input props for render scripts)
 scripts/                        sync-assets · validate · qa-stills · export-srt · asset-manifest
 ```
 
@@ -90,7 +102,7 @@ scripts/                        sync-assets · validate · qa-stills · export-s
    <BigText text="1982" at={b.on('1982')} />       // appears as "1982" is spoken
    <Stamp text="PROPRIETARY" at={b.on('proprietary')} />
    ```
-   SFX cues use the same idea (`{id: 'SFX-01', on: 'proprietary'}`). When you drop in the real VO, every beat, SFX hit and subtitle re-times itself. Typos in a phrase throw an error in Studio, and `npm run validate` checks SFX phrases.
+   SFX cues use the same idea (`{id: 'SFX-01', on: 'proprietary'}`). When you drop in the real VO, every beat, SFX hit and subtitle re-times itself. Typos in a phrase throw an error in Studio, and `npm run validate` checks SFX phrases, VO overlaps, SFX placement, subtitle order and music coverage.
 4. Subtitles use the same word-position model, so captions and visuals agree. For frame-perfect captions from the final VO, transcribe with [`@remotion/install-whisper-cpp`](https://www.remotion.dev/docs/install-whisper-cpp) and replace `buildCues` output with the word timestamps.
 
 ## Adding real assets
@@ -104,7 +116,7 @@ See **[`ASSETS.md`](ASSETS.md)** for the full checklist, including the VO record
 | SFX | `public/audio/sfx/sfx-01-sub-boom.mp3` … | 12-sound library from storyboard §4. |
 | B-roll | `public/broll/…`, `public/images/…` | Paths in `data/broll.ts`. Placeholders show the expected path. |
 
-`npm run studio` / `render` run `sync:assets` first, which indexes `public/` so only existing files are mounted. Nothing else to wire up.
+`npm run studio` / `render` run `sync:assets` first, which indexes `public/` so only existing files are mounted. Nothing else to wire up. B-roll clips shorter than their slot loop automatically; unreadable files are skipped with a warning (the estimate is used instead).
 
 ## Source-fidelity guardrails (from the storyboard)
 

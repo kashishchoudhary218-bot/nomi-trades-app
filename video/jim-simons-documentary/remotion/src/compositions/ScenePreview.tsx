@@ -1,5 +1,6 @@
 import React, {useMemo} from 'react';
 import {AbsoluteFill, Sequence} from 'remotion';
+import {MediaDurationsProvider} from '../assets/MediaContext';
 import {AudioLayer} from '../audio/AudioLayer';
 import {Guides} from '../components/Guides';
 import {Subtitle} from '../components/Subtitle';
@@ -12,17 +13,19 @@ import {RenderScene} from './Documentary';
 export type ScenePreviewProps = {
 	sceneId: string;
 	voDurations: Record<string, number>;
+	mediaDurations: Record<string, number>;
 	showSubtitles: boolean;
 	showGuides: boolean;
 };
 
 /** One scene in isolation (with its own VO, SFX and subtitles) for fast iteration in Studio. */
-export const ScenePreview: React.FC<ScenePreviewProps> = ({sceneId, voDurations, showSubtitles, showGuides}) => {
+export const ScenePreview: React.FC<ScenePreviewProps> = ({sceneId, voDurations, mediaDurations, showSubtitles, showGuides}) => {
 	const timeline = useMemo(() => buildTimeline(SCENES, voDurations), [voDurations]);
 	const scene = timeline.scenes.find((s) => s.def.id === sceneId);
 	const cues = useMemo(() => buildCues(timeline), [timeline]);
-	if (!scene) return null;
+	if (!scene) throw new Error(`Unknown scene ${sceneId}`);
 	return (
+		<MediaDurationsProvider value={mediaDurations}>
 		<AbsoluteFill style={{backgroundColor: colors.ink}}>
 			{/* Shift the whole film so this scene starts at frame 0; audio/subs stay in sync. */}
 			<Sequence from={-scene.from} name="Film offset">
@@ -34,5 +37,6 @@ export const ScenePreview: React.FC<ScenePreviewProps> = ({sceneId, voDurations,
 				{showGuides ? <Guides timeline={timeline} /> : null}
 			</Sequence>
 		</AbsoluteFill>
+		</MediaDurationsProvider>
 	);
 };

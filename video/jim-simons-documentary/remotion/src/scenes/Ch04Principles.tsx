@@ -162,7 +162,7 @@ export const S16: React.FC = () => {
 				<svg width={600} height={680}>
 					<defs>
 						{quads.map((q, i) => (
-							<clipPath key={i} id={`q${i}`}>
+							<clipPath key={i} id={`s16-q${i}`}>
 								<rect x={q.x + 4} y={q.y + 4} width={292} height={337} />
 							</clipPath>
 						))}
@@ -171,7 +171,7 @@ export const S16: React.FC = () => {
 					{quads.map((_, i) => {
 						const p = progress(frame, segAt[i], 16);
 						return (
-							<g key={i} clipPath={`url(#q${i})`} opacity={p}>
+							<g key={i} clipPath={`url(#s16-q${i})`} opacity={p}>
 								<path d={shield} fill={colors.gain} fillOpacity={0.16 + p * 0.1} stroke={colors.gain} strokeWidth={4} />
 							</g>
 						);

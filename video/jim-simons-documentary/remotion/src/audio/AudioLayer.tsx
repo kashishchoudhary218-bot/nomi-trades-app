@@ -4,6 +4,7 @@ import {findAudio} from '../assets/assets';
 import {MUSIC, SFX, voPath, type MusicCueId, type SfxId} from './library';
 import type {BuiltTimeline} from '../timeline/build';
 import {phraseFrame} from '../timeline/SceneContext';
+import {VIDEO} from '../theme/tokens';
 
 export type PlacedSfx = {id: SfxId; from: number; volume: number; sceneId: string};
 export type PlacedMusic = {id: MusicCueId; from: number; durationInFrames: number};
@@ -33,7 +34,7 @@ export const placeAudio = (timeline: BuiltTimeline) => {
 		s.def.sfx.map((cue) => {
 			const local = cue.on
 				? phraseFrame({narration: s.def.narration, voFrom: s.voFrom, voFrames: s.voFrames}, cue.on)
-				: Math.round((cue.atSec ?? 0) * 30);
+				: Math.round((cue.atSec ?? 0) * VIDEO.fps);
 			return {id: cue.id, from: s.from + local, volume: cue.volume ?? 0.8, sceneId: s.def.id};
 		}),
 	);
@@ -95,7 +96,7 @@ export const AudioLayer: React.FC<{timeline: BuiltTimeline}> = ({timeline}) => {
 				if (!path) return null;
 				return (
 					<Sequence key={`sfx-${i}`} from={s.from} durationInFrames={SFX_LEN} name={`${s.id} (${s.sceneId})`} layout="none">
-						<Audio src={staticFile(path)} volume={s.volume} />
+						<Audio src={staticFile(path)} volume={() => s.volume} />
 					</Sequence>
 				);
 			})}

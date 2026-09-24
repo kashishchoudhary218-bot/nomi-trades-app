@@ -2,6 +2,7 @@ import React, {useMemo} from 'react';
 import {AbsoluteFill, Sequence} from 'remotion';
 import {TransitionSeries} from '@remotion/transitions';
 import {z} from 'zod';
+import {MediaDurationsProvider} from '../assets/MediaContext';
 import {AudioLayer} from '../audio/AudioLayer';
 import {Guides} from '../components/Guides';
 import {Background} from '../components/Background';
@@ -20,6 +21,8 @@ import {colors} from '../theme/tokens';
 export const documentarySchema = z.object({
 	/** Measured VO lengths in seconds, filled automatically by calculateMetadata. */
 	voDurations: z.record(z.string(), z.number()),
+	/** Measured B-roll clip lengths in seconds, filled automatically by calculateMetadata. */
+	mediaDurations: z.record(z.string(), z.number()),
 	showSubtitles: z.boolean(),
 	showGuides: z.boolean(),
 });
@@ -59,11 +62,12 @@ export const RenderScene: React.FC<{scene: BuiltScene}> = ({scene}) => {
 };
 
 /** The full film: 35 scenes with house transitions, audio layer, subtitles and editor guides. */
-export const Documentary: React.FC<DocumentaryProps> = ({voDurations, showSubtitles, showGuides}) => {
+export const Documentary: React.FC<DocumentaryProps> = ({voDurations, mediaDurations, showSubtitles, showGuides}) => {
 	const timeline = useMemo(() => buildTimeline(SCENES, voDurations), [voDurations]);
 	const cues = useMemo(() => buildCues(timeline), [timeline]);
 
 	return (
+		<MediaDurationsProvider value={mediaDurations}>
 		<AbsoluteFill style={{backgroundColor: colors.ink}}>
 			<TransitionSeries>
 				{timeline.scenes.map((scene) => (
@@ -81,5 +85,6 @@ export const Documentary: React.FC<DocumentaryProps> = ({voDurations, showSubtit
 			{showSubtitles ? <Subtitle cues={cues} /> : null}
 			{showGuides ? <Guides timeline={timeline} /> : null}
 		</AbsoluteFill>
+		</MediaDurationsProvider>
 	);
 };

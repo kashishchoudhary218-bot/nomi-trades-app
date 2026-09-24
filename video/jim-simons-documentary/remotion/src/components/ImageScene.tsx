@@ -1,6 +1,7 @@
 import React from 'react';
-import {AbsoluteFill, Img, OffthreadVideo, useCurrentFrame} from 'remotion';
+import {AbsoluteFill, Img, Loop, OffthreadVideo, useCurrentFrame, useVideoConfig} from 'remotion';
 import {assetUrl} from '../assets/assets';
+import {useMediaDuration} from '../assets/MediaContext';
 import {map} from '../lib/anim';
 import {fonts} from '../theme/fonts';
 import {colors, EASE_IN_OUT} from '../theme/tokens';
@@ -57,8 +58,12 @@ export const ImageScene: React.FC<ImageSceneProps> = ({
 	const s = map(frame, [0, dur], [fromScale, toScale], EASE_IN_OUT);
 	const x = map(frame, [0, dur], [fromX, toX], EASE_IN_OUT);
 	const y = map(frame, [0, dur], [fromY, toY], EASE_IN_OUT);
+	const {fps} = useVideoConfig();
 	const url = assetUrl(src);
 	const isVideo = /\.(mp4|mov|webm)$/i.test(src);
+	const clipSec = useMediaDuration(src);
+	// Clips shorter than the slot loop instead of freezing on their last frame.
+	const loopFrames = clipSec !== undefined && clipSec * fps < dur ? Math.max(1, Math.floor(clipSec * fps)) : null;
 	const media: React.CSSProperties = {width: '100%', height: '100%', objectFit: 'cover', filter: GRADE[grade]};
 
 	return (
@@ -66,7 +71,13 @@ export const ImageScene: React.FC<ImageSceneProps> = ({
 			<AbsoluteFill style={{transform: `translate(${x}px, ${y}px) scale(${s})`}}>
 				{url ? (
 					isVideo ? (
-						<OffthreadVideo src={url} muted style={media} />
+						loopFrames ? (
+							<Loop durationInFrames={loopFrames} name={`${shotId} loop`}>
+								<OffthreadVideo src={url} muted style={media} />
+							</Loop>
+						) : (
+							<OffthreadVideo src={url} muted style={media} />
+						)
 					) : (
 						<Img src={url} style={media} />
 					)

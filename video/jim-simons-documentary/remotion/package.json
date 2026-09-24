@@ -7,21 +7,23 @@
     "sync:assets": "node scripts/sync-assets.mjs",
     "studio": "npm run sync:assets && remotion studio",
     "render": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge.mp4",
-    "render:draft": "npm run sync:assets && remotion render Documentary out/draft.mp4 --scale=0.5 --crf=28 --props='{\"showGuides\":true}'",
+    "render:draft": "npm run sync:assets && remotion render Documentary out/draft.mp4 --scale=0.5 --crf=28 --props=props/draft.json",
     "render:scene": "npm run sync:assets && remotion render",
-    "thumbnail": "remotion still Thumbnail out/thumbnail.png",
+    "thumbnail": "npm run sync:assets && remotion still Thumbnail out/thumbnail.png",
     "srt": "tsx scripts/export-srt.ts",
     "validate": "tsx scripts/validate.ts",
     "qa": "npm run sync:assets && tsx scripts/qa-stills.ts",
     "typecheck": "tsc --noEmit",
-    "check": "npm run typecheck && npm run validate",
-    "assets": "tsx scripts/asset-manifest.ts"
+    "check": "npm run typecheck && npm run lint && npm run validate",
+    "assets": "tsx scripts/asset-manifest.ts",
+    "lint": "eslint .",
+    "render:clean": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge-no-subs.mp4 --props=props/clean.json"
   },
   "dependencies": {
     "@remotion/cli": "4.0.527",
     "@remotion/fonts": "4.0.527",
-    "@remotion/media-utils": "4.0.527",
     "@remotion/transitions": "4.0.527",
+    "mediabunny": "1.59.1",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "remotion": "4.0.527",
@@ -29,9 +31,13 @@
   },
   "devDependencies": {
     "@remotion/bundler": "4.0.527",
+    "@remotion/eslint-plugin": "4.0.527",
     "@remotion/renderer": "4.0.527",
     "@types/react": "19.1.8",
+    "eslint": "9.39.5",
+    "eslint-plugin-react-hooks": "5.2.0",
     "tsx": "^4.19.0",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "typescript-eslint": "8.70.1"
   }
 }

@@ -12,8 +12,14 @@ const FAMILIES = [
 	{family: 'JetBrains Mono', file: 'fonts/JetBrainsMono-Variable-latin.woff2', weight: '100 800'},
 ] as const;
 
-for (const f of FAMILIES) {
-	loadFont({family: f.family, url: staticFile(f.file), weight: f.weight, display: 'block'});
+// Only in the browser (Studio / render). Node scripts that import scene code skip this.
+if (typeof document !== 'undefined') {
+	for (const f of FAMILIES) {
+		loadFont({family: f.family, url: staticFile(f.file), weight: f.weight, display: 'block'}).catch((err: unknown) => {
+			// loadFont already cancels the render via delayRender; this just avoids an unhandled rejection.
+			console.error(`Failed to load font ${f.family}`, err);
+		});
+	}
 }
 
 export const fonts = {

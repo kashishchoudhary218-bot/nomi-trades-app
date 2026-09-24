@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 import {colors} from '../theme/tokens';
+import {useSvgId} from '../lib/useSvgId';
 
 type Props = {
 	/** Dot grid behind the content. */
@@ -57,7 +58,7 @@ export const Background: React.FC<Props> = ({
 
 export const FilmGrain: React.FC<{opacity?: number}> = ({opacity = 0.06}) => {
 	const frame = useCurrentFrame();
-	const id = `grain-${frame % 6}`;
+	const id = useSvgId('grain')(String(frame % 6));
 	return (
 		<AbsoluteFill style={{pointerEvents: 'none', mixBlendMode: 'overlay', opacity}}>
 			<svg width="100%" height="100%">

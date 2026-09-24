@@ -3,6 +3,7 @@ import {useCurrentFrame} from 'remotion';
 import {map, progress} from '../lib/anim';
 import {fonts} from '../theme/fonts';
 import {colors} from '../theme/tokens';
+import {useSvgId} from '../lib/useSvgId';
 
 type Common = {
 	steps: string[];
@@ -65,6 +66,7 @@ const LoopTimeline: React.FC<Extract<TimelineProps, {layout: 'loop'}>> = ({
 	const frame = useCurrentFrame();
 	const n = steps.length;
 	const r = size * 0.36;
+	const id = useSvgId('loop');
 	const c = size / 2;
 	const angle = (i: number) => -Math.PI / 2 + (i / n) * Math.PI * 2;
 	const pos = (a: number, rad = r) => [c + Math.cos(a) * rad, c + Math.sin(a) * rad] as const;
@@ -83,7 +85,7 @@ const LoopTimeline: React.FC<Extract<TimelineProps, {layout: 'loop'}>> = ({
 		<div style={{position: 'relative', width: size, height: size, ...style}}>
 			<svg width={size} height={size} style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
 				<defs>
-					<filter id="loop-glow">
+					<filter id={id('glow')}>
 						<feGaussianBlur stdDeviation="6" result="b" />
 						<feMerge>
 							<feMergeNode in="b" />
@@ -101,7 +103,7 @@ const LoopTimeline: React.FC<Extract<TimelineProps, {layout: 'loop'}>> = ({
 					strokeWidth={minimal ? 3 : 2.5}
 					strokeDasharray={`${circ * ringP} ${circ}`}
 					transform={`rotate(-90 ${c} ${c})`}
-					filter="url(#loop-glow)"
+					filter={`url(#${id('glow')})`}
 				/>
 				{steps.map((_, i) => {
 					const p = progress(frame, stepTime(i, at, stepFrames, stepTimes), 16);
@@ -110,12 +112,12 @@ const LoopTimeline: React.FC<Extract<TimelineProps, {layout: 'loop'}>> = ({
 					return (
 						<g key={i} transform={`translate(${x} ${y}) scale(${p})`}>
 							<circle r={minimal ? 6 : 16} fill={colors.ink} stroke={isActive ? accent : colors.textLo} strokeWidth={3} />
-							{!minimal ? <circle r={6} fill={isActive ? accent : colors.textLo} filter={isActive ? 'url(#loop-glow)' : undefined} /> : null}
+							{!minimal ? <circle r={6} fill={isActive ? accent : colors.textLo} filter={isActive ? `url(#${id('glow')})` : undefined} /> : null}
 						</g>
 					);
 				})}
 				{lapT >= 0 ? (
-					<circle cx={pos(tokenA)[0]} cy={pos(tokenA)[1]} r={10} fill={accent} filter="url(#loop-glow)" />
+					<circle cx={pos(tokenA)[0]} cy={pos(tokenA)[1]} r={10} fill={accent} filter={`url(#${id('glow')})`} />
 				) : null}
 				{ejectAt !== undefined && frame >= ejectAt
 					? (() => {
@@ -124,7 +126,7 @@ const LoopTimeline: React.FC<Extract<TimelineProps, {layout: 'loop'}>> = ({
 							const [ex, ey] = pos(a, r + t * r * 0.9);
 							return (
 								<g opacity={1 - progress(frame, ejectAt + 40, 20)}>
-									<circle cx={ex} cy={ey} r={11} fill={colors.loss} filter="url(#loop-glow)" />
+									<circle cx={ex} cy={ey} r={11} fill={colors.loss} filter={`url(#${id('glow')})`} />
 									<text x={ex - 20} y={ey - 22} textAnchor="end" fill={colors.loss} fontFamily={fonts.sans} fontWeight={700} fontSize={20} letterSpacing="0.16em">
 										{ejectLabel}
 									</text>

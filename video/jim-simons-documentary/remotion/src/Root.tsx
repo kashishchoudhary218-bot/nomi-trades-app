@@ -1,7 +1,8 @@
 import React from 'react';
-import {Composition, Folder, staticFile, type CalculateMetadataFunction} from 'remotion';
-import {getAudioDurationInSeconds} from '@remotion/media-utils';
-import {findAudio} from './assets/assets';
+import {Composition, Folder, Still, type CalculateMetadataFunction} from 'remotion';
+import {findAudio, hasAsset} from './assets/assets';
+import {measureAll} from './assets/measure';
+import {BROLL} from './data/broll';
 import {voPath} from './audio/library';
 import {Documentary, documentarySchema, type DocumentaryProps} from './compositions/Documentary';
 import {ScenePreview, type ScenePreviewProps} from './compositions/ScenePreview';
@@ -12,27 +13,35 @@ import {buildTimeline} from './timeline/build';
 import {VIDEO} from './theme/tokens';
 import './theme/fonts';
 
-/** Measures any recorded VO so scene lengths, subtitles and SFX re-time to the real read. */
-const measureVo = async (): Promise<Record<string, number>> => {
-	const out: Record<string, number> = {};
-	await Promise.all(
-		SCENES.map(async (s) => {
-			const path = findAudio(voPath(s.id));
-			if (path) out[s.id] = await getAudioDurationInSeconds(staticFile(path));
-		}),
-	);
-	return out;
+/**
+ * Measures recorded VO (so scene lengths, subtitles, beats and SFX re-time to the real read)
+ * and B-roll clips (so clips shorter than their slot loop instead of freezing).
+ */
+const measureMedia = async () => {
+	const voPaths = SCENES.map((s) => [s.id, findAudio(voPath(s.id))] as const).filter((e): e is [string, string] => e[1] !== null);
+	const videoPaths = Object.values(BROLL)
+		.map((b) => b.src)
+		.filter((src) => /\.(mp4|mov|webm)$/i.test(src) && hasAsset(src));
+	const measured = await measureAll([...voPaths.map(([, p]) => p), ...videoPaths]);
+	const voDurations: Record<string, number> = {};
+	for (const [id, p] of voPaths) if (measured[p]) voDurations[id] = measured[p];
+	const mediaDurations: Record<string, number> = {};
+	for (const p of videoPaths) if (measured[p]) mediaDurations[p] = measured[p];
+	return {voDurations, mediaDurations};
 };
 
 const calculateDocumentary: CalculateMetadataFunction<DocumentaryProps> = async ({props}) => {
-	const voDurations = {...(await measureVo()), ...props.voDurations};
-	return {durationInFrames: buildTimeline(SCENES, voDurations).totalFrames, props: {...props, voDurations}};
+	const measured = await measureMedia();
+	const voDurations = {...measured.voDurations, ...props.voDurations};
+	const mediaDurations = {...measured.mediaDurations, ...props.mediaDurations};
+	return {durationInFrames: buildTimeline(SCENES, voDurations).totalFrames, props: {...props, voDurations, mediaDurations}};
 };
 
 const calculateScene: CalculateMetadataFunction<ScenePreviewProps> = async ({props}) => {
-	const voDurations = await measureVo();
+	const {voDurations, mediaDurations} = await measureMedia();
 	const scene = buildTimeline(SCENES, voDurations).scenes.find((s) => s.def.id === props.sceneId);
-	return {durationInFrames: scene?.durationInFrames ?? 300, props: {...props, voDurations}};
+	if (!scene) throw new Error(`Unknown scene ${props.sceneId}`);
+	return {durationInFrames: scene.durationInFrames, props: {...props, voDurations, mediaDurations}};
 };
 
 export const RemotionRoot: React.FC = () => {
@@ -47,7 +56,7 @@ export const RemotionRoot: React.FC = () => {
 				fps={VIDEO.fps}
 				width={VIDEO.width}
 				height={VIDEO.height}
-				defaultProps={{voDurations: {}, showSubtitles: true, showGuides: false}}
+				defaultProps={{voDurations: {}, mediaDurations: {}, showSubtitles: true, showGuides: false}}
 				calculateMetadata={calculateDocumentary}
 			/>
 			<Folder name="Scenes">
@@ -60,14 +69,14 @@ export const RemotionRoot: React.FC = () => {
 						fps={VIDEO.fps}
 						width={VIDEO.width}
 						height={VIDEO.height}
-						defaultProps={{sceneId: s.def.id, voDurations: {}, showSubtitles: true, showGuides: true}}
+						defaultProps={{sceneId: s.def.id, voDurations: {}, mediaDurations: {}, showSubtitles: true, showGuides: true}}
 						calculateMetadata={calculateScene}
 					/>
 				))}
 			</Folder>
 			<Folder name="Extras">
 				<Composition id="Showcase" component={Showcase} durationInFrames={SHOWCASE_FRAMES} fps={VIDEO.fps} width={VIDEO.width} height={VIDEO.height} />
-				<Composition id="Thumbnail" component={Thumbnail} durationInFrames={1} fps={VIDEO.fps} width={1280} height={720} />
+				<Still id="Thumbnail" component={Thumbnail} width={1280} height={720} />
 			</Folder>
 		</>
 	);

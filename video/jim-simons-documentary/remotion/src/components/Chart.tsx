@@ -4,6 +4,7 @@ import {map, progress} from '../lib/anim';
 import {fonts} from '../theme/fonts';
 import {colors, EASE_IN_OUT} from '../theme/tokens';
 import {IllustrativeTag} from './Primitives';
+import {useSvgId} from '../lib/useSvgId';
 
 export type ChartSeries = {
 	id: string;
@@ -99,6 +100,7 @@ export const Chart: React.FC<ChartProps> = ({
 	style,
 }) => {
 	const frame = useCurrentFrame();
+	const id = useSvgId('chart');
 	const padding = paddingProp ?? (series.some((s) => s.label) ? LABELLED_PAD : DEFAULT_PAD);
 	const n = xLength ?? Math.max(...series.map((s) => s.data.length));
 	const all = series.flatMap((s) => s.data);
@@ -131,12 +133,12 @@ export const Chart: React.FC<ChartProps> = ({
 			<svg width={width} height={height} style={{position: 'absolute', inset: 0, overflow: 'visible'}}>
 				<defs>
 					{series.map((s) => (
-						<linearGradient key={s.id} id={`grad-${s.id}`} x1="0" x2="0" y1="0" y2="1">
+						<linearGradient key={s.id} id={id(`grad-${s.id}`)} x1="0" x2="0" y1="0" y2="1">
 							<stop offset="0%" stopColor={s.color ?? colors.signal} stopOpacity={0.28} />
 							<stop offset="100%" stopColor={s.color ?? colors.signal} stopOpacity={0} />
 						</linearGradient>
 					))}
-					<filter id="chart-glow" x="-20%" y="-20%" width="140%" height="140%">
+					<filter id={id('glow')} x="-20%" y="-20%" width="140%" height="140%">
 						<feGaussianBlur stdDeviation="5" result="b" />
 						<feMerge>
 							<feMergeNode in="b" />
@@ -223,7 +225,7 @@ export const Chart: React.FC<ChartProps> = ({
 					const areaD = `${d} L${last[0].toFixed(1)},${floor} L${pts[0][0].toFixed(1)},${floor} Z`;
 					return (
 						<g key={s.id} opacity={s.opacity ?? 1}>
-							{s.area === 'gradient' ? <path d={areaD} fill={`url(#grad-${s.id})`} /> : null}
+							{s.area === 'gradient' ? <path d={areaD} fill={`url(#${id(`grad-${s.id}`)})`} /> : null}
 							{s.area === 'underwater' ? <path d={areaD} fill={colors.loss} fillOpacity={0.22} /> : null}
 							<path
 								d={d}
@@ -233,10 +235,10 @@ export const Chart: React.FC<ChartProps> = ({
 								strokeLinejoin="round"
 								strokeLinecap="round"
 								strokeDasharray={s.dashed ? '10 10' : undefined}
-								filter={s.glow ? 'url(#chart-glow)' : undefined}
+								filter={s.glow ? `url(#${id('glow')})` : undefined}
 							/>
 							{s.head !== false && head < (s.range?.[1] ?? s.data.length - 1) ? (
-								<circle cx={last[0]} cy={last[1]} r={6} fill={c} filter="url(#chart-glow)" />
+								<circle cx={last[0]} cy={last[1]} r={6} fill={c} filter={`url(#${id('glow')})`} />
 							) : null}
 							{s.label ? (
 								<text
@@ -268,7 +270,7 @@ export const Chart: React.FC<ChartProps> = ({
 					const c = m.color ?? colors.signal;
 					return (
 						<g key={i} transform={`translate(${mx} ${my}) scale(${pop})`}>
-							<MarkerShape shape={m.shape ?? 'dot'} color={c} />
+							<MarkerShape shape={m.shape ?? 'dot'} color={c} glowId={id('glow')} />
 							{m.label ? (
 								<g transform={`translate(0 ${m.shape === 'down' ? -34 : 44})`}>
 									<text textAnchor="middle" fill={c} fontFamily={fonts.sans} fontWeight={700} fontSize={17} letterSpacing="0.12em">
@@ -289,7 +291,7 @@ export const Chart: React.FC<ChartProps> = ({
 							return (
 								<g>
 									<rect x={padding.left} y={padding.top} width={px - padding.left} height={ih} fill={c} fillOpacity={0.04} />
-									<line x1={px} x2={px} y1={padding.top - 10} y2={padding.top + ih + 10} stroke={c} strokeWidth={2} filter="url(#chart-glow)" />
+									<line x1={px} x2={px} y1={padding.top - 10} y2={padding.top + ih + 10} stroke={c} strokeWidth={2} filter={`url(#${id('glow')})`} />
 								</g>
 							);
 						})()
@@ -316,15 +318,15 @@ export const Chart: React.FC<ChartProps> = ({
 	);
 };
 
-const MarkerShape: React.FC<{shape: NonNullable<ChartMarker['shape']>; color: string}> = ({shape, color}) => {
-	if (shape === 'up') return <path d="M0,-4 L12,18 L-12,18 Z" transform="translate(0 8)" fill={color} filter="url(#chart-glow)" />;
-	if (shape === 'down') return <path d="M0,4 L12,-18 L-12,-18 Z" transform="translate(0 -8)" fill={color} filter="url(#chart-glow)" />;
+const MarkerShape: React.FC<{shape: NonNullable<ChartMarker['shape']>; color: string; glowId: string}> = ({shape, color, glowId}) => {
+	if (shape === 'up') return <path d="M0,-4 L12,18 L-12,18 Z" transform="translate(0 8)" fill={color} filter={`url(#${glowId})`} />;
+	if (shape === 'down') return <path d="M0,4 L12,-18 L-12,-18 Z" transform="translate(0 -8)" fill={color} filter={`url(#${glowId})`} />;
 	if (shape === 'x')
-		return <path d="M-9,-9 L9,9 M9,-9 L-9,9" stroke={color} strokeWidth={4} strokeLinecap="round" filter="url(#chart-glow)" />;
+		return <path d="M-9,-9 L9,9 M9,-9 L-9,9" stroke={color} strokeWidth={4} strokeLinecap="round" filter={`url(#${glowId})`} />;
 	return (
 		<>
 			<circle r={16} fill={color} fillOpacity={0.15} />
-			<circle r={8} fill={color} filter="url(#chart-glow)" />
+			<circle r={8} fill={color} filter={`url(#${glowId})`} />
 		</>
 	);
 };

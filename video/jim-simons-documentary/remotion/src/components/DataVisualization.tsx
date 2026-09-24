@@ -4,6 +4,7 @@ import {map, progress} from '../lib/anim';
 import {fonts} from '../theme/fonts';
 import {colors} from '../theme/tokens';
 import {IllustrativeTag} from './Primitives';
+import {useSvgId} from '../lib/useSvgId';
 
 type Common = {width: number; height: number; at?: number; illustrative?: boolean; style?: React.CSSProperties};
 
@@ -158,6 +159,7 @@ const Waterfall: React.FC<WaterfallViz> = ({start, steps, endLabel, width, heigh
 
 const Scatter: React.FC<ScatterViz> = ({width, height, count = 420, seed = 'scatter', revealAt, at = 0}) => {
 	const frame = useCurrentFrame();
+	const id = useSvgId('scatter');
 	const reveal = progress(frame, revealAt, 40);
 	const pts = Array.from({length: count}, (_, i) => {
 		const px = random(`${seed}-x-${i}`) * width;
@@ -174,7 +176,7 @@ const Scatter: React.FC<ScatterViz> = ({width, height, count = 420, seed = 'scat
 	return (
 		<svg width={width} height={height} style={{overflow: 'visible'}}>
 			<defs>
-				<filter id="scatter-glow">
+				<filter id={id('glow')}>
 					<feGaussianBlur stdDeviation="4" result="b" />
 					<feMerge>
 						<feMergeNode in="b" />
@@ -190,7 +192,7 @@ const Scatter: React.FC<ScatterViz> = ({width, height, count = 420, seed = 'scat
 					r={p.onPattern ? 3 + reveal * 1.5 : 2.6}
 					fill={p.onPattern ? mix(colors.textLo, colors.signal, reveal) : colors.textLo}
 					opacity={p.appear * (p.onPattern ? 0.5 + reveal * 0.5 : 0.5 - reveal * 0.25)}
-					filter={p.onPattern && reveal > 0.5 ? 'url(#scatter-glow)' : undefined}
+					filter={p.onPattern && reveal > 0.5 ? `url(#${id('glow')})` : undefined}
 				/>
 			))}
 			<path
@@ -202,7 +204,7 @@ const Scatter: React.FC<ScatterViz> = ({width, height, count = 420, seed = 'scat
 				strokeDasharray={1}
 				strokeDashoffset={1 - progress(frame, revealAt + 20, 50)}
 				opacity={0.7}
-				filter="url(#scatter-glow)"
+				filter={`url(#${id('glow')})`}
 			/>
 		</svg>
 	);
