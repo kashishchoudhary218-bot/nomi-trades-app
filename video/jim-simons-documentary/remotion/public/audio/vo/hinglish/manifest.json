@@ -1,0 +1,299 @@
+{
+	"S01": {
+		"file": "audio/vo/hinglish/S01.mp3",
+		"hash": "82c55ec57ce9db4f",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 13.728000000000002,
+		"generatedAt": "2026-09-24T12:32:51.054Z"
+	},
+	"S02": {
+		"file": "audio/vo/hinglish/S02.mp3",
+		"hash": "4e2ce0bf61aa0fe1",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 12.576,
+		"generatedAt": "2026-09-24T12:32:56.775Z"
+	},
+	"S03": {
+		"file": "audio/vo/hinglish/S03.mp3",
+		"hash": "c734879bf8993bc1",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 17.544,
+		"generatedAt": "2026-09-24T12:33:04.454Z"
+	},
+	"S05": {
+		"file": "audio/vo/hinglish/S05.mp3",
+		"hash": "8fb2e12dcf9a4b0e",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 17.904,
+		"generatedAt": "2026-09-24T12:33:12.180Z"
+	},
+	"S06": {
+		"file": "audio/vo/hinglish/S06.mp3",
+		"hash": "a09cdf30b9a1f809",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 22.296000000000003,
+		"generatedAt": "2026-09-24T12:33:20.980Z"
+	},
+	"S07": {
+		"file": "audio/vo/hinglish/S07.mp3",
+		"hash": "7ef6db362076bc21",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 31.704,
+		"generatedAt": "2026-09-24T12:33:32.594Z"
+	},
+	"S08": {
+		"file": "audio/vo/hinglish/S08.mp3",
+		"hash": "32b58fd2f444b8e2",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 22.44,
+		"generatedAt": "2026-09-24T12:33:41.162Z"
+	},
+	"S09": {
+		"file": "audio/vo/hinglish/S09.mp3",
+		"hash": "da196719e9fa8d5f",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 20.952,
+		"generatedAt": "2026-09-24T12:33:49.722Z"
+	},
+	"S10": {
+		"file": "audio/vo/hinglish/S10.mp3",
+		"hash": "8b6c89c3ee5669f4",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 31.224,
+		"generatedAt": "2026-09-24T12:34:00.054Z"
+	},
+	"S11": {
+		"file": "audio/vo/hinglish/S11.mp3",
+		"hash": "f9c543b21f82eb8c",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 23.952,
+		"generatedAt": "2026-09-24T12:34:09.063Z"
+	},
+	"S12": {
+		"file": "audio/vo/hinglish/S12.mp3",
+		"hash": "e5646b5a3c1897a0",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 21.504,
+		"generatedAt": "2026-09-24T12:34:17.704Z"
+	},
+	"S13": {
+		"file": "audio/vo/hinglish/S13.mp3",
+		"hash": "79ad387f68fe61ed",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 29.544,
+		"generatedAt": "2026-09-24T12:34:28.044Z"
+	},
+	"S14": {
+		"file": "audio/vo/hinglish/S14.mp3",
+		"hash": "8d25bf1fb40da7b2",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 23.496000000000002,
+		"generatedAt": "2026-09-24T12:34:36.962Z"
+	},
+	"S15": {
+		"file": "audio/vo/hinglish/S15.mp3",
+		"hash": "6bb4e86517800d12",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 32.112,
+		"generatedAt": "2026-09-24T12:34:48.078Z"
+	},
+	"S16": {
+		"file": "audio/vo/hinglish/S16.mp3",
+		"hash": "d6dd4d632126b8a2",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 29.736,
+		"generatedAt": "2026-09-24T12:34:58.231Z"
+	},
+	"S17": {
+		"file": "audio/vo/hinglish/S17.mp3",
+		"hash": "4812e2e5cc730af0",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 34.104,
+		"generatedAt": "2026-09-24T12:35:11.043Z"
+	},
+	"S18": {
+		"file": "audio/vo/hinglish/S18.mp3",
+		"hash": "d655c974e920fb98",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 23.232000000000003,
+		"generatedAt": "2026-09-24T12:35:19.974Z"
+	},
+	"S19": {
+		"file": "audio/vo/hinglish/S19.mp3",
+		"hash": "874649c39f3dd165",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 16.848000000000003,
+		"generatedAt": "2026-09-24T12:35:27.006Z"
+	},
+	"S20": {
+		"file": "audio/vo/hinglish/S20.mp3",
+		"hash": "0dbd6159021a093a",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 20.016000000000002,
+		"generatedAt": "2026-09-24T12:35:34.527Z"
+	},
+	"S21": {
+		"file": "audio/vo/hinglish/S21.mp3",
+		"hash": "af73c547769598ca",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 19.656000000000002,
+		"generatedAt": "2026-09-24T12:35:41.939Z"
+	},
+	"S22": {
+		"file": "audio/vo/hinglish/S22.mp3",
+		"hash": "d0f7691ed27b77be",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 25.032,
+		"generatedAt": "2026-09-24T12:35:51.489Z"
+	},
+	"S23": {
+		"file": "audio/vo/hinglish/S23.mp3",
+		"hash": "45c86380a6f9bf7e",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 14.568000000000001,
+		"generatedAt": "2026-09-24T12:35:57.836Z"
+	},
+	"S24": {
+		"file": "audio/vo/hinglish/S24.mp3",
+		"hash": "2f2cacfa8e919272",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 31.824,
+		"generatedAt": "2026-09-24T12:36:08.752Z"
+	},
+	"S25": {
+		"file": "audio/vo/hinglish/S25.mp3",
+		"hash": "d3ab91c43eacc98f",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 35.664,
+		"generatedAt": "2026-09-24T12:36:21.122Z"
+	},
+	"S26": {
+		"file": "audio/vo/hinglish/S26.mp3",
+		"hash": "ea1a23d88751b418",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 33.504000000000005,
+		"generatedAt": "2026-09-24T12:36:32.098Z"
+	},
+	"S27": {
+		"file": "audio/vo/hinglish/S27.mp3",
+		"hash": "aef7c68c299674cd",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 18.288,
+		"generatedAt": "2026-09-24T12:36:39.631Z"
+	},
+	"S28": {
+		"file": "audio/vo/hinglish/S28.mp3",
+		"hash": "fd3b23ce4c394483",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 22.728,
+		"generatedAt": "2026-09-24T12:36:48.371Z"
+	},
+	"S29": {
+		"file": "audio/vo/hinglish/S29.mp3",
+		"hash": "2218741fc0381f62",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 12.744000000000002,
+		"generatedAt": "2026-09-24T12:36:54.084Z"
+	},
+	"S30": {
+		"file": "audio/vo/hinglish/S30.mp3",
+		"hash": "1fc975a87a74ec9b",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 22.560000000000002,
+		"generatedAt": "2026-09-24T12:37:03.270Z"
+	},
+	"S31": {
+		"file": "audio/vo/hinglish/S31.mp3",
+		"hash": "5c70c81968841594",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 33.624,
+		"generatedAt": "2026-09-24T12:37:14.410Z"
+	},
+	"S32": {
+		"file": "audio/vo/hinglish/S32.mp3",
+		"hash": "b994a79791065da6",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 69.744,
+		"generatedAt": "2026-09-24T12:37:35.429Z"
+	},
+	"S33": {
+		"file": "audio/vo/hinglish/S33.mp3",
+		"hash": "c6bf775b67a6ae3f",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 22.752000000000002,
+		"generatedAt": "2026-09-24T12:37:43.716Z"
+	},
+	"S34": {
+		"file": "audio/vo/hinglish/S34.mp3",
+		"hash": "01673cda7349614f",
+		"provider": "kokoro",
+		"voice": "hm_omega",
+		"speed": 1.1,
+		"durationSec": 16.272000000000002,
+		"generatedAt": "2026-09-24T12:37:50.460Z"
+	}
+}

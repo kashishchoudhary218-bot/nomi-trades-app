@@ -21,6 +21,8 @@ export type BuiltScene = {
 export type BuiltTimeline = {scenes: BuiltScene[]; totalFrames: number; language: Language};
 
 const TAIL_SEC = 0.9;
+/** Minimum silence between one scene's narration and the next, whatever the transition. */
+const MIN_VO_GAP_SEC = 1.0;
 const f = (s: number) => Math.round(s * VIDEO.fps);
 
 /**
@@ -39,11 +41,16 @@ export const buildTimeline = (
 		const voSec = measured ?? estimateVoSeconds(def.narration);
 		const voFrom = f(def.voOffsetSec);
 		const voFrames = f(voSec);
-		const needed = def.narration ? voFrom + voFrames + f(TAIL_SEC) : 0;
-		const durationInFrames = Math.max(f(def.minDurationSec), needed);
 		const isLast = index === defs.length - 1;
 		const kind: TransitionKind = isLast ? 'cut' : def.transitionOut;
 		const frames = kind === 'cut' ? 0 : (def.transitionFrames ?? DEFAULT_TRANSITION_FRAMES[kind]);
+		// The outgoing transition overlaps the next scene, so leave room for it plus a breath
+		// before the next narration starts (next scene's VO offset counts towards that breath).
+		const next = defs[index + 1];
+		const nextVoFrom = next?.narration ? f(next.voOffsetSec) : Infinity;
+		const tail = Math.max(f(TAIL_SEC), frames + f(MIN_VO_GAP_SEC) - nextVoFrom);
+		const needed = def.narration ? voFrom + voFrames + tail : 0;
+		const durationInFrames = Math.max(f(def.minDurationSec), needed);
 		scenes.push({
 			def,
 			index,
