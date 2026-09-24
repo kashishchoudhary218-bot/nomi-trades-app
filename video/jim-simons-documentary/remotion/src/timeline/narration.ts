@@ -1,0 +1,38 @@
+/** Word-level helpers for syncing visuals and SFX to narration phrases. */
+
+export const tokenize = (text: string): string[] =>
+	text
+		.split(/\s+/)
+		.map((w) => w.toLowerCase().replace(/[^a-z0-9%'-]/g, '').replace(/^[-']+|[-']+$/g, ''))
+		.filter(Boolean);
+
+export const wordCount = (text: string): number => tokenize(text).length;
+
+/**
+ * Word index where `phrase` starts in `narration` (nth occurrence, 0-based).
+ * Throws if the phrase isn't in the narration, so typos are caught in Studio.
+ */
+export const phraseIndex = (narration: string, phrase: string, occurrence = 0): number => {
+	const words = tokenize(narration);
+	const target = tokenize(phrase);
+	let seen = 0;
+	for (let i = 0; i <= words.length - target.length; i++) {
+		if (target.every((t, k) => words[i + k] === t)) {
+			if (seen === occurrence) return i;
+			seen++;
+		}
+	}
+	throw new Error(`Phrase "${phrase}" not found in narration: "${narration.slice(0, 60)}…"`);
+};
+
+/**
+ * Estimated VO length when no recording exists yet: ~150 wpm documentary read,
+ * plus pauses at punctuation (matches the / and // marks in the script).
+ */
+export const estimateVoSeconds = (text: string): number => {
+	if (!text.trim()) return 0;
+	const words = wordCount(text);
+	const sentences = (text.match(/[.!?]/g) ?? []).length;
+	const breaths = (text.match(/[,:;—]/g) ?? []).length;
+	return words / 2.5 + sentences * 0.35 + breaths * 0.15;
+};
