@@ -1,0 +1,15 @@
+{
+  "name": "deck",
+  "version": "1.0.0",
+  "description": "Hinglish explainer deck for The Mathematician's Edge",
+  "main": "index.js",
+  "scripts": {
+    "build": "../remotion/node_modules/.bin/tsx build-deck.ts"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "pptxgenjs": "^3.12.0"
+  }
+}
