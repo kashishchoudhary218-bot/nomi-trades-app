@@ -28,7 +28,7 @@ export const kokoro: VoiceProvider = {
 		return ok ? null : 'Python packages missing — run: npm run tts:setup';
 	},
 	defaultSettings(): VoiceSettings {
-		return {voice: process.env.KOKORO_VOICE ?? 'hm_omega', speed: 1.0, language: 'hi'};
+		return {voice: process.env.KOKORO_VOICE ?? 'hm_omega', speed: 1.1, language: 'hi'};
 	},
 	async generateSpeech(text, s): Promise<SpeechResult> {
 		const dir = mkdtempSync(path.join(tmpdir(), 'kokoro-'));
