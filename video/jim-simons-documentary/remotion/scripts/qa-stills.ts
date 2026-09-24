@@ -7,6 +7,7 @@ import {bundle} from '@remotion/bundler';
 import {renderStill, selectComposition} from '@remotion/renderer';
 import {DEFAULT_LANGUAGE, LANGUAGES, localizeScenes} from '../src/data/language';
 import {buildTimeline} from '../src/timeline/build';
+import {manifestDurations} from './lib/vo-manifest';
 
 const only = process.argv.slice(2);
 const browserExecutable = process.env.REMOTION_BROWSER_EXECUTABLE || null;
@@ -16,7 +17,7 @@ const main = async () => {
 	const serveUrl = await bundle({entryPoint: path.resolve('src/index.ts')});
 	const outDir = path.resolve('out/qa');
 	mkdirSync(outDir, {recursive: true});
-	const timeline = buildTimeline(localizeScenes(language), {}, language);
+	const timeline = buildTimeline(localizeScenes(language), manifestDurations(language), language);
 	console.log(`QA language: ${language}`);
 	let failed = 0;
 	for (const s of timeline.scenes) {

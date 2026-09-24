@@ -12,7 +12,15 @@
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
-    "lib": ["DOM", "ES2022"]
+    "lib": [
+      "DOM",
+      "ES2022"
+    ]
   },
-  "include": ["src", "scripts", "remotion.config.ts"]
+  "include": [
+    "src",
+    "scripts",
+    "tts",
+    "remotion.config.ts"
+  ]
 }

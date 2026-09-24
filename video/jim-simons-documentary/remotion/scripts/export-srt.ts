@@ -8,10 +8,11 @@ import {DEFAULT_LANGUAGE, LANGUAGES, localizeScenes} from '../src/data/language'
 import {buildCues, toSrt} from '../src/subtitles/buildCues';
 import {buildTimeline} from '../src/timeline/build';
 import {VIDEO} from '../src/theme/tokens';
+import {manifestDurations} from './lib/vo-manifest';
 
 const language = LANGUAGES.find((l) => l === process.argv[2]) ?? DEFAULT_LANGUAGE;
 const voArg = process.argv[process.argv[2] === language ? 3 : 2];
-const voDurations: Record<string, number> = voArg ? JSON.parse(voArg) : {};
+const voDurations: Record<string, number> = voArg ? JSON.parse(voArg) : manifestDurations(language);
 const timeline = buildTimeline(localizeScenes(language), voDurations, language);
 const cues = buildCues(timeline);
 mkdirSync('out', {recursive: true});

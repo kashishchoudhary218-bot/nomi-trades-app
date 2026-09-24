@@ -13,7 +13,12 @@ export type PlacedVo = {sceneId: string; from: number; durationInFrames: number}
 const MUSIC_FADE_IN = 20;
 const MUSIC_FADE_OUT = 36;
 const DUCK_RAMP = 10;
+/**
+ * Mix (music beds are mastered to ≈ -22 dBFS RMS, narration to ≈ -19 dBFS):
+ * music sits ≈ -30 dBFS between lines and ducks to ≈ -40 dBFS under the voice (~20 dB below it).
+ */
 const DUCK_LEVEL = 0.3; // music level under VO, relative to the cue's base volume
+const SFX_MASTER = 0.7; // keeps effects subtle under the narration
 const SFX_LEN = 150;
 
 /** Absolute positions of every VO, music and SFX cue in the film. */
@@ -96,7 +101,7 @@ export const AudioLayer: React.FC<{timeline: BuiltTimeline}> = ({timeline}) => {
 				if (!path) return null;
 				return (
 					<Sequence key={`sfx-${i}`} from={s.from} durationInFrames={SFX_LEN} name={`${s.id} (${s.sceneId})`} layout="none">
-						<Audio src={staticFile(path)} volume={() => s.volume} />
+						<Audio src={staticFile(path)} volume={() => s.volume * SFX_MASTER} />
 					</Sequence>
 				);
 			})}

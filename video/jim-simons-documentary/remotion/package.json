@@ -19,7 +19,10 @@
     "lint": "eslint .",
     "render:clean": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge-no-subs.mp4 --props=props/clean.json",
     "render:english": "npm run sync:assets && remotion render Documentary out/the-mathematicians-edge-english.mp4 --props=props/english.json",
-    "script:hinglish": "tsx scripts/export-script.ts"
+    "script:hinglish": "tsx scripts/export-script.ts",
+    "voiceover": "tsx scripts/voiceover.ts",
+    "tts:setup": "node tts/kokoro/setup.mjs",
+    "sound-design": "node tts/sound-design.mjs"
   },
   "dependencies": {
     "@remotion/cli": "4.0.527",

@@ -24,13 +24,13 @@ export const SFX = {
 export type SfxId = keyof typeof SFX;
 
 export const MUSIC = {
-	M1: {name: 'Pattern — mysterious, precise (~80 BPM)', path: 'audio/music/m1-pattern', volume: 0.55},
-	M2: {name: 'Laboratory — curious, forward (~95 BPM)', path: 'audio/music/m2-laboratory', volume: 0.5},
+	M1: {name: 'Pattern — mysterious, precise (~80 BPM)', path: 'audio/music/m1-pattern', volume: 0.4},
+	M2: {name: 'Laboratory — curious, forward (~95 BPM)', path: 'audio/music/m2-laboratory', volume: 0.4},
 	M3: {name: 'Ground Truth — low drone', path: 'audio/music/m3-ground-truth', volume: 0.45},
-	M4: {name: 'Method — confident, bright (~100 BPM)', path: 'audio/music/m4-method', volume: 0.5},
-	M5: {name: 'Pressure — tense, heartbeat (~70 BPM)', path: 'audio/music/m5-pressure', volume: 0.5},
-	M6: {name: 'Noise — granular, uneasy', path: 'audio/music/m6-noise', volume: 0.5},
-	M7: {name: 'Discipline — piano + strings resolve', path: 'audio/music/m7-discipline', volume: 0.6},
+	M4: {name: 'Method — confident, bright (~100 BPM)', path: 'audio/music/m4-method', volume: 0.4},
+	M5: {name: 'Pressure — tense, heartbeat (~70 BPM)', path: 'audio/music/m5-pressure', volume: 0.4},
+	M6: {name: 'Noise — granular, uneasy', path: 'audio/music/m6-noise', volume: 0.4},
+	M7: {name: 'Discipline — piano + strings resolve', path: 'audio/music/m7-discipline', volume: 0.45},
 } as const;
 
 export type MusicCueId = keyof typeof MUSIC;

@@ -12,6 +12,7 @@ import {SCENE_COMPONENTS} from '../src/scenes';
 import {buildCues} from '../src/subtitles/buildCues';
 import {buildTimeline, formatTimecode} from '../src/timeline/build';
 import {phraseIndex, resolvePhrase} from '../src/timeline/narration';
+import {manifestDurations} from './lib/vo-manifest';
 
 const errors: string[] = [];
 const tryPhrase = (label: string, fn: () => unknown) => {
@@ -57,9 +58,11 @@ for (const file of readdirSync('src/scenes').filter((f) => f.endsWith('.tsx'))) 
 }
 
 const onlyLang = LANGUAGES.find((l) => l === process.argv[2]);
-const voDurations: Record<string, number> = process.argv[onlyLang ? 3 : 2] ? JSON.parse(process.argv[onlyLang ? 3 : 2]) : {};
+// Measured VO seconds: explicit JSON arg, else the generated voiceover's manifest.json.
+const voArg: Record<string, number> | null = process.argv[onlyLang ? 3 : 2] ? JSON.parse(process.argv[onlyLang ? 3 : 2]) : null;
 
 const checkLanguage = (language: Language) => {
+	const voDurations = voArg ?? manifestDurations(language);
 	const defs = localizeScenes(language);
 	for (const s of defs) {
 		for (const cue of s.sfx) if (cue.on) tryPhrase(`${language} ${s.id} SFX`, () => resolvePhrase(s.narration, s.anchors, cue.on!));
@@ -100,15 +103,16 @@ const checkLanguage = (language: Language) => {
 		if (i > 0 && c.from < cues[i - 1].to) errors.push(`${language}: subtitle ${i + 1} overlaps the previous cue`);
 		if (c.to > t.totalFrames) errors.push(`${language}: subtitle ${i + 1} runs past the end of the film`);
 	});
-	return t;
+	return {t, measured: Object.keys(voDurations).length};
 };
 
 for (const language of onlyLang ? [onlyLang] : LANGUAGES) {
-	const t = checkLanguage(language);
-	console.log(`\n[${language}] Scene  Start     Length  VO(${Object.keys(voDurations).length ? 'meas' : 'est'})  Title`);
+	const {t, measured} = checkLanguage(language);
+	console.log(`\n[${language}] VO: ${measured} scene(s) measured from recordings, the rest estimated`);
+	console.log(`[${language}] Scene  Start     Length  VO       Title`);
 	for (const s of t.scenes) {
 		console.log(
-			`[${language}] ${s.def.id.padEnd(6)} ${formatTimecode(s.from)}  ${(s.durationInFrames / 30).toFixed(1).padStart(5)}s  ${(s.voFrames / 30).toFixed(1).padStart(5)}s  ${s.def.title}`,
+			`[${language}] ${s.def.id.padEnd(6)} ${formatTimecode(s.from)}  ${(s.durationInFrames / 30).toFixed(1).padStart(5)}s  ${(s.voFrames / 30).toFixed(1).padStart(5)}s${s.voMeasured ? '*' : ' '} ${s.def.title}`,
 		);
 	}
 	console.log(`[${language}] Total: ${formatTimecode(t.totalFrames)} (${t.totalFrames} frames @ 30 fps)`);

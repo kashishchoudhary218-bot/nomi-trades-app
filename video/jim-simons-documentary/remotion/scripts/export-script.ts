@@ -5,8 +5,9 @@ import {CHAPTERS} from '../src/data/chapters';
 import {localizeScenes} from '../src/data/language';
 import {SCENES} from '../src/data/scenes';
 import {buildTimeline, formatTimecode} from '../src/timeline/build';
+import {manifestDurations} from './lib/vo-manifest';
 
-const hi = buildTimeline(localizeScenes('hinglish'), {}, 'hinglish');
+const hi = buildTimeline(localizeScenes('hinglish'), manifestDurations('hinglish'), 'hinglish');
 const tc = (f: number) => formatTimecode(f).slice(0, 5);
 const out: string[] = [
 	'# The Mathematician\'s Edge — Hinglish Narration Script',
@@ -17,7 +18,7 @@ const out: string[] = [
 	'**Kept from the source PDF:** "reportedly", "lagbhag" (approximately) and "fees se pehle" (before fees). Don\'t drop them in the read.',
 	'**Files:** record one file per scene as `public/audio/vo/hinglish/<Scene>.mp3` (S04 and S35 have no VO). Scene lengths, subtitles, visual beats and SFX re-time to the recording automatically.',
 	'',
-	'Timecodes are estimates until the VO is recorded. Visuals and on-screen text are unchanged; see `STORYBOARD.md`.',
+	'Timecodes follow the generated voiceover where it exists (`npm run voiceover`), otherwise estimates. Visuals and on-screen text are unchanged; see `STORYBOARD.md`.',
 	'',
 ];
 let chapter = '';
