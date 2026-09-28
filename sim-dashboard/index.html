@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sim Desk — Simulation</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Persistent environment label. Intentionally not dismissible. -->
+  <div class="sim-banner" role="status">
+    <span class="sim-dot"></span>
+    <strong>SIMULATION — DEMO DATA</strong>
+    <span class="sim-banner-sub">Fictional accounts · mock prices · no real funds · not connected to any broker</span>
+  </div>
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand-mark">SD</span>
+      <span class="brand-name">Sim Desk</span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <a href="#dashboard" data-view="dashboard">Dashboard</a>
+      <a href="#markets" data-view="markets">Markets</a>
+    </nav>
+    <button class="acct-chip" id="acctChip" aria-haspopup="dialog">
+      <span class="badge" data-bind="typeBadge"></span>
+      <span class="acct-chip-bal" data-bind="equityShort"></span>
+      <svg class="ico sm" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+    </button>
+  </header>
+
+  <main>
+    <!-- ================= Dashboard ================= -->
+    <section class="view" id="view-dashboard">
+      <div class="dash-grid">
+        <article class="account-card" id="accountCard">
+          <div class="card-top">
+            <button class="acct-select" id="acctSelectBtn">
+              <span class="acct-avatar">$</span>
+              <span class="acct-select-label" data-bind="nameNumber"></span>
+              <svg class="ico sm" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg>
+            </button>
+            <button class="round-btn" id="createBtn" aria-label="Create mock account">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg>
+            </button>
+          </div>
+          <div class="card-tags">
+            <span class="tag tag-outline" data-bind="typeLabel"></span>
+            <span class="tag tag-outline" data-bind="planLabel"></span>
+          </div>
+          <div class="card-balance">
+            <span class="big" data-bind="equityBig"></span>
+            <button class="eye-btn" id="eyeBtn" aria-label="Toggle balance visibility">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12Z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <span class="pl-pill" data-bind="plPill"></span>
+          <div class="card-actions">
+            <button class="pill-btn" data-action="manage">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+              Manage
+            </button>
+            <button class="pill-btn" data-action="deposit">
+              <svg class="ico" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+              Deposit
+            </button>
+          </div>
+          <span class="card-watermark">SIMULATION</span>
+        </article>
+
+        <aside class="panel details-panel">
+          <h3>Account details</h3>
+          <dl class="stats" data-stats="full"></dl>
+        </aside>
+      </div>
+
+      <div class="quick-row">
+        <button class="quick" data-action="goto-markets"><span class="quick-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M3 17l6-6 4 4 8-8M15 7h6v6"/></svg></span>Trade</button>
+        <button class="quick" data-action="history"><span class="quick-ico"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>History</button>
+        <button class="quick" data-action="switch"><span class="quick-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M7 7h13l-4-4M17 17H4l4 4"/></svg></span>Switch</button>
+        <button class="quick" data-action="reset"><span class="quick-ico"><svg class="ico" viewBox="0 0 24 24"><path d="M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"/></svg></span>Reset data</button>
+      </div>
+
+      <section class="panel">
+        <div class="panel-head"><h3>Open positions</h3><span class="muted" data-bind="posCount"></span></div>
+        <div class="positions" data-positions></div>
+      </section>
+    </section>
+
+    <!-- ================= Markets ================= -->
+    <section class="view" id="view-markets">
+      <div class="markets-layout">
+        <aside class="watchlist panel flush">
+          <div class="wl-head">
+            <select id="wlGroup" aria-label="Instrument group"></select>
+            <input id="wlSearch" type="search" placeholder="Search" aria-label="Search instruments">
+          </div>
+          <ul class="wl-list" id="wlList"></ul>
+        </aside>
+
+        <section class="chart-area panel flush">
+          <div class="chart-head">
+            <div class="sym-title">
+              <span class="sym-ico" id="symIco"></span>
+              <div>
+                <div class="sym-name" id="symName"></div>
+                <div class="sym-change" id="symChange"></div>
+              </div>
+            </div>
+            <div class="tf-group" id="tfGroup"></div>
+          </div>
+          <div class="ohlc" id="ohlc"></div>
+          <div class="chart-wrap"><canvas id="chart"></canvas></div>
+          <div class="chart-foot">
+            <span data-bind="footer"></span>
+            <span class="muted" id="clock"></span>
+          </div>
+        </section>
+
+        <aside class="order-panel panel">
+          <h3>One‑Click Order <span class="tag tag-sim">MOCK</span></h3>
+          <div class="oc-buttons">
+            <button class="oc sell" id="sellBtn"><small>SELL</small><span id="sellPx"></span></button>
+            <span class="oc-spread" id="spread"></span>
+            <button class="oc buy" id="buyBtn"><small>BUY</small><span id="buyPx"></span></button>
+          </div>
+          <label class="field-label" for="lots">Volume (lots)</label>
+          <div class="stepper">
+            <button id="lotMinus" aria-label="Decrease">−</button>
+            <input id="lots" type="number" min="0.01" step="0.01" value="0.10">
+            <button id="lotPlus" aria-label="Increase">+</button>
+          </div>
+          <div class="oc-info">
+            <div><span>Amount</span><b id="ocUnits"></b></div>
+            <div><span>Required margin</span><b id="ocMargin"></b></div>
+            <div><span>Free margin</span><b data-bind="freeMargin"></b></div>
+          </div>
+          <p class="fine">Orders fill instantly against mock prices and only change local demo data.</p>
+          <div class="panel-head mt"><h3>Positions</h3><span class="muted" data-bind="posCount"></span></div>
+          <div class="positions compact" data-positions></div>
+        </aside>
+      </div>
+    </section>
+  </main>
+
+  <!-- ================= Overlays ================= -->
+  <div class="scrim" id="scrim" hidden></div>
+
+  <div class="popover" id="acctPopover" hidden role="dialog" aria-label="Account summary">
+    <button class="x-btn" data-close aria-label="Close">×</button>
+    <div class="card-tags"><span class="tag" data-bind="typeBadgeText"></span><span class="tag tag-outline dark" data-bind="planLabel"></span></div>
+    <h4 data-bind="name"></h4>
+    <div class="muted num" data-bind="number"></div>
+    <dl class="stats" data-stats="full"></dl>
+    <button class="btn dark block" data-action="manage">Manage</button>
+    <button class="btn outline block" data-action="switch">⇄ Switch Account</button>
+    <button class="link-btn" data-action="create">Create New Account</button>
+  </div>
+
+  <div class="modal" id="selectModal" hidden role="dialog" aria-label="Select account">
+    <h4 class="center">Select Account</h4>
+    <div id="acctList" class="acct-list"></div>
+    <button class="btn primary block" data-action="create">+ Create New Account</button>
+  </div>
+
+  <aside class="drawer" id="manageDrawer" hidden role="dialog" aria-label="Manage account">
+    <div class="drawer-head"><h3>Manage</h3><button class="x-btn" data-close aria-label="Close">×</button></div>
+    <button class="acct-row-btn" data-action="switch"><span class="acct-avatar sm">$</span><span data-bind="nameNumberFull"></span> <svg class="ico sm" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6"/></svg></button>
+    <div class="card-tags"><span class="tag" data-bind="typeBadgeText"></span><span class="tag tag-outline dark" data-bind="planLabel"></span></div>
+    <h4 data-bind="name"></h4>
+    <div class="muted num"><span data-bind="number"></span> <button class="copy-btn" id="copyBtn" aria-label="Copy account number">⧉</button></div>
+    <dl class="stats" data-stats="manage"></dl>
+    <div class="fund-row">
+      <button class="fund" data-action="deposit"><span><svg class="ico" viewBox="0 0 24 24"><path d="M12 19V5M6 11l6-6 6 6"/></svg></span>Deposit</button>
+      <button class="fund" data-action="withdraw"><span><svg class="ico" viewBox="0 0 24 24"><path d="M12 5v14M6 13l6 6 6-6"/></svg></span>Withdraw</button>
+      <button class="fund" data-action="transfer"><span><svg class="ico" viewBox="0 0 24 24"><path d="M4 8h14l-3-3M20 16H6l3 3"/></svg></span>Transfer</button>
+    </div>
+    <ul class="menu">
+      <li><button data-action="login-details"><svg class="ico" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="m7 14 3-3 3 3 4-4"/></svg>Sim Login Details<span class="chev">›</span></button></li>
+      <li><button data-action="leverage"><svg class="ico" viewBox="0 0 24 24"><path d="M12 3v18M5 7h14M5 7l-3 7h6zM19 7l-3 7h6z"/></svg>Change Leverage<span class="chip" data-bind="leverageLabel"></span><span class="chev">›</span></button></li>
+      <li><button data-action="rename"><svg class="ico" viewBox="0 0 24 24"><circle cx="9" cy="8" r="4"/><path d="M3 20c0-3 3-5 6-5M14 20l6-6-2-2-6 6v2z"/></svg>Change Account Name<span class="chev">›</span></button></li>
+      <li><button data-action="history"><svg class="ico" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>View Transaction History<span class="chev">›</span></button></li>
+    </ul>
+  </aside>
+
+  <div class="modal" id="formModal" hidden role="dialog">
+    <button class="x-btn" data-close aria-label="Close">×</button>
+    <h4 id="formTitle"></h4>
+    <div id="formBody"></div>
+  </div>
+
+  <div class="toasts" id="toasts" aria-live="polite"></div>
+
+  <script src="js/mock-data.js"></script>
+  <script src="js/engine.js"></script>
+  <script src="js/chart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
